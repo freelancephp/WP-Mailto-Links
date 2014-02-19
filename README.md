@@ -1,4 +1,6 @@
 WP-Mailto-Links
 ===============
 
-See (http://wordpress.org/plugins/wp-mailto-links/)[http://wordpress.org/plugins/wp-mailto-links/]
+Put it on Github so everybode can contribute code changes.
+
+See http://wordpress.org/plugins/wp-mailto-links/
