@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email icon, javascript
 Requires at least: 3.4.0
 Tested up to: 3.8.1
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 
 Protect email addresses and mailto links from spambots and being used for spamming. Easy to use without configuration.
 
@@ -30,6 +30,9 @@ Although the plugin can scan mailto links automatically, you could also use the 
 = Support =
 This plugin has the same [requirements](http://wordpress.org/about/requirements/) as WordPress.
 If you are experiencing any problems, just take a look at the [FAQ](http://wordpress.org/extend/plugins/wp-mailto-links/faq/) or report it in the [support section](http://wordpress.org/support/plugin/wp-mailto-links). You can also send me a mail with [this contactform](http://www.freelancephp.net/contact/).
+
+= Github =
+I published the code on [Github](https://github.com/freelancephp/WP-Mailto-Links) so anybody can commit code changes.
 
 = Like this plugin? =
 Please [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-mailto-links) or [post a comment](http://www.freelancephp.net/wp-mailto-links/) on my blog.
@@ -120,6 +123,9 @@ add_filter('wpml_mailto', 'special_mailto', 10, 4);`
 Now all mailto links will be wrapped around a `<b>`-tag.
 
 == Changelog ==
+
+= 1.3.1 =
+* Solved css rtl direction bug
 
 = 1.3.0 =
 * Only support for WP 3.4+

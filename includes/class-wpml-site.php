@@ -50,7 +50,7 @@ class WPML_Site extends WPML_Admin {
         echo '<style type="text/css" media="screen">' . "\n";
         echo '/* WP Mailto Links Plugin */' . "\n";
         echo '.wpml-nodis { display:none; }';
-        echo '/*.wpml-rtl { unicode-bidi:bidi-override; direction:rtl; }*/';
+        echo '.wpml-rtl { unicode-bidi:bidi-override; direction:rtl; }';
 
         if ($icon) {
             $padding = ($icon < 19) ? 15 : 17;
