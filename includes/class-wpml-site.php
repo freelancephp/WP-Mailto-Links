@@ -13,24 +13,29 @@ if (!class_exists('WPML_Site') && class_exists('WPML_Admin')):
 
 class WPML_Site extends WPML_Admin {
 
+    // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
+    const REGEXP_EMAIL = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
+
     /**
      * Regular expressions
      * @var array
      */
-    public $regexps = array(
-        // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
-        'email_plain' => '/([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))/i',
-        'email_mailto' => '/mailto\:[\s+]*([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))/i',
-        '<a>' => '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is',
-        '<img>' => '/<img([^>]*)>/is',
-        '<body>' => '/(<body(([^>]*)>))/is',
-    );
+    public $regexps = array();
 
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
+
+        $this->regexps = array(
+            'email_plain' => '/' . self::REGEXP_EMAIL . '/i',
+            'email_mailto' => '/mailto\:[\s+]*' . self::REGEXP_EMAIL . '/i',
+            'input' => '/<input(.*?)value=\"[\s+]*' . self::REGEXP_EMAIL . '[\s+]*\"/is',
+            '<a>' => '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is',
+            '<img>' => '/<img([^>]*)>/is',
+            '<body>' => '/(<body(([^>]*)>))/is',
+        );
 
         // add actions
         add_action('wp', array($this, 'wp_site'), 10);
@@ -204,6 +209,9 @@ class WPML_Site extends WPML_Admin {
     public function callback_filter_content($content) {
         $filtered = $content;
 
+        // first encode email address in input values
+        $filtered = preg_replace_callback($this->regexps['input'], array($this, 'callback_input_values'), $filtered);
+
         // get <a> elements
         $filtered = preg_replace_callback($this->regexps['<a>'], array($this, 'parse_link'), $filtered);
 
@@ -223,6 +231,15 @@ class WPML_Site extends WPML_Admin {
         }
 
         return $filtered;
+    }
+
+    /**
+     * Encode emails in input values
+     * @param array $match
+     * @return string
+     */
+    public function callback_input_values($match) {
+        return '<input' . $match[1] .'value="' . antispambot($match[2]) . '"';
     }
 
     /**
