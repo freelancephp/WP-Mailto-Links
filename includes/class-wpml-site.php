@@ -82,7 +82,7 @@ class WPML_Site extends WPML_Admin {
         // site
             // set js file
             if ($this->options['protect']) {
-                wp_enqueue_script('wp-mailto-links', plugins_url('js/wp-mailto-links.js', WP_MAILTO_LINKS_FILE), array('jquery'), WP_MAILTO_LINKS_VERSION);
+                wp_enqueue_script('wp-mailto-links', plugins_url('js/wp-mailto-links.js', WP_MAILTO_LINKS_FILE), array(), WP_MAILTO_LINKS_VERSION);
             }
 
             if ($this->options['filter_body'] || $this->options['filter_head']) {
@@ -249,10 +249,12 @@ class WPML_Site extends WPML_Admin {
     /**
      * Emails will be replaced by '*protected email*'
      * @param string $content
+     * @param string $email_replacement  Optional
      * @return string
      */
-    public function replace_plain_emails($content) {
-        return preg_replace($this->regexps['email_plain'], __($this->options['protection_text'], WP_MAILTO_LINKS_DOMAIN), $content);
+    public function replace_plain_emails($content, $email_replacement = null) {
+        $email_replacement = ($email_replacement === null) ? __($this->options['protection_text'], WP_MAILTO_LINKS_DOMAIN) : $email_replacement;
+        return preg_replace($this->regexps['email_plain'], $email_replacement, $content);
     }
 
     /* -------------------------------------------------------------------------
@@ -330,6 +332,11 @@ class WPML_Site extends WPML_Admin {
             $attrs['class'] = (empty($attrs['class']))
                                 ? $this->options['class_name']
                                 : $attrs['class'] .' '. $this->options['class_name'];
+        }
+
+        // check title for email address
+        if (!empty($attrs['title'])) {
+            $attrs['title'] = $this->replace_plain_emails($attrs['title'], '{{email}}'); // {{email}} will be replaced in javascript
         }
 
         // create element code
