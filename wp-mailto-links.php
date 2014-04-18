@@ -32,12 +32,6 @@ if (isset($wp_version)
     // create instance
     $WPML_Site = new WPML_Site;
 
-    // for testing purposes
-    if (file_exists(dirname(__FILE__) . '/../../wp-plugin-tester/tests/test-wp-mailto-links.php')) {
-        require_once('/../../wp-plugin-tester/wp-plugin-tester.php');
-        require_once('/../../wp-plugin-tester/tests/test-wp-mailto-links.php');
-    }
-
 } else {
 
     // set error message
