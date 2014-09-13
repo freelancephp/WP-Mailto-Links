@@ -51,12 +51,20 @@ class WPML_Site extends WPML_Admin {
      */
     public function wp_head() {
         $icon = $this->options['icon'];
+        $class_name = $this->options['class_name'];
 
+        // add style to <head>
         echo '<style type="text/css" media="screen">' . "\n";
         echo '/* WP Mailto Links Plugin */' . "\n";
         echo '.wpml-nodis { display:none; }';
         echo '.wpml-rtl { unicode-bidi:bidi-override; direction:rtl; }';
 
+        // add nowrap style
+        if ($class_name) {
+            echo '.' . $class_name . ' { white-space:nowrap; }';
+        }
+
+        // add icon styling
         if ($icon) {
             $padding = ($icon < 19) ? 15 : 17;
             echo '.mail-icon-' . $icon . ' { background:url(' . plugins_url('/images/mail-icon-' . $icon . '.png', WP_MAILTO_LINKS_FILE) . ') no-repeat 100% 75%; padding-right:' . $padding . 'px; }';
