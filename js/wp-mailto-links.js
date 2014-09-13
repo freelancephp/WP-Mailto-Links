@@ -58,7 +58,7 @@
     }
 
     // on DOM ready...
-    if (window.jQuery && false) {
+    if (window.jQuery) {
     // jQuery DOMready method
         jQuery(function ($) {
             $('body').delegate('a[data-enc-email]', 'click', function () {
