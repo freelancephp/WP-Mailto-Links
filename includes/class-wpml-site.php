@@ -32,7 +32,7 @@ class WPML_Site extends WPML_Admin {
             'email_plain' => '/' . self::REGEXP_EMAIL . '/i',
             'email_mailto' => '/mailto\:[\s+]*' . self::REGEXP_EMAIL . '/i',
             'input' => '/<input(.*?)value=\"[\s+]*' . self::REGEXP_EMAIL . '[\s+]*\"/is',
-            '<a>' => '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is',
+            'mailto_link' => '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\'])>(.*?)<\/a[\s+]*>/is',
             '<img>' => '/<img([^>]*)>/is',
             '<body>' => '/(<body(([^>]*)>))/is',
         );
@@ -220,8 +220,8 @@ class WPML_Site extends WPML_Admin {
         // first encode email address in input values
         $filtered = preg_replace_callback($this->regexps['input'], array($this, 'callback_input_values'), $filtered);
 
-        // get <a> elements
-        $filtered = preg_replace_callback($this->regexps['<a>'], array($this, 'parse_link'), $filtered);
+        // get mailto links
+        $filtered = preg_replace_callback($this->regexps['mailto_link'], array($this, 'parse_mailto'), $filtered);
 
         // convert plain emails
         if ($this->options['convert_emails'] == 1) {
@@ -313,21 +313,13 @@ class WPML_Site extends WPML_Admin {
      * -------------------------------------------------------------------------*/
 
     /**
-     * Make a clean <a> code
+     * Make a clean protected mailto link
      * @param array $match Result of a preg call in callback_filter_content()
-     * @return string Clean <a> code
+     * @return string Protected mailto link
      */
-    public function parse_link($match) {
+    public function parse_mailto($match) {
         $attrs = shortcode_parse_atts($match[1]);
-
-        $href_tolower = (isset($attrs['href'])) ? strtolower($attrs['href']) : '';
-
-        // check url
-        if (substr($href_tolower, 0, 7) === 'mailto:') {
-            $link = $this->protected_mailto($match[2], $attrs);
-        } else {
-            $link = $match[0];
-        }
+        $link = $this->protected_mailto($match[4], $attrs);
 
         return $link;
     }
