@@ -31,7 +31,7 @@ class WPML_Site extends WPML_Admin {
         $this->regexps = array(
             'email_plain' => '/' . self::REGEXP_EMAIL . '/i',
             'email_mailto' => '/mailto\:[\s+]*' . self::REGEXP_EMAIL . '/i',
-            'input' => '/<input(.*?)value=\"[\s+]*' . self::REGEXP_EMAIL . '[\s+]*\"/is',
+            'input' => '/<input([^>]*)value=["\'][\s+]*' . self::REGEXP_EMAIL . '[\s+]*["\']([^>]*)>/is',
             'mailto_link' => '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\'])>(.*?)<\/a[\s+]*>/is',
             '<img>' => '/<img([^>]*)>/is',
             '<body>' => '/(<body(([^>]*)>))/is',
@@ -247,7 +247,13 @@ class WPML_Site extends WPML_Admin {
      * @return string
      */
     public function callback_input_values($match) {
-        return '<input' . $match[1] .'value="' . antispambot($match[2]) . '"';
+        $input = $match[0];
+        $email = $match[2];
+
+        // replace email by encoded
+        $input = str_replace($email, antispambot($email), $input);
+
+        return $input;
     }
 
     /**
