@@ -32,6 +32,11 @@ if (isset($wp_version)
     // create instance
     $WPML_Site = new WPML_Site;
 
+    // init test
+    if (class_exists('Test_WP_Mailto_Links')) {
+        $Test_WP_Mailto_Links = new Test_WP_Mailto_Links;
+    }
+
 } else {
 
     // set error message
