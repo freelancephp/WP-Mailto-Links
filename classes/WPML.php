@@ -11,12 +11,6 @@ class WPML extends WP_Plugin_Abstract
 {
 
     /**
-     * @var array
-     */
-    public $optionValues = null;
-
-
-    /**
      * Init before using
      * @param array $extraGlobals
      */
@@ -44,28 +38,18 @@ class WPML extends WP_Plugin_Abstract
     }
 
     /**
-     * Get stored value
-     * @param string $key
-     * @return \WP_Plugin_OptionValues
-     */
-    public static function getOptionValues()
-    {
-        return self::getInstance()->optionValues;
-    }
-
-    /**
      * WP action callback
      */
     public function actionInit()
     {
-        $this->initOptions();
+        WPML::set('optionValues', $this->initOptionValues());
 
         if (is_admin()) {
             // create admin
-            WPML::set('WPML_Admin', new WPML_Admin);
+            WPML::set('admin', new WPML_Admin);
         } else {
             // create front
-            WPML::set('WPML_Front', new WPML_Front);
+            WPML::set('front', new WPML_Front);
 
             // create template functions
             if (!function_exists('wpml_mailto')):
@@ -79,14 +63,14 @@ class WPML extends WP_Plugin_Abstract
                        $attrs['href'] = 'mailto:'.$email;
                    }
 
-                   return WPML::get('WPML_Front')->protectedMailto($display, $attrs);
+                   return WPML::get('front')->protectedMailto($display, $attrs);
                }
             endif;
 
             if (!function_exists('wpml_filter')):
                 function wpml_filter($content)
                 {
-                    return WPML::get('WPML_Front')->filterContent($content);
+                    return WPML::get('front')->filterContent($content);
                 }
             endif;
         }
@@ -100,7 +84,7 @@ class WPML extends WP_Plugin_Abstract
     /**
      * Init option values
      */
-    protected function initOptions()
+    protected function initOptionValues()
     {
         $settings = array(
             'file' => self::get('file'),
@@ -128,13 +112,13 @@ class WPML extends WP_Plugin_Abstract
         );
 
         // options instance
-        $this->optionValues = new WP_Plugin_OptionValues($settings, $defaultValues);
+        $optionValues = new WP_Plugin_OptionValues($settings, $defaultValues);
 
         // check if this is an update
-        if ($this->optionValues->get('version') !== self::get('version')) {
+        if ($optionValues->get('version') !== self::get('version')) {
             // update version
-            $this->optionValues->set('version', self::get('version'));
-            $this->optionValues->save();
+            $optionValues->set('version', self::get('version'));
+            $optionValues->save();
 
             // check for old values of 1.x version
             $oldValues = get_option('WP_Mailto_Links_options');
@@ -143,9 +127,11 @@ class WPML extends WP_Plugin_Abstract
                 $defaultValues = $oldValues;
 
                 // set new instance with old values as defaults
-                $this->optionValues = new WP_Plugin_OptionValues($settings, $defaultValues);
+                $optionValues = new WP_Plugin_OptionValues($settings, $defaultValues);
             }
         }
+        
+        return $optionValues;
     }
 
     /**

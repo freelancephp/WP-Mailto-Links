@@ -20,7 +20,7 @@ class WPML_Admin extends WP_Plugin_AdminPage
             'pageKey' => WPML::get('adminPage'),
             'pageTitle' => WPML::__('WP Mailto Links'),
             'menuIcon' => 'images/icon-wp-mailto-links-16.png',
-            'mainMenu' => (bool) WPML::getOptionValues()->get('own_admin_menu'),
+            'mainMenu' => (bool) WPML::get('optionValues')->get('own_admin_menu'),
         );
 
         $this->metaboxes = array(
@@ -77,7 +77,7 @@ class WPML_Admin extends WP_Plugin_AdminPage
     {
         // prepare view
         WPML_View::addPath(WPML::get('dir') . '/views');
-        WPML_View::setGlobalVar('values', WPML::getOptionValues()->get());
+        WPML_View::setGlobalVar('values', WPML::get('optionValues')->get());
 
         // add plugin script
         wp_enqueue_script(

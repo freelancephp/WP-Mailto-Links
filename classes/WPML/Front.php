@@ -37,7 +37,7 @@ class WPML_Front
         );
 
         // set values
-        $this->optionValues = WPML::getOptionValues()->get();
+        $this->optionValues = WPML::get('optionValues')->get();
 
         // add actions
         add_action('wp', array($this, 'actionWpSite'), 10);
