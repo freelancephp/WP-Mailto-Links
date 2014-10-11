@@ -7,8 +7,11 @@
  *            ->set('var1', 'value1')
  *            ->show();
  *
- * @package WPML
+ * @package  WPML
  * @category WordPress Plugins
+ * @author   Victor Villaverde Laan
+ * @link     http://www.freelancephp.net/
+ * @license  MIT license
  */
 class WPML_View extends Lim_View {
 

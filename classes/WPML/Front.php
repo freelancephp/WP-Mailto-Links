@@ -1,10 +1,12 @@
 <?php
-
 /**
  * Class WPML_Front
  *
- * @package WPML
+ * @package  WPML
  * @category WordPress Plugins
+ * @author   Victor Villaverde Laan
+ * @link     http://www.freelancephp.net/
+ * @license  MIT license
  */
 class WPML_Front
 {

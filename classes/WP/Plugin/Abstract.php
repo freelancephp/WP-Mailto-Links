@@ -2,8 +2,14 @@
 /**
  * Class WP_Plugin_Abstract
  *
- * @package WP_Plugin
+ * @sinlgeton
+ *
+ * @package  WP_Plugin
  * @category WordPress Plugins
+ * @version  1.0.0
+ * @author   Victor Villaverde Laan
+ * @link     http://www.freelancephp.net/
+ * @license  MIT license
  */
 abstract class WP_Plugin_Abstract
 {
