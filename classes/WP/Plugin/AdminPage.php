@@ -186,6 +186,15 @@ abstract class WP_Plugin_AdminPage
 
         $screen = get_current_screen();
 
+        // help sidebar
+        $viewFile = str_replace('{{key}}', 'sidebar', $this->settings['viewHelptab']);
+
+        if (WPML_View::exists($viewFile)) {
+            $helpText = $this->renderView($viewFile, false);
+            $screen->set_help_sidebar($helpText);
+        }
+
+        // helptabs
         foreach ($this->helptabs as $key => $params) {
             // help tab
             $viewFile = str_replace('{{key}}', $key, $this->settings['viewHelptab']);

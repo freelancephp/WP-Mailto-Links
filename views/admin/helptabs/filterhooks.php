@@ -5,8 +5,8 @@
 <pre><code><&#63;php
 add_filter('wpml_mailto', 'special_mailto', 10, 4);
 
-function special_mailto(\$link, \$display, \$email, \$attrs) {
-    return '&lt;b&gt;'. \$link .'&lt;/b&gt;';
+function special_mailto($link, $display, $email, $attrs) {
+    return '&lt;b&gt;'. $link .'&lt;/b&gt;';
 }
 &#63;></code></pre>
 <p>Now all mailto links will be wrapped around a &lt;b&gt;-tag.</p>
