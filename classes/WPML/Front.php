@@ -125,7 +125,7 @@ class WPML_Front
         $class_name = $this->optionValues['class_name'];
 
         // add style to <head>
-        echo '<style type="text/css" media="screen">'."\n";
+        echo '<style type="text/css" media="all">'."\n";
         echo '/* WP Mailto Links Plugin */'."\n";
         echo '.wpml-nodis { display:none; }';
         echo '.wpml-rtl { unicode-bidi:bidi-override; direction:rtl; }';
