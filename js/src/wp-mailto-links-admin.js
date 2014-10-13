@@ -6,12 +6,12 @@ jQuery(function ($) {
     var $wpmlAdmin = $('.wpml-admin');
 
     // update message
-    $wpmlAdmin.find('#setting-error-settings_updated').click(function () {
+    $wpmlAdmin.delegate('#setting-error-settings_updated', 'click', function () {
         $(this).hide();
     });
 
     // help link
-    $wpmlAdmin.find('.wpml-help-link').click(function (e) {
+    $wpmlAdmin.delegate('.wpml-help-link', 'click', function (e) {
         $('#contextual-help-link').click();
         e.preventDefault();
     });
