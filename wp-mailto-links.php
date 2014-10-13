@@ -24,7 +24,7 @@ WPML::init(array(
     'adminPage' => 'wp-mailto-links-settings',
     'file' => __FILE__,
     'dir' => dirname(__FILE__),
-    'pluginUrl' => plugins_url() . '/wp-mailto-links',
+    'pluginUrl' => plugins_url('', __FILE__),
     'wpVersion' => $wp_version,
     'minPhpVersion' => '5.2.4',
     'minWpVersion' => '3.4.0',
