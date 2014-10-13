@@ -82,6 +82,18 @@ class WPML_Admin extends WP_Plugin_AdminPage
         WPML_View::addPath(WPML::get('dir') . '/views');
         WPML_View::setGlobalVar('values', WPML::get('optionValues')->get());
 
+        // actions and filters
+        add_action('admin_notices', array($this, 'actionAdminNotices'));
+        add_filter('plugin_action_links', array($this, 'filterPluginActionLinks'), 10, 2);
+    }
+
+    /**
+     * WP action callback
+     */
+    public function loadPage()
+    {
+        parent::loadPage();
+        
         // add plugin script
         wp_enqueue_script(
             'WPML_admin',
@@ -89,10 +101,6 @@ class WPML_Admin extends WP_Plugin_AdminPage
             array('jquery'),
             WPML::get('version')
         );
-
-        // actions and filters
-        add_action('admin_notices', array($this, 'actionAdminNotices'));
-        add_filter('plugin_action_links', array($this, 'filterPluginActionLinks'), 10, 2);
     }
 
     /**
