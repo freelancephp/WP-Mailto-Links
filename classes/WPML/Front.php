@@ -51,10 +51,6 @@ class WPML_Front
      */
     public function actionWpSite()
     {
-        if (is_admin()) {
-            return;
-        }
-
         if (is_feed()) {
             // rss feed
             if ($this->optionValues['filter_rss']) {
