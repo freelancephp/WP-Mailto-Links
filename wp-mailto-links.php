@@ -16,7 +16,7 @@ require_once(dirname(__FILE__) . '/classes/WP/Plugin/Abstract.php');
 require_once(dirname(__FILE__) . '/classes/WPML.php');
 
 // init plugin
-WPML::init(array(
+WPML::getInstance(array(
     'version' => '1.4.1',
     'key' => 'WP_Mailto_Links',
     'domain' => 'wp-mailto-links',

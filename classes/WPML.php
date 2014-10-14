@@ -14,16 +14,10 @@ class WPML extends WP_Plugin_Abstract
 {
 
     /**
-     * Init before using
-     * @param array $extraGlobals
+     * Init
      */
-    public static function init(array $globals = array())
+    protected function init()
     {
-        $instance = self::getInstance();
-
-        // init globals
-        $instance->globals = $globals;
-
         // load text domain for translations
         load_plugin_textdomain(self::get('domain'), false, self::get('dir') . '/languages');
 
@@ -34,9 +28,9 @@ class WPML extends WP_Plugin_Abstract
         // check plugin compatibility
         if ($validPhpVersion && $validWpVersion) {
             // start...
-            add_action('init', array($instance, 'actionInit'), 5);
+            add_action('init', array($this, 'actionInit'), 5);
         } else {
-            add_action('admin_notices', array($instance, 'actionAdminNotices'));
+            add_action('admin_notices', array($this, 'actionAdminNotices'));
         }
     }
 
