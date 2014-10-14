@@ -41,6 +41,9 @@ class WPML_Front
         // set values
         $this->optionValues = WPML::get('optionValues')->get();
 
+        // create template function
+        $this->createTemplateFunctions();
+
         // add actions
         add_action('wp', array($this, 'actionWpSite'), 10);
         add_filter('wp_head', array($this, 'filterWpHead'), 10);
@@ -455,19 +458,27 @@ class WPML_Front
     /**
      * Create the global template functions
      */
-    public function createTemplateFunctions()
+    protected function createTemplateFunctions()
     {
         if (!function_exists('wpml_mailto')):
             function wpml_mailto($email, $display = null, $attrs = array())
             {
-                return WPML_Front::mailto($email, $display, $attrs);
+                if (is_array($display)) {
+                   // backwards compatibility (old params: $display, $attrs = array())
+                   $attrs   = $display;
+                   $display = $email;
+               } else {
+                   $attrs['href'] = 'mailto:'.$email;
+               }
+
+               return WPML::get('front')->protectedMailto($display, $attrs);
             }
         endif;
 
         if (!function_exists('wpml_filter')):
             function wpml_filter($content)
             {
-                return WPML_Front::filter($content);
+                return WPML::get('front')->filterContent($content);
             }
         endif;
     }

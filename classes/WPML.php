@@ -53,29 +53,6 @@ class WPML extends WP_Plugin_Abstract
         } else {
             // create front
             WPML::set('front', new WPML_Front);
-
-            // create template functions
-            if (!function_exists('wpml_mailto')):
-                function wpml_mailto($email, $display = null, $attrs = array())
-                {
-                    if (is_array($display)) {
-                       // backwards compatibility (old params: $display, $attrs = array())
-                       $attrs   = $display;
-                       $display = $email;
-                   } else {
-                       $attrs['href'] = 'mailto:'.$email;
-                   }
-
-                   return WPML::get('front')->protectedMailto($display, $attrs);
-               }
-            endif;
-
-            if (!function_exists('wpml_filter')):
-                function wpml_filter($content)
-                {
-                    return WPML::get('front')->filterContent($content);
-                }
-            endif;
         }
 
         // init test
