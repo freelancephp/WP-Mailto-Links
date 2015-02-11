@@ -21,17 +21,7 @@ class WPML extends WP_Plugin_Abstract
         // load text domain for translations
         load_plugin_textdomain(self::get('domain'), false, self::get('dir') . '/languages');
 
-        // compare versions
-        $validPhpVersion = version_compare(phpversion(), self::get('minPhpVersion'), '>=');
-        $validWpVersion = version_compare(preg_replace('/-.*$/', '', self::get('wpVersion')), self::get('minWpVersion'), '>=');
-
-        // check plugin compatibility
-        if ($validPhpVersion && $validWpVersion) {
-            // start...
-            add_action('init', array($this, 'actionInit'), 5);
-        } else {
-            add_action('admin_notices', array($this, 'actionAdminNotices'));
-        }
+        add_action('init', array($this, 'actionInit'), 5);
     }
 
     /**
@@ -106,20 +96,6 @@ class WPML extends WP_Plugin_Abstract
         }
         
         return $optionValues;
-    }
-
-    /**
-     * WP action callback
-     */
-    public function actionAdminNotices()
-    {
-        $plugin_title = get_admin_page_title();
-
-        echo '<div class="error">';
-        echo sprintf(WPML::__('<p>Warning - The plugin <strong>%s</strong> requires PHP 5.2.4+ and WP 3.4+.'
-                . '  Please upgrade your PHP and/or WordPress.'
-                . '<br/>Disable the plugin to remove this message.</p>'), $plugin_title);
-        echo '</div>';
     }
 
 } // End Class WPML

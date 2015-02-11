@@ -14,7 +14,7 @@ class WPML_Front
      * Regular expressions
      * @var array
      */
-    public $regexps = array();
+    protected $regexps = array();
 
     /**
      * @var array

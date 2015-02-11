@@ -10,14 +10,21 @@ License: Dual licensed under the MIT and GPL licenses
 Text Domain: wp-mailto-links
 Domain Path: /languages
 */
+define('WPML_VERSION', '1.4.1');
+define('WPML_MIN_PHP_VERSION', '5.2.4');
+define('WPML_MIN_WP_VERSION', '3.4.0');
 
 // includes
 require_once(dirname(__FILE__) . '/classes/WP/Plugin/Abstract.php');
 require_once(dirname(__FILE__) . '/classes/WPML.php');
 
+// compatibility
+$compatiblePhpVersion = version_compare(phpversion(), WPML_MIN_PHP_VERSION, '>=');
+$compatibleWpVersion = version_compare(preg_replace('/-.*$/', '', $wp_version), WPML_MIN_WP_VERSION, '>=');
+
 // init plugin
 WPML::getInstance(array(
-    'version' => '1.4.1',
+    'version' => WPML_VERSION,
     'key' => 'WP_Mailto_Links',
     'domain' => 'wp-mailto-links',
     'optionName' => 'WP_Mailto_Links_options',
@@ -26,6 +33,7 @@ WPML::getInstance(array(
     'dir' => dirname(__FILE__),
     'pluginUrl' => plugins_url('', __FILE__),
     'wpVersion' => $wp_version,
-    'minPhpVersion' => '5.2.4',
-    'minWpVersion' => '3.4.0',
+    'minPhpVersion' => WPML_MIN_PHP_VERSION,
+    'minWpVersion' => WPML_MIN_WP_VERSION,
+    'isCompatible' => ($compatiblePhpVersion && $compatibleWpVersion),
 ));
