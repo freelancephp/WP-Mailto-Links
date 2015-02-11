@@ -76,6 +76,9 @@ abstract class WP_Plugin_Abstract
         return self::$instance;
     }
 
+    /**
+     * Init procedure to implement
+     */
     abstract protected function init();
 
     /**
