@@ -4,15 +4,15 @@ Plugin Name: WP Mailto Links - Manage Email Links
 Plugin URI: http://www.freelancephp.net/wp-mailto-links-plugin
 Description: Manage mailto links on your site and protect email addresses from spambots, set mail icon and more.
 Author: Victor Villaverde Laan
-Version: 1.4.1
+Version: 1.5.0
 Author URI: http://www.freelancephp.net
 License: Dual licensed under the MIT and GPL licenses
 Text Domain: wp-mailto-links
 Domain Path: /languages
 */
-define('WPML_VERSION', '1.4.1');
+define('WPML_VERSION', '1.5.0');
 define('WPML_MIN_PHP_VERSION', '5.2.4');
-define('WPML_MIN_WP_VERSION', '3.4.0');
+define('WPML_MIN_WP_VERSION', '3.6.0');
 
 // includes
 require_once(dirname(__FILE__) . '/classes/WP/Plugin/Abstract.php');
