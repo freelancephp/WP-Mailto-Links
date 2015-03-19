@@ -260,10 +260,18 @@ class WPML_Front
         $input = $match[0];
         $email = $match[2];
 
-        // replace email by encoded
-        $input = str_replace($email, antispambot($email), $input);
+        $encodedEmail = $this->getEncEmail($email);
 
-        return $input;
+        // add data-enc-email after "<input"
+        $encodedInput = '';
+        $encodedInput .= substr($input, 0, 6);
+        $encodedInput .= ' data-enc-email="' . $encodedEmail . '"';
+        $encodedInput .= substr($input, 6);
+
+        // remove email from value attribute
+        $encodedInput = str_replace($email, '', $encodedInput);
+
+        return $encodedInput;
     }
 
     /**
@@ -374,14 +382,9 @@ class WPML_Front
         foreach ($attrs AS $key => $value) {
             if (strtolower($key) == 'href' && $this->optionValues['protect']) {
                 // get email from href
-                $email         = substr($value, 7);
-                $encoded_email = $email;
-                // decode entities
-                $encoded_email = html_entity_decode($encoded_email);
-                // rot13 encoding
-                $encoded_email = str_rot13($encoded_email);
-                // replace @
-                $encoded_email = str_replace('@', '[at]', $encoded_email);
+                $email = substr($value, 7);
+
+                $encoded_email = $this->getEncEmail($email);
 
                 // set attrs
                 $link .= 'href="javascript:;" ';
@@ -405,6 +408,27 @@ class WPML_Front
         $link = $this->replacePlainEmails($link);
 
         return $link;
+    }
+
+    /**
+     * Get encoded email, used for data-attribute (translate by javascript)
+     * @param string $email
+     * @return string
+     */
+    protected function getEncEmail($email)
+    {
+        $encEmail = $email;
+
+        // decode entities
+        $encEmail = html_entity_decode($encEmail);
+
+        // rot13 encoding
+        $encEmail = str_rot13($encEmail);
+
+        // replace @
+        $encEmail = str_replace('@', '[at]', $encEmail);
+
+        return $encEmail;
     }
 
     /**
