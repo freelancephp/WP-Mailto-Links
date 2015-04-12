@@ -8,14 +8,15 @@ Stable tag: 1.5.0
 Protect email addresses and mailto links from spambots and being used for spamming. Easy to use without configuration.
 
 == Description ==
-Protect your email addresses and manage mailto links on your site, set mail icon, styling and more.
+**Protect your email addresses** and manage mailto links on your site, set mail icon, styling and more.
 
 = Features =
-* Protect mailto links automatically
-* Protect plain email addresses or convert them to mailto links
-* Protect RSS feed
-* Set mail icon
-* Use shortcodes, template functions, action and filter hooks
+* Protect **mailto links** automatically
+* Protect **plain email addresses** or convert them to mailto links
+* Protect **RSS feed**
+* Set mail **icon**
+* Can also the **shortcode**
+* Use **action and filter hooks** to program your custom changes *(like adding [Awesome Fonts](https://wordpress.org/plugins/wp-mailto-links/faq/))*
 
 The plugin combines the best email protection methods explained in [this article](http://perishablepress.com/press/2010/08/01/best-method-for-email-obfuscation/) by Jeff Starr.
 
@@ -23,12 +24,12 @@ The plugin combines the best email protection methods explained in [this article
 After activating the plugin all options are already set for protecting your emails and mailto links. Optionally you can also set some style options, like adding an icon.
 
 = Sources =
-* [Documentation](http://wordpress.org/extend/plugins/wp-mailto-links/other_notes/)
-* [FAQ](http://wordpress.org/extend/plugins/wp-mailto-links/faq/)
-* [Github](https://github.com/freelancephp/WP-Mailto-Links)
+>  [Documentation](http://wordpress.org/extend/plugins/wp-mailto-links/other_notes/) | [FAQ](http://wordpress.org/extend/plugins/wp-mailto-links/faq/) | [Github](https://github.com/freelancephp/WP-Mailto-Links) | [Plugin Page](http://www.freelancephp.net/wp-mailto-links-plugin-2/)
+
+*Documentation is available on the plugin admin page. Just click on the help-tab.*
 
 = Like this plugin? =
-[Send your review](http://wordpress.org/support/view/plugin-reviews/wp-mailto-links).
+To support [rate this plugin](http://wordpress.org/support/view/plugin-reviews/wp-mailto-links).
 
 == Installation ==
 
