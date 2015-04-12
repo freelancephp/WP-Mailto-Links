@@ -12,15 +12,20 @@ Domain Path: /languages
 */
 define('WPML_VERSION', '1.5.0');
 define('WPML_MIN_PHP_VERSION', '5.2.4');
-define('WPML_MIN_WP_VERSION', '3.6.0');
+define('WPML_MIN_WP_VERSION', '3.6');
 
 // includes
 require_once(dirname(__FILE__) . '/classes/WP/Plugin/Abstract.php');
 require_once(dirname(__FILE__) . '/classes/WPML.php');
 
+// wp_version var was used by older WP versions
+if (!isset($wp_version)) {
+    $wp_version = get_bloginfo('version');
+}
+
 // compatibility
 $compatiblePhpVersion = version_compare(phpversion(), WPML_MIN_PHP_VERSION, '>=');
-$compatibleWpVersion = version_compare(preg_replace('/-.*$/', '', $wp_version), WPML_MIN_WP_VERSION, '>=');
+$compatibleWpVersion = version_compare($wp_version, WPML_MIN_WP_VERSION, '>=');
 
 // init plugin
 WPML::getInstance(array(
