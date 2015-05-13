@@ -71,7 +71,7 @@ class WPML_Front
             // set js file
             if ($this->optionValues['protect']) {
                 wp_enqueue_script('wp-mailto-links',
-                    WPML::url('js/wp-mailto-links.js'), array(),
+                    WPML::url('js/wp-mailto-links.js'), array('jquery'),
                     WPML::get('version'));
             }
 
