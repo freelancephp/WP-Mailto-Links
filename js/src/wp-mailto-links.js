@@ -1,20 +1,7 @@
 /* WP Mailto Links */
 /*global window, jQuery*/
-(function (window) {
+(function (window, $) {
     'use strict';
-
-    var document = window.document;
-
-    // add event handler
-    function addEvt(el, evt, fn) {
-        if (el.attachEvent) {
-            // IE method
-            el.attachEvent('on' + evt, fn);
-        } else if (el.addEventListener) {
-            // Standard JS method
-            el.addEventListener(evt, fn, false);
-        }
-    }
 
     // encoding method
     function rot13(s) {
@@ -71,59 +58,21 @@
     }
 
     // on DOM ready...
-    if (window.jQuery) {
-    // jQuery DOMready method
-        jQuery(function ($) {
-            // set mailto click
-            $('body').delegate('a[data-enc-email]', 'click', function () {
-                mailto(this);
-            });
-
-            // parse title attirbute
-            $('a[data-enc-email]').each(function () {
-                parseTitle(this);
-            });
-
-            // parse input fields
-            $('input[data-enc-email]').each(function () {
-                setInputValue(this);
-            });
+    $(function ($) {
+        // set mailto click
+        $('body').delegate('a[data-enc-email]', 'click', function () {
+            mailto(this);
         });
-    } else {
-    // use onload when jQuery not available
-        addEvt(window, 'load', function () {
-            var links = document.getElementsByTagName('a');
-            var inputs = document.getElementsByTagName('input');
-            var addClick = function (a) {
-                addEvt(a, 'click', function () {
-                    mailto(a);
-                });
-            };
-            var a;
-            var input;
-            var i;
 
-            // check each <a> element
-            for (i = 0; i < links.length; i += 1) {
-                a = links[i];
-
-                if (a.getAttribute('data-enc-email')) {
-                    parseTitle(a);
-                    // click event for opening mailto-action
-                    addClick(a);
-                }
-            }
-
-            // check each <input> element
-            for (i = 0; i < inputs.length; i += 1) {
-                input = inputs[i];
-
-                // click event for opening in a new window
-                if (input.getAttribute('data-enc-email')) {
-                    setInputValue(input);
-                }
-            }
+        // parse title attirbute
+        $('a[data-enc-email]').each(function () {
+            parseTitle(this);
         });
-    }
 
-}(window));
+        // parse input fields
+        $('input[data-enc-email]').each(function () {
+            setInputValue(this);
+        });
+    });
+
+}(window, jQuery));
