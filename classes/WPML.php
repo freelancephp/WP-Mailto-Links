@@ -66,6 +66,7 @@ class WPML extends WP_Plugin_Abstract
             'filter_widgets' => 1,
             'filter_rss' => 1,
             'filter_head' => 1,
+            'input_strong_protection' => 0,
             'protection_text' => '*protected email*',
             'icon' => 0,
             'image_no_icon' => 0,
