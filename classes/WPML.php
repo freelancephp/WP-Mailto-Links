@@ -12,6 +12,10 @@
  */
 class WPML extends WP_Plugin_Abstract
 {
+    /**
+     * @var string  Name of Plugin class to create singleton instance
+     */
+    protected static $className = 'WPML';
 
     /**
      * Init

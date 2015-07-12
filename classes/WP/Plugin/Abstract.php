@@ -15,7 +15,12 @@ abstract class WP_Plugin_Abstract
 {
 
     /**
-     * @var WPML
+     * @var string  Name of Plugin class to create singleton instance
+     */
+    protected static $className = null;
+
+    /**
+     * @var \WP_Plugin_Abstract  Instance of Plugin class
      */
     protected static $instance = null;
 
@@ -63,7 +68,7 @@ abstract class WP_Plugin_Abstract
     public static function getInstance(array $globals = array())
     {
         if (self::$instance === null) {
-            self::$instance = new WPML;
+            self::$instance = new static::$className;
 
             // set globals
             foreach ($globals as $key => $value) {
