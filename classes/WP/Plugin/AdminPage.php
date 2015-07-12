@@ -100,7 +100,7 @@ abstract class WP_Plugin_AdminPage
                 'manage_options',
                 $this->settings['pageKey'],
                 array($this, 'showPage'),
-                WPML::url($this->settings['menuIcon'])
+                $this->settings['menuIcon']
             );
         } else {
             // create submenu item under "Settings"

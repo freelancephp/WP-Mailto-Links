@@ -22,7 +22,7 @@ class WPML_Admin extends WP_Plugin_AdminPage
             'key' => WPML::get('key'),
             'pageKey' => WPML::get('adminPage'),
             'pageTitle' => WPML::__('WP Mailto Links'),
-            'menuIcon' => 'images/icon-wp-mailto-links-16.png',
+            'menuIcon' => WPML::url('images/icon-wp-mailto-links-16.png'),
             'mainMenu' => (bool) WPML::get('optionValues')->get('own_admin_menu'),
             'viewVars' => array('values' => WPML::get('optionValues')->get()),
             'viewPage' => WPML::get('dir') . '/views/admin/page.php',
