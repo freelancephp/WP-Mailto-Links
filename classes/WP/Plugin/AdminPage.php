@@ -56,9 +56,10 @@ abstract class WP_Plugin_AdminPage
         'menuIcon' => null,
         'defaultColumns' => 2,
         'maxColumns' => 2,
-        'viewPage' => '/admin/page.php',
-        'viewMetabox' => '/admin/metaboxes/{{key}}.php',
-        'viewHelptab' => '/admin/helptabs/{{key}}.php',
+        'viewVars' => array(),
+        'viewPage' => null, // f.e. full path + '/page.php',
+        'viewMetabox' => null, // f.e. full path + '/{{key}}.php',
+        'viewHelptab' => null, // f.e. full path + '/{{key}}.php',
     );
 
     /**
@@ -193,7 +194,7 @@ abstract class WP_Plugin_AdminPage
         // help sidebar
         $viewFile = str_replace('{{key}}', 'sidebar', $this->settings['viewHelptab']);
 
-        if (WPML_View::exists($viewFile)) {
+        if (file_exists($viewFile)) {
             $helpText = $this->renderView($viewFile, false);
             $screen->set_help_sidebar($helpText);
         }
@@ -218,9 +219,8 @@ abstract class WP_Plugin_AdminPage
      * @param boolean $show
      * @return string
      */
-    protected function renderView($file, $show = false)
-    {
-        return WPML_View::factory($file)->render($show);
+    protected function renderView($file, $show = false) {
+        return WP_View::create($file, $this->settings['viewVars'])->render($show);
     }
 
 } // End Class WP_Plugin_AdminPage

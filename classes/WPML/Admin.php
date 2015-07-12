@@ -24,6 +24,10 @@ class WPML_Admin extends WP_Plugin_AdminPage
             'pageTitle' => WPML::__('WP Mailto Links'),
             'menuIcon' => 'images/icon-wp-mailto-links-16.png',
             'mainMenu' => (bool) WPML::get('optionValues')->get('own_admin_menu'),
+            'viewVars' => array('values' => WPML::get('optionValues')->get()),
+            'viewPage' => WPML::get('dir') . '/views/admin/page.php',
+            'viewMetabox' => WPML::get('dir') . '/views/admin/metaboxes/{{key}}.php',
+            'viewHelptab' => WPML::get('dir') . '/views/admin/helptabs/{{key}}.php',
         );
 
         $this->metaboxes = array(
@@ -78,9 +82,8 @@ class WPML_Admin extends WP_Plugin_AdminPage
      */
     public function actionAdminInit()
     {
-        // prepare view
-        WPML_View::addPath(WPML::get('dir') . '/views');
-        WPML_View::setGlobalVar('values', WPML::get('optionValues')->get());
+        logger(WPML::get('dir'));
+        logger(dirname(WPML::get('file')));
 
         // actions and filters
         add_action('admin_notices', array($this, 'actionAdminNotices'));
@@ -144,7 +147,7 @@ class WPML_Admin extends WP_Plugin_AdminPage
         }
 
         if (isset($_GET['page']) && $_GET['page'] === WPML::get('adminPage') && is_plugin_active('email-encoder-bundle/email-encoder-bundle.php')) {
-            WPML_View::factory('/admin/notices.php')->show();
+            $this->renderView(WPML::get('dir') . '/views/admin/notices.php', true);
         }
     }
 
