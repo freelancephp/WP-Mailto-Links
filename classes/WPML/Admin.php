@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-class WPML_Admin extends WP_Plugin_AdminPage
+class WPML_Admin extends WPDev_Plugin_AdminPage
 {
 
     /**

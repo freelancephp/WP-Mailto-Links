@@ -10,7 +10,7 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-class WPML extends WP_Plugin_Abstract
+class WPML extends WPDev_Plugin_Abstract
 {
     /**
      * @var string  Name of Plugin class to create singleton instance
@@ -81,7 +81,7 @@ class WPML extends WP_Plugin_Abstract
         );
 
         // options instance
-        $optionValues = new WP_Plugin_OptionValues($settings, $defaultValues);
+        $optionValues = new WPDev_Plugin_OptionValues($settings, $defaultValues);
 
         // check if this is an update
         if ($optionValues->get('version') !== self::get('version')) {
@@ -96,7 +96,7 @@ class WPML extends WP_Plugin_Abstract
                 $defaultValues = $oldValues;
 
                 // set new instance with old values as defaults
-                $optionValues = new WP_Plugin_OptionValues($settings, $defaultValues);
+                $optionValues = new WPDev_Plugin_OptionValues($settings, $defaultValues);
             }
         }
         

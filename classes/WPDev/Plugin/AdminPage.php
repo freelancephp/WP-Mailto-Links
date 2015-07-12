@@ -1,17 +1,17 @@
 <?php
 /**
- * Class WP_Plugin_AdminPage
+ * Class WPDev_Plugin_AdminPage
  *
  * Creating an admin options page with a menu item
  *
- * @package  WP_Plugin
+ * @package  WPDev_Plugin
  * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-abstract class WP_Plugin_AdminPage
+abstract class WPDev_Plugin_AdminPage
 {
 
     /**
@@ -216,11 +216,11 @@ abstract class WP_Plugin_AdminPage
     /**
      * Render a view
      * @param string $file
-     * @param boolean $show
+     * @param boolean $show  Optional, default false
      * @return string
      */
     protected function renderView($file, $show = false) {
-        return WP_View::create($file, $this->settings['viewVars'])->render($show);
+        return WPDev_View::create($file, $this->settings['viewVars'])->render($show);
     }
 
-} // End Class WP_Plugin_AdminPage
+}

@@ -1,17 +1,17 @@
 <?php
 /**
- * Class WP_Plugin_OptionValues
+ * Class WPDev_Plugin_OptionValues
  *
  * Managing options
  *
- * @package  WP_Plugin
+ * @package  WPDev_Plugin
  * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-class WP_Plugin_OptionValues
+class WPDev_Plugin_OptionValues
 {
 
     /**
@@ -58,7 +58,7 @@ class WP_Plugin_OptionValues
 
         // set uninstall hook
         if ($this->settings['uninstall']) {
-            register_uninstall_hook($this->settings['file'], array('WP_Plugin_OptionValues', 'uninstall'));
+            register_uninstall_hook($this->settings['file'], array('WPDev_Plugin_OptionValues', 'uninstall'));
         }
 
         // add actions
@@ -120,4 +120,4 @@ class WP_Plugin_OptionValues
         unregister_setting($this->settings['optionGroup'], $this->settings['optionName']);
     }
 
-} // End Class WP_Plugin_OptionValues
+}

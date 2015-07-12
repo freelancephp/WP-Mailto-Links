@@ -1,15 +1,15 @@
 <?php
 /**
- * Class WP_View
+ * Class WPDev_View
  *
- * @package  WP_Plugin
+ * @package  WPDev_Plugin
  * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-class WP_View
+class WPDev_View
 {
 
     /**
@@ -29,15 +29,15 @@ class WP_View
      * Create view instance (factory method)
      * @param string $file
      * @param array $vars  Optional
-     * @return \WP_View
+     * @return \WPDev_View
      */
     public static function create($file, array $vars = array())
     {
-        return new WP_View($file, $vars);
+        return new WPDev_View($file, $vars);
     }
 
     /**
-     * Constructor, protected, force using create factory
+     * Protected constructor to force using create factory
      * @param string $file
      * @param array $vars  Optional
      */

@@ -1,26 +1,28 @@
 <?php
 /**
- * Class WP_Plugin_Abstract
+ * Class WPDev_Plugin_Abstract
  *
  * @sinlgeton
  *
- * @package  WP_Plugin
+ * @package  WPDev_Plugin
  * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-abstract class WP_Plugin_Abstract
+abstract class WPDev_Plugin_Abstract
 {
 
     /**
-     * @var string  Name of Plugin class to create singleton instance
+     * Name of Plugin class to create singleton instance
+     * @var string
      */
     protected static $className = null;
 
     /**
-     * @var \WP_Plugin_Abstract  Instance of Plugin class
+     * Instance of Plugin class
+     * @var \WPDev_Plugin_Abstract
      */
     protected static $instance = null;
 
@@ -166,4 +168,4 @@ abstract class WP_Plugin_Abstract
         }
     }
 
-} // End Class WP_Plugin_Abstract
+}
