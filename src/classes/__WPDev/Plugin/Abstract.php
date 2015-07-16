@@ -4,12 +4,11 @@
  *
  * @sinlgeton
  *
- * @package  WPDev
+ * @package  WPDev_Plugin
  * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
 abstract class WPDev_Plugin_Abstract
@@ -44,15 +43,10 @@ abstract class WPDev_Plugin_Abstract
     /**
      * Singleton protection
      */
-    protected function __construct(array $globals)
+    protected function __construct()
     {
         // autoloader
         spl_autoload_register(array($this, 'autoload'));
-
-        // set globals
-        foreach ($globals as $key => $value) {
-            $this->globals[$key] = $value;
-        }
     }
 
     /**
@@ -70,15 +64,23 @@ abstract class WPDev_Plugin_Abstract
     }
 
     /**
-     * Create singleton instance
-     * @param array $globals
+     * Get singleton instance
+     * @param array $globals  Optional, only on first call
      */
-    public static function create(array $globals)
+    public static function getInstance(array $globals = array())
     {
         if (self::$instance === null) {
-            self::$instance = new static::$className($globals);
+            self::$instance = new static::$className;
+
+            // set globals
+            foreach ($globals as $key => $value) {
+                self::$instance->globals[$key] = $value;
+            }
+
             self::$instance->init();
         }
+
+        return self::$instance;
     }
 
     /**
@@ -112,7 +114,7 @@ abstract class WPDev_Plugin_Abstract
      */
     public static function get($key)
     {
-        $globals = self::$instance->globals;
+        $globals = self::getInstance()->globals;
 
         if (key_exists($key, $globals)) {
             return $globals[$key];
@@ -129,7 +131,7 @@ abstract class WPDev_Plugin_Abstract
      */
     public static function set($key, $value = null)
     {
-        self::$instance->globals[$key] = $value;
+        self::getInstance()->globals[$key] = $value;
     }
 
     /**

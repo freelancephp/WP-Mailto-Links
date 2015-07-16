@@ -4,12 +4,11 @@
  *
  * Creating an admin options page with a menu item
  *
- * @package  WPDev
- * @category WordPress Library
+ * @package  WPDev_Plugin
+ * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
 abstract class WPDev_Plugin_AdminPage

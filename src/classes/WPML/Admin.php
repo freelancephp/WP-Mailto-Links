@@ -82,8 +82,8 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
      */
     public function actionAdminInit()
     {
-        logger(WPML::get('dir'));
-        logger(dirname(WPML::get('file')));
+//        logger(WPML::get('dir'));
+//        logger(dirname(WPML::get('file')));
 
         // actions and filters
         add_action('admin_notices', array($this, 'actionAdminNotices'));

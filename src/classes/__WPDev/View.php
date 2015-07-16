@@ -2,12 +2,11 @@
 /**
  * Class WPDev_View
  *
- * @package  WPDev
- * @category WordPress Library
+ * @package  WPDev_Plugin
+ * @category WordPress Plugins
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
- * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
 class WPDev_View
@@ -42,7 +41,7 @@ class WPDev_View
      * @param string $file
      * @param array $vars  Optional
      */
-    protected function __construct($file, array $vars = array())
+    protected function __construct($file, $vars = array())
     {
         $this->file = $file;
         $this->vars = $vars;
@@ -56,7 +55,7 @@ class WPDev_View
      */
     public function render($show = false) {
         if (!file_exists($this->file)) {
-            throw new Exception('The file "' . $this->file . '" could not be rendered as view (file does not exist or is not readable).');
+            throw new Exception('The file "' . $this->file . '" does not exists and could not be rendered as view.');
         }
 
         // extract vars to global namespace

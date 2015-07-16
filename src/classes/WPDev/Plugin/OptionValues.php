@@ -4,11 +4,12 @@
  *
  * Managing options
  *
- * @package  WPDev_Plugin
- * @category WordPress Plugins
+ * @package  WPDev
+ * @category WordPress Library
  * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
+ * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
 class WPDev_Plugin_OptionValues
@@ -20,49 +21,40 @@ class WPDev_Plugin_OptionValues
     protected $values = array();
 
     /**
-     * @var array
+     * @var string
      */
-    protected $settings = array(
-        'file' => null,
-        'optionGroup' => null,
-        'optionName' => null,
-        'uninstall' => true,
-    );
+    protected $optionGroup = null;
 
     /**
-     * @param array $settings  Optional
+     * @var string
+     */
+    protected $optionName = null;
+
+    /**
+     * @param string $optionGroup
+     * @param string $optionName
      * @param array $defaultValues  Optional
      */
-    public function __construct(array $settings = null, array $defaultValues = null)
+    public function __construct($optionGroup, $optionName, array $defaultValues = null)
     {
-        // set given setting values
-        if ($settings !== null) {
-            foreach ($settings as $key => $value) {
-                if (key_exists($key, $this->settings)) {
-                    $this->settings[$key] = $value;
-                }
-            }
-        }
+        $this->optionGroup = $optionGroup;
+        $this->optionName = $optionName;
 
         // get saved option values
-        $savedValues = get_option($this->settings['optionName']);
+        $savedValues = get_option($this->optionName);
 
-        // set values
+        // first set all defaults
         $this->values = $defaultValues;
 
+        // overwrite defaults with saved values (if exists)
         if ($savedValues) {
             foreach ($savedValues as $key => $value) {
                 $this->values[$key] = $value;
             }
         }
 
-        // set uninstall hook
-        if ($this->settings['uninstall']) {
-            register_uninstall_hook($this->settings['file'], array('WPDev_Plugin_OptionValues', 'uninstall'));
-        }
-
         // add actions
-        add_action('admin_init', array($this, 'actionAdminInit'), 1);
+        add_action('admin_init', array($this, 'register'), 1);
     }
 
     /**
@@ -100,24 +92,26 @@ class WPDev_Plugin_OptionValues
      */
     public function save()
     {
-        update_option($this->settings['optionName'], $this->values);
+        return update_option($this->optionName, $this->values);
     }
 
     /**
-     * WP action callback
+     * Register setting
      */
-    public function actionAdminInit()
+    public function register()
     {
-        register_setting($this->settings['optionGroup'], $this->settings['optionName']);
+        register_setting($this->optionGroup, $this->optionName);
     }
 
     /**
-     * WP hook callback
+     * Delete all values from DB and unregister
+     * Could be used for plugin uninstall or deactivate proces
+     * Cannot immediatly be attached to register_uninstall_hook, because needs to be static method
      */
-    public static function uninstall()
+    public function deleteAll()
     {
-        delete_option($this->settings['optionName']);
-        unregister_setting($this->settings['optionGroup'], $this->settings['optionName']);
+        delete_option($this->optionName);
+        unregister_setting($this->optionGroup, $this->optionName);
     }
 
 }

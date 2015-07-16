@@ -1,4 +1,6 @@
 <?php
+require_once(dirname(__FILE__) . '/WPDev/Plugin/Abstract.php');
+
 /**
  * Class WPML
  *
@@ -42,11 +44,6 @@ class WPML extends WPDev_Plugin_Abstract
             // create front
             WPML::set('front', new WPML_Front);
         }
-
-        // init test
-        if (class_exists('Test_WP_Mailto_Links')) {
-            $Test = new Test_WP_Mailto_Links;
-        }
     }
 
     /**
@@ -54,12 +51,6 @@ class WPML extends WPDev_Plugin_Abstract
      */
     protected function initOptionValues()
     {
-        $settings = array(
-            'file' => self::get('file'),
-            'optionGroup' => self::get('key'),
-            'optionName' => self::get('optionName'),
-        );
-
         $defaultValues = array(
             'version' => null,
             'convert_emails' => 1,
@@ -80,8 +71,11 @@ class WPML extends WPDev_Plugin_Abstract
             'own_admin_menu' => 0,
         );
 
+        $optionGroup = self::get('key');
+        $optionName = self::get('optionName');
+
         // options instance
-        $optionValues = new WPDev_Plugin_OptionValues($settings, $defaultValues);
+        $optionValues = new WPDev_Plugin_OptionValues($optionGroup, $optionName, $defaultValues);
 
         // check if this is an update
         if ($optionValues->get('version') !== self::get('version')) {
@@ -96,11 +90,11 @@ class WPML extends WPDev_Plugin_Abstract
                 $defaultValues = $oldValues;
 
                 // set new instance with old values as defaults
-                $optionValues = new WPDev_Plugin_OptionValues($settings, $defaultValues);
+                $optionValues = new WPDev_Plugin_OptionValues($optionGroup, $optionName, $defaultValues);
             }
         }
         
         return $optionValues;
     }
 
-} // End Class WPML
+}
