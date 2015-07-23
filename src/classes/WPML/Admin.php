@@ -30,7 +30,7 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
             'viewHelptab' => WPML::get('dir') . '/views/admin/helptabs/{{key}}.php',
         );
 
-        $this->metaboxes = array(
+        $metaboxes = array(
             'general' => array(
                 'title' => WPML::__('General Settings'),
                 'position' => 'normal',
@@ -53,7 +53,7 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
              ),
         );
 
-        $this->helptabs = array(
+        $helptabs = array(
             'general' => array(
                 'title' => WPML::__('General'),
              ),
@@ -74,7 +74,7 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
              ),
         );
 
-        parent::__construct($settings);
+        parent::__construct($settings, $metaboxes, $helptabs);
     }
 
     /**
