@@ -15,6 +15,9 @@ define('WPML_MIN_PHP_VERSION', '5.2.4');
 define('WPML_MIN_WP_VERSION', '3.6');
 
 // includes
+if (!class_exists('WPDev_Plugin_Abstract')) {
+    require_once(dirname(__FILE__) . '/WPDev/Plugin/Abstract.php');
+}
 require_once(dirname(__FILE__) . '/classes/WPML.php');
 
 // wp_version var was used by older WP versions

@@ -1,8 +1,4 @@
 <?php
-if (!class_exists('WPDev_Plugin_Abstract')) {
-    require_once(dirname(__FILE__) . '/WPDev/Plugin/Abstract.php');
-}
-
 /**
  * Class WPML
  *
