@@ -16,6 +16,25 @@ abstract class WPDev_Plugin_AdminPage
 {
 
     /**
+     * Settings
+     * @var array
+     */
+    protected $settings = array(
+        'file' => null,
+        'key' => null,
+        'pageKey' => null,
+        'pageTitle' => null,
+        'mainMenu' => false,
+        'menuIcon' => null,
+        'defaultColumns' => 2,
+        'maxColumns' => 2,
+        'viewVars' => array(),
+        'viewPage' => null, // f.e. full path + '/page.php',
+        'viewMetabox' => null, // f.e. full path + '/{{key}}.php',
+        'viewHelptab' => null, // f.e. full path + '/{{key}}.php',
+    );
+
+    /**
      * All metaboxes
      * @example
      *      array(
@@ -45,42 +64,32 @@ abstract class WPDev_Plugin_AdminPage
     protected $helptabs = array();
 
     /**
-     * Settings
-     * @var array
-     */
-    protected $settings = array(
-        'file' => null,
-        'key' => null,
-        'pageKey' => null,
-        'pageTitle' => null,
-        'mainMenu' => false,
-        'menuIcon' => null,
-        'defaultColumns' => 2,
-        'maxColumns' => 2,
-        'viewVars' => array(),
-        'viewPage' => null, // f.e. full path + '/page.php',
-        'viewMetabox' => null, // f.e. full path + '/{{key}}.php',
-        'viewHelptab' => null, // f.e. full path + '/{{key}}.php',
-    );
-
-    /**
      * Constructor
-     * @param array $settings  Optional
+     * @param array $settings
+     * @param array $metaboxes Optional
+     * @param array $helptabs  Optional
      */
-    public function __construct(array $settings = null)
+    public function __construct(array $settings, array $metaboxes = array(), array $helptabs = array())
     {
-        // set given setting values
-        if ($settings !== null) {
-            foreach ($settings as $key => $value) {
-                if (key_exists($key, $this->settings)) {
-                    $this->settings[$key] = $value;
-                }
-            }
-        }
-
+        $this->setSettings($settings);
+        $this->metaboxes = $metaboxes;
+        $this->helptabs = $helptabs;
+        
         // add actions
         add_action('admin_init', array($this, 'actionAdminInit'));
         add_action('admin_menu', array($this, 'actionAdminMenu'));
+    }
+
+    /**
+     * @param array $settings
+     */
+    protected function setSettings(array $settings)
+    {
+        foreach ($settings as $key => $value) {
+            if (key_exists($key, $this->settings)) {
+                $this->settings[$key] = $value;
+            }
+        }
     }
 
     /**
