@@ -70,10 +70,6 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
      */
     public function actionAdminInit()
     {
-//        logger(WPML::get('dir'));
-//        logger(dirname(WPML::get('file')));
-
-        // actions and filters
         add_action('admin_notices', array($this, 'actionAdminNotices'));
         add_filter('plugin_action_links', array($this, 'filterPluginActionLinks'), 10, 2);
     }
