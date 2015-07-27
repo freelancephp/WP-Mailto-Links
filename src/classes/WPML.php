@@ -51,7 +51,7 @@ class WPML extends WPDev_Plugin_Abstract
             ));
         } else {
             // create front
-            $front = new WPML_Front($optionValues->get());
+            $front = new WPML_Front($optionValues);
         }
     }
 

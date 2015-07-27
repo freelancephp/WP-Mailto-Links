@@ -17,14 +17,14 @@ class WPML_Front
     protected $regexps = array();
 
     /**
-     * @var array
+     * @var \WPDev_Plugin_OptionValues
      */
     protected $optionValues = array();
 
     /**
      * Constructor
      */
-    public function __construct(array $optionValues = array())
+    public function __construct(WPDev_Plugin_OptionValues $optionValues)
     {
         // set values
         $this->optionValues = $optionValues;
@@ -56,7 +56,7 @@ class WPML_Front
     {
         if (is_feed()) {
             // rss feed
-            if ($this->optionValues['filter_rss']) {
+            if ($this->optionValues->get('filter_rss')) {
                 $rss_filters = array('the_title', 'the_content', 'the_excerpt', 'the_title_rss',
                     'the_content_rss', 'the_excerpt_rss',
                     'comment_text_rss', 'comment_author_rss', 'the_category_rss',
@@ -69,37 +69,37 @@ class WPML_Front
         } else {
             // site
             // set js file
-            if ($this->optionValues['protect']) {
+            if ($this->optionValues->get('protect')) {
                 wp_enqueue_script('wp-mailto-links',
                     WPML::url('js/wp-mailto-links.js'), array('jquery'),
                     WPML::get('version'));
             }
 
-            if ($this->optionValues['filter_body'] || $this->optionValues['filter_head']) {
+            if ($this->optionValues->get('filter_body') || $this->optionValues->get('filter_head')) {
                 ob_start(array($this, 'filterPage'));
 
                 // set ob flush
                 add_action('wp_footer', array($this, 'actionWpFooter'), 10000);
             }
 
-            if (!$this->optionValues['filter_body']) {
+            if (!$this->optionValues->get('filter_body')) {
                 $filters = array();
 
                 // post content
-                if ($this->optionValues['filter_posts']) {
+                if ($this->optionValues->get('filter_posts')) {
                     array_push($filters, 'the_title', 'the_content',
                         'the_excerpt', 'get_the_excerpt');
                 }
 
                 // comments
-                if ($this->optionValues['filter_comments']) {
+                if ($this->optionValues->get('filter_comments')) {
                     array_push($filters, 'comment_text', 'comment_excerpt',
                         'comment_url', 'get_comment_author_url',
                         'get_comment_author_link', 'get_comment_author_url_link');
                 }
 
                 // widgets ( only text widgets )
-                if ($this->optionValues['filter_widgets']) {
+                if ($this->optionValues->get('filter_widgets')) {
                     array_push($filters, 'widget_title', 'widget_text',
                         'widget_content'); // widget_content id filter of Widget Logic plugin
                 }
@@ -122,8 +122,8 @@ class WPML_Front
      */
     public function filterWpHead()
     {
-        $icon       = $this->optionValues['icon'];
-        $class_name = $this->optionValues['class_name'];
+        $icon       = $this->optionValues->get('icon');
+        $class_name = $this->optionValues->get('class_name');
 
         // add style to <head>
         echo '<style type="text/css" media="all">'."\n";
@@ -166,14 +166,14 @@ class WPML_Front
 
         if (count($html_split) >= 4) {
             // protect emails in <head> section
-            if ($this->optionValues['filter_head']) {
+            if ($this->optionValues->get('filter_head')) {
                 $headFiltered = $this->filterHead(array($html_split[0]));
             } else {
                 $headFiltered = $html_split[0];
             }
 
             // only replace links in <body> part
-            if ($this->optionValues['filter_body']) {
+            if ($this->optionValues->get('filter_body')) {
                 $bodyFiltered = $this->filterBody(array($html_split[4]));
             } else {
                 $bodyFiltered = $html_split[4];
@@ -234,10 +234,10 @@ class WPML_Front
         $filtered = preg_replace_callback($this->regexps['mailtoLink'], array($this, 'pregReplaceMailto'), $filtered);
 
         // convert plain emails
-        if ($this->optionValues['convert_emails'] == 1) {
+        if ($this->optionValues->get('convert_emails') == 1) {
             // protect plain emails
             $filtered = $this->replacePlainEmails($filtered);
-        } elseif ($this->optionValues['convert_emails'] == 2) {
+        } elseif ($this->optionValues->get('convert_emails') == 2) {
             // make mailto links from plain emails
             $filtered = preg_replace_callback($this->regexps['emailPlain'], array($this, 'pregReplacePlainEmail'), $filtered);
         }
@@ -262,7 +262,7 @@ class WPML_Front
 
         $encodedEmail = $this->getEncEmail($email);
 
-        if ($this->optionValues['input_strong_protection'] == 1) {
+        if ($this->optionValues->get('input_strong_protection') == 1) {
             // add data-enc-email after "<input"
             $encodedInput = substr($input, 0, 6);
             $encodedInput .= ' data-enc-email="' . $encodedEmail . '"';
@@ -310,7 +310,7 @@ class WPML_Front
     public function filterRss($content)
     {
         $content = $this->replacePlainEmails($content);
-        $content = preg_replace($this->regexps['emailMailto'], 'mailto:'.WPML::__($this->optionValues['protection_text']), $content);
+        $content = preg_replace($this->regexps['emailMailto'], 'mailto:'.WPML::__($this->optionValues->get('protection_text')), $content);
         return $content;
     }
 
@@ -322,7 +322,7 @@ class WPML_Front
      */
     public function replacePlainEmails($content, $emailReplacement = null)
     {
-        $emailReplacement = ($emailReplacement === null) ? WPML::__($this->optionValues['protection_text']) : $emailReplacement;
+        $emailReplacement = ($emailReplacement === null) ? WPML::__($this->optionValues->get('protection_text')) : $emailReplacement;
         return preg_replace($this->regexps['emailPlain'], $emailReplacement, $content);
     }
 
@@ -334,7 +334,7 @@ class WPML_Front
      */
     public function shortcodeProtectedMailto($attrs, $content = '')
     {
-        if ($this->optionValues['protect'] && preg_match($this->regexps['emailPlain'], $content) > 0) {
+        if ($this->optionValues->get('protect') && preg_match($this->regexps['emailPlain'], $content) > 0) {
             $content = $this->getProtectedDisplay($content);
         }
 
@@ -361,18 +361,18 @@ class WPML_Front
         $class_ori = (empty($attrs['class'])) ? '' : $attrs['class'];
 
         // set icon class, unless no-icon class isset or another icon class ('mail-icon-...') is found and display does not contain image
-        if ($this->optionValues['icon'] > 0 && (empty($this->optionValues['no_icon_class'])
-                || strpos($class_ori, $this->optionValues['no_icon_class']) === FALSE) && strpos($class_ori, 'mail-icon-') === FALSE
-                && !($this->optionValues['image_no_icon'] == 1
+        if ($this->optionValues->get('icon') > 0 && (!$this->optionValues->get('no_icon_class')
+                || strpos($class_ori, $this->optionValues->get('no_icon_class')) === FALSE) && strpos($class_ori, 'mail-icon-') === FALSE
+                && !($this->optionValues->get('image_no_icon') == 1
                 && (bool) preg_match($this->regexps['image'], $display))) {
-            $icon_class = 'mail-icon-' . $this->optionValues['icon'];
+            $icon_class = 'mail-icon-' . $this->optionValues->get('icon');
 
             $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
         }
 
         // set user-defined class
-        if (!empty($this->optionValues['class_name']) && strpos($class_ori, $this->optionValues['class_name']) === FALSE) {
-            $attrs['class'] = (empty($attrs['class'])) ? $this->optionValues['class_name'] : $attrs['class'].' '.$this->optionValues['class_name'];
+        if ($this->optionValues->get('class_name') && strpos($class_ori, $this->optionValues->get('class_name')) === FALSE) {
+            $attrs['class'] = (empty($attrs['class'])) ? $this->optionValues->get('class_name') : $attrs['class'].' '.$this->optionValues->get('class_name');
         }
 
         // check title for email address
@@ -384,7 +384,7 @@ class WPML_Front
         $link = '<a ';
 
         foreach ($attrs AS $key => $value) {
-            if (strtolower($key) == 'href' && $this->optionValues['protect']) {
+            if (strtolower($key) == 'href' && $this->optionValues->get('protect')) {
                 // get email from href
                 $email = substr($value, 7);
 
@@ -402,7 +402,7 @@ class WPML_Front
         $link = substr($link, 0, -1);
 
         $link .= '>';
-        $link .= ($this->optionValues['protect'] && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
+        $link .= ($this->optionValues->get('protect') && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
         $link .= '</a>';
 
         // filter
