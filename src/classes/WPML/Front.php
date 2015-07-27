@@ -24,8 +24,11 @@ class WPML_Front
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(array $optionValues = array())
     {
+        // set values
+        $this->optionValues = $optionValues;
+
         // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
         $regexpEmail = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
 
@@ -37,9 +40,6 @@ class WPML_Front
             'image' => '/<img([^>]*)>/is',
             'body' => '/(<body(([^>]*)>))/is',
         );
-
-        // set values
-        $this->optionValues = WPML::get('optionValues')->get();
 
         // create template function
         $this->createTemplateFunctions();
@@ -488,9 +488,13 @@ class WPML_Front
      */
     protected function createTemplateFunctions()
     {
+        // set this object as "global" to use in template functions
+        WPML::set('frontObject', $this);
+
         if (!function_exists('wpml_mailto')):
             function wpml_mailto($email, $display = null, $attrs = array())
             {
+                global $front;
                 if (is_array($display)) {
                    // backwards compatibility (old params: $display, $attrs = array())
                    $attrs   = $display;
@@ -499,16 +503,16 @@ class WPML_Front
                    $attrs['href'] = 'mailto:'.$email;
                }
 
-               return WPML::get('front')->protectedMailto($display, $attrs);
+               return WPML::get('frontObject')->protectedMailto($display, $attrs);
             }
         endif;
 
         if (!function_exists('wpml_filter')):
             function wpml_filter($content)
             {
-                return WPML::get('front')->filterContent($content);
+                return WPML::get('frontObject')->filterContent($content);
             }
         endif;
     }
+
 }
-// End Class WPML_Front

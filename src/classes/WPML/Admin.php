@@ -14,22 +14,10 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
     /**
      * Constructor
      * Init settings, metaboxes, helptabs etc
+     * @param array $settings
      */
-    public function __construct()
+    public function __construct(array $settings)
     {
-        $settings = array(
-            'file' => WPML::get('file'),
-            'key' => WPML::get('key'),
-            'pageKey' => WPML::get('adminPage'),
-            'pageTitle' => WPML::__('WP Mailto Links'),
-            'menuIcon' => WPML::url('images/icon-wp-mailto-links-16.png'),
-            'mainMenu' => (bool) WPML::get('optionValues')->get('own_admin_menu'),
-            'viewVars' => array('values' => WPML::get('optionValues')->get()),
-            'viewPage' => WPML::get('dir') . '/views/admin/page.php',
-            'viewMetabox' => WPML::get('dir') . '/views/admin/metaboxes/{{key}}.php',
-            'viewHelptab' => WPML::get('dir') . '/views/admin/helptabs/{{key}}.php',
-        );
-
         $metaboxes = array(
             'general' => array(
                 'title' => WPML::__('General Settings'),

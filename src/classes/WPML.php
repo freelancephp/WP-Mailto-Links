@@ -33,14 +33,25 @@ class WPML extends WPDev_Plugin_Abstract
      */
     public function actionInit()
     {
-        WPML::set('optionValues', $this->initOptionValues());
+        $optionValues = $this->initOptionValues();
 
         if (is_admin()) {
             // create admin
-            WPML::set('admin', new WPML_Admin);
+            $admin = new WPML_Admin(array(
+                'file' => self::get('file'),
+                'key' => self::get('key'),
+                'pageKey' => self::get('adminPage'),
+                'pageTitle' => self::__('WP Mailto Links'),
+                'menuIcon' => self::url('images/icon-wp-mailto-links-16.png'),
+                'mainMenu' => (bool) $optionValues->get('own_admin_menu'),
+                'viewVars' => array('values' => $optionValues->get()),
+                'viewPage' => self::get('dir') . '/views/admin/page.php',
+                'viewMetabox' => self::get('dir') . '/views/admin/metaboxes/{{key}}.php',
+                'viewHelptab' => self::get('dir') . '/views/admin/helptabs/{{key}}.php',
+            ));
         } else {
             // create front
-            WPML::set('front', new WPML_Front);
+            $front = new WPML_Front($optionValues->get());
         }
     }
 
