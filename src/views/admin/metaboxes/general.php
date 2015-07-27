@@ -26,7 +26,7 @@
             <br/>&nbsp;&nbsp;<label><input type="checkbox" name="<?php echo WPML::get('optionName') ?>[filter_comments]" id="filter_comments" value="1" <?php checked('1', (int) $values['filter_comments']); ?> />
                     <span><?php WPML::_e('Comments') ?></span></label>
             <br/>&nbsp;&nbsp;<label><input type="checkbox" name="<?php echo WPML::get('optionName') ?>[filter_widgets]" id="filter_widgets" value="1" <?php checked('1', (int) $values['filter_widgets']); ?> />
-                    <span><?php if (WPML_Admin::hasWidgetLogicFilter()) { WPML::_e('All widgets (uses the <code>widget_content</code> filter of the Widget Logic plugin)'); } else { WPML::_e('All text widgets'); } ?></span></label>
+                    <span><?php WPML::_e('All widgets'); ?></span></label>
         </td>
     </tr>
     <tr>

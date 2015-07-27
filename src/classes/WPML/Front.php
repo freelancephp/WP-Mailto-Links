@@ -100,8 +100,13 @@ class WPML_Front
 
                 // widgets ( only text widgets )
                 if ($this->optionValues->get('filter_widgets')) {
-                    array_push($filters, 'widget_title', 'widget_text',
-                        'widget_content'); // widget_content id filter of Widget Logic plugin
+                    // create WidgetOutput filter
+                    if (! WPDev_Filter_WidgetOutput::isCreated()) {
+                        global $wp_registered_widgets; // not very nice but need to get global by reference
+                        WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
+                    }
+
+                    array_push($filters, 'widget_output');
                 }
 
                 foreach ($filters as $filter) {

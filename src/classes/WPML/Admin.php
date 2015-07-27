@@ -135,19 +135,4 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
         }
     }
 
-    /**
-     * Check if widget logic filter is active
-     * @return boolean
-     */
-    public static function hasWidgetLogicFilter()
-    {
-        $wlOptions = get_option('widget_logic');
-
-        if (!is_array($wlOptions) || !key_exists('widget_logic-options-filter', $wlOptions)) {
-            return false;
-        }
-
-        return ($wlOptions['widget_logic-options-filter'] === 'checked');
-    }
-
-} // End Class WPML_Admin
+}
