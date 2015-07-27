@@ -1,56 +1,82 @@
 <?php
-include_once 'UnitTestBase.php';
-
 /**
- * Dependencies
- * WordPress functions
+ * WordPress Dependencies
  */
 
-function __($text, $domain = null)
+/**
+ * Helper
+ */
+function _helperSaveCallAndReturnValue($funcName, $args = array())
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
-    return '<translated>' . $text . '</translated>';
+    WPDev_Test_UnitBase::saveCall($funcName, $args);
+    return WPDev_Test_UnitBase::getReturnValue($funcName);
 }
+
+/**
+ * WP Global Functions
+ */
 
 function add_action($hookName, $callback, $priority = null)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
 function apply_filters($filterName, $content)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
-    return '<applied>' . $content . '</applied>';
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
+}
+
+function __($text, $domain = null)
+{
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
 function get_option($option, $default = false)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
-    return array('someKey' => 'someValue', 'anotherKey' => 'anotherValue', 'check' => $option /* a variable value */);
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
 function update_option($option, $newValue, $autoload = null)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
-    return true;
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
 function delete_option($option)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
 function register_setting($optionGroup, $optionName, $sanitizeCallback = null)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
 function unregister_setting($optionGroup, $optionName, $sanitizeCallback = null)
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
 
-function register_uninstall_hook($file, $callback)
+function add_menu_page()
 {
-    UnitTestBase::saveCall(__FUNCTION__, func_get_args());
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
+}
+
+function add_submenu_page()
+{
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
+}
+
+function wp_enqueue_script()
+{
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
+}
+
+function add_screen_option()
+{
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
+}
+
+function get_current_screen()
+{
+    return _helperSaveCallAndReturnValue(__FUNCTION__, func_get_args());
 }
