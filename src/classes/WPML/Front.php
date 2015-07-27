@@ -264,7 +264,7 @@ class WPML_Front
 
         if ($this->optionValues['input_strong_protection'] == 1) {
             // add data-enc-email after "<input"
-            $encodedInput .= substr($input, 0, 6);
+            $encodedInput = substr($input, 0, 6);
             $encodedInput .= ' data-enc-email="' . $encodedEmail . '"';
             $encodedInput .= substr($input, 6);
 
