@@ -35,16 +35,27 @@ class WPDev_Plugin_OptionValues
      * @param string $optionName
      * @param array $defaultValues  Optional
      */
-    public function __construct($optionGroup, $optionName, array $defaultValues = null)
+    public function __construct($optionGroup, $optionName, array $defaultValues = array())
     {
         $this->optionGroup = $optionGroup;
         $this->optionName = $optionName;
 
-        // get saved option values
-        $savedValues = get_option($this->optionName);
-
         // first set all defaults
         $this->values = $defaultValues;
+
+        $this->setSavedValues($defaultValues);
+
+        // add actions
+        add_action('admin_init', array($this, 'register'), 1);
+    }
+
+    /**
+     * Set saved option values
+     */
+    protected function setSavedValues()
+    {
+        // get saved option values
+        $savedValues = get_option($this->optionName);
 
         // overwrite defaults with saved values (if exists)
         if ($savedValues) {
@@ -52,9 +63,6 @@ class WPDev_Plugin_OptionValues
                 $this->values[$key] = $value;
             }
         }
-
-        // add actions
-        add_action('admin_init', array($this, 'register'), 1);
     }
 
     /**

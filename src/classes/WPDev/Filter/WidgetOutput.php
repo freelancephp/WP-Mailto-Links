@@ -16,10 +16,11 @@
  * @license  MIT license
  *
  * @example
+ *      if (! WPDev_Filter_WidgetOutput::isCreated()) {
+ *          WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
+ *      }
  *
- *      WPDev_Filter_WidgetOutput::create('wp_widget_output');
- *
- *      add_filter('wp_widget_output', 'wp_replace_b_tags', 10, 1);
+ *      add_filter('widget_output', 'wp_replace_b_tags', 10, 1);
  *
  *      function wp_replace_b_tags($content) {
  *          $content = str_replace('<b>', '<strong>', $content);
@@ -34,7 +35,7 @@ class WPDev_Filter_WidgetOutput
      * Filter name
      * @var string
      */
-    protected $filterName = null;
+    protected $filterName = 'widget_output';
 
     /**
      * @var string
@@ -42,33 +43,40 @@ class WPDev_Filter_WidgetOutput
     protected $wpRegisteredWidgets = null;
 
     /**
-     * @var boolean
+     * @var \WPDev_Filter_WidgetOutput
      */
-    protected static $created = false;
+    protected static $instance = null;
 
     /**
      * Factory method
-     * @param string $filterName
      * @param array &$wpRegisteredWidgets Contains WP global $wp_registered_widgets
      * @return \WPDev_Filter_WidgetOutput
+     * @throw Exception
      */
-    public static function create($filterName, array & $wpRegisteredWidgets)
+    public static function create(array & $wpRegisteredWidgets)
     {
-        if (self::$created === true) {
+        if (self::isCreated()) {
             throw new Exception('Widget Output filter already created.');
         }
 
-        self::$created = true;
-        return new WPDev_Filter_WidgetOutput($filterName, $wpRegisteredWidgets);
+        self::$instance = new WPDev_Filter_WidgetOutput($wpRegisteredWidgets);
+        return self::$instance;
     }
 
     /**
-     * @param string $filterName
+     * Check if already instantiated
+     * @return boolean
+     */
+    public static function isCreated()
+    {
+        return (self::$instance !== null);
+    }
+
+    /**
      * @param array &$wpRegisteredWidgets
      */
-    protected function __construct($filterName, array & $wpRegisteredWidgets)
+    protected function __construct(array & $wpRegisteredWidgets)
     {
-        $this->filterName = $filterName;
         $this->wpRegisteredWidgets = & $wpRegisteredWidgets;
 
         add_filter('dynamic_sidebar_params', array($this, 'setCallbacks'), 5);
