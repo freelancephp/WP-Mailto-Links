@@ -44,7 +44,7 @@ class WPDev_Filter_FinalOutput
     /**
      * @param string $filterName
      */
-    private function __construct($filterName)
+    protected function __construct($filterName)
     {
         $this->filterName = $filterName;
 

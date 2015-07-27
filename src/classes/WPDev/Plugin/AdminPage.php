@@ -74,7 +74,7 @@ abstract class WPDev_Plugin_AdminPage
         $this->setSettings($settings);
         $this->metaboxes = $metaboxes;
         $this->helptabs = $helptabs;
-        
+
         // add actions
         add_action('admin_init', array($this, 'actionAdminInit'));
         add_action('admin_menu', array($this, 'actionAdminMenu'));
