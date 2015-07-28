@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPDev_Plugin_OptionValues
+ * Class WPDev_Option
  *
  * Managing options
  *
@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Plugin_OptionValues
+class WPDev_Option
 {
 
     /**
@@ -66,33 +66,41 @@ class WPDev_Plugin_OptionValues
     }
 
     /**
-     * Get value
-     * @param string|null $key
+     * @param string $key
      * @return mixed|null
+     * @throw Exception
      */
-    public function get($key = null)
+    public function getValue($key)
     {
-        if ($key === null) {
-            return $this->values;
+        if (!key_exists($key, $this->values)) {
+            throw new Exception('Key "' . $key . '" does not exist.');
         }
 
-        if (key_exists($key, $this->values)) {
-            return $this->values[$key];
-        }
+        return $this->values[$key];
+    }
 
-        return null;
+    /**
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->values;
     }
 
     /**
      * Change value
-     * @param string $key
-     * @param mixed $value
+     * @param string  $key
+     * @param mixed   $value
+     * @param boolean $setOnlyWhenKeyExists
+     * @throw Exception
      */
-    public function set($key, $value)
+    public function setValue($key, $value, $setOnlyWhenKeyExists = true)
     {
-        if (key_exists($key, $this->values)) {
-            $this->values[$key] = $value;
+        if ($setOnlyWhenKeyExists === true && !key_exists($key, $this->values)) {
+            throw new Exception('Key "' . $key . '" does not exist.');
         }
+
+        $this->values[$key] = $value;
     }
 
     /**

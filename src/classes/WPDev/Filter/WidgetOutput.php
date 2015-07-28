@@ -28,24 +28,24 @@
  *          return $content;
  *      }
  */
-class WPDev_Filter_WidgetOutput
+final class WPDev_Filter_WidgetOutput
 {
 
     /**
      * Filter name
      * @var string
      */
-    protected $filterName = 'widget_output';
+    private $filterName = 'widget_output';
 
     /**
-     * @var string
+     * @var array
      */
-    protected $wpRegisteredWidgets = null;
+    private $wpRegisteredWidgets = null;
 
     /**
      * @var \WPDev_Filter_WidgetOutput
      */
-    protected static $instance = null;
+    private static $instance = null;
 
     /**
      * Factory method
@@ -75,7 +75,7 @@ class WPDev_Filter_WidgetOutput
     /**
      * @param array &$wpRegisteredWidgets
      */
-    protected function __construct(array & $wpRegisteredWidgets)
+    private function __construct(array & $wpRegisteredWidgets)
     {
         $this->wpRegisteredWidgets = & $wpRegisteredWidgets;
 

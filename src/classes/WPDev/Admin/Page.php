@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPDev_Plugin_AdminPage
+ * Class WPDev_Admin_Page
  *
  * Creating an admin options page with a menu item
  *
@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-abstract class WPDev_Plugin_AdminPage
+class WPDev_Admin_Page
 {
 
     /**
@@ -75,8 +75,6 @@ abstract class WPDev_Plugin_AdminPage
         $this->metaboxes = $metaboxes;
         $this->helptabs = $helptabs;
 
-        // add actions
-        add_action('admin_init', array($this, 'actionAdminInit'));
         add_action('admin_menu', array($this, 'actionAdminMenu'));
     }
 
@@ -91,11 +89,6 @@ abstract class WPDev_Plugin_AdminPage
             }
         }
     }
-
-    /**
-     * WP action callback
-     */
-    abstract public function actionAdminInit();
 
     /**
      * WP action callback
@@ -178,7 +171,7 @@ abstract class WPDev_Plugin_AdminPage
         $key = $box['args'][0];
         $viewFile = str_replace('{{key}}', $key, $this->settings['viewMetabox']);
 
-        $this->renderView($viewFile, true);
+        echo $this->renderView($viewFile);
     }
 
     /**
@@ -186,7 +179,7 @@ abstract class WPDev_Plugin_AdminPage
      */
     public function showPage()
     {
-        $this->renderView($this->settings['viewPage'], true);
+        echo $this->renderView($this->settings['viewPage']);
     }
 
     /**
@@ -205,7 +198,7 @@ abstract class WPDev_Plugin_AdminPage
         $viewFile = str_replace('{{key}}', 'sidebar', $this->settings['viewHelptab']);
 
         if (file_exists($viewFile)) {
-            $helpText = $this->renderView($viewFile, false);
+            $helpText = $this->renderView($viewFile);
             $screen->set_help_sidebar($helpText);
         }
 
@@ -213,7 +206,7 @@ abstract class WPDev_Plugin_AdminPage
         foreach ($this->helptabs as $key => $params) {
             // help tab
             $viewFile = str_replace('{{key}}', $key, $this->settings['viewHelptab']);
-            $helpText = $this->renderView($viewFile, false);
+            $helpText = $this->renderView($viewFile);
 
             $screen->add_help_tab(array(
                 'id' => $key,
@@ -226,11 +219,10 @@ abstract class WPDev_Plugin_AdminPage
     /**
      * Render a view
      * @param string $file
-     * @param boolean $show  Optional, default false
      * @return string
      */
-    protected function renderView($file, $show = false) {
-        return WPDev_View::create($file, $this->settings['viewVars'])->render($show);
+    protected function renderView($file) {
+        return WPDev_View::create($file, $this->settings['viewVars'])->render(false);
     }
 
 }

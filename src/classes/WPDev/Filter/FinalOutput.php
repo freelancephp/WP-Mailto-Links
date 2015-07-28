@@ -11,10 +11,11 @@
  * @license  MIT license
  *
  * @example
+ *      if (! WPDev_Filter_FinalOutput::isCreated()) {
+ *          WPDev_Filter_FinalOutput::create('final_output');
+ *      }
  *
- *      WPDev_Filter_FinalOutput::create('wp_final_output');
- *
- *      add_filter('wp_final_output', 'wp_replace_b_tags', 10, 1);
+ *      add_filter('final_output', 'wp_replace_b_tags', 10, 1);
  *
  *      function wp_replace_b_tags($content) {
  *          $content = str_replace('<b>', '<strong>', $content);
@@ -29,25 +30,41 @@ class WPDev_Filter_FinalOutput
      * Filter name
      * @var string
      */
-    protected $filterName = null;
+    private $filterName = 'final_output';
+
+    /**
+     * @var \WPDev_Filter_FinalOutput
+     */
+    private static $instance = null;
 
     /**
      * Factory method
-     * @param string $filterName
      * @return \WPDev_Filter_FinalOutput
      */
-    public static function create($filterName)
+    public static function create()
     {
-        return new WPDev_Filter_FinalOutput($filterName);
+        if (self::isCreated()) {
+            throw new Exception('Final Output filter already created.');
+        }
+
+        self::$instance = new WPDev_Filter_FinalOutput;
+        return self::$instance;
     }
 
     /**
-     * @param string $filterName
+     * Check if already instantiated
+     * @return boolean
      */
-    protected function __construct($filterName)
+    public static function isCreated()
     {
-        $this->filterName = $filterName;
+        return (self::$instance !== null);
+    }
 
+    /**
+     * Constructor
+     */
+    private function __construct()
+    {
         add_action('wp', array($this, 'bufferStart'), 1);
     }
 

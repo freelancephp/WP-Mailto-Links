@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPDev_View
+ * Class WPDev_Test_UnitBase
  *
  * Parent for all Unit Test
  *
