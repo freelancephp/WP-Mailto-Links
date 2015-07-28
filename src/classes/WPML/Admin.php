@@ -8,61 +8,80 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-class WPML_Admin extends WPDev_Plugin_AdminPage
+final class WPML_Admin extends WPDev_Admin_Page
 {
-
     /**
      * Constructor
      * Init settings, metaboxes, helptabs etc
-     * @param array $settings
      */
-    public function __construct(array $settings)
+    public function __construct(WPDev_Option $option)
     {
+        $plugin = WPML::plugin();
+
+        $settings = array(
+            'file' => $plugin->getGlobal('file'),
+            'key' => $plugin->getGlobal('key'),
+            'pageKey' => $plugin->getGlobal('adminPage'),
+            'pageTitle' => $plugin->__('WP Mailto Links'),
+            'menuIcon' => $plugin->getGlobal('pluginUrl') . '/images/icon-wp-mailto-links-16.png',
+            'mainMenu' => (bool) $option->getValue('own_admin_menu'),
+            'viewVars' => array(
+                'optionName' => $plugin->getGlobal('optionName'),
+                'values' => $option->getValues(),
+                'plugin' => $plugin,
+            ),
+            'viewPage' => $plugin->getGlobal('dir') . '/views/admin/page.php',
+            'viewMetabox' => $plugin->getGlobal('dir') . '/views/admin/metaboxes/{{key}}.php',
+            'viewHelptab' => $plugin->getGlobal('dir') . '/views/admin/helptabs/{{key}}.php',
+        );
+
         $metaboxes = array(
             'general' => array(
-                'title' => WPML::__('General Settings'),
+                'title' => $plugin->__('General Settings'),
                 'position' => 'normal',
              ),
             'style' => array(
-                'title' => WPML::__('Style Settings'),
+                'title' => $plugin->__('Style Settings'),
                 'position' => 'normal',
              ),
             'admin' => array(
-                'title' => WPML::__('Admin Settings'),
+                'title' => $plugin->__('Admin Settings'),
                 'position' => 'normal',
              ),
             'this-plugin' => array(
-                'title' => WPML::__('Support'),
+                'title' => $plugin->__('Support'),
                 'position' => 'side',
              ),
             'other-plugins' => array(
-                'title' => WPML::__('Other Plugins'),
+                'title' => $plugin->__('Other Plugins'),
                 'position' => 'side',
              ),
         );
 
         $helptabs = array(
             'general' => array(
-                'title' => WPML::__('General'),
+                'title' => $plugin->__('General'),
              ),
             'shortcodes' => array(
-                'title' => WPML::__('Shortcodes'),
+                'title' => $plugin->__('Shortcodes'),
              ),
             'templatefunctions' => array(
-                'title' => WPML::__('Template functions'),
+                'title' => $plugin->__('Template functions'),
              ),
             'actionhooks' => array(
-                'title' => WPML::__('Action Hooks'),
+                'title' => $plugin->__('Action Hooks'),
              ),
             'filterhooks' => array(
-                'title' => WPML::__('Filter Hooks'),
+                'title' => $plugin->__('Filter Hooks'),
              ),
             'faq' => array(
-                'title' => WPML::__('FAQ'),
+                'title' => $plugin->__('FAQ'),
              ),
         );
 
         parent::__construct($settings, $metaboxes, $helptabs);
+
+        add_action('admin_init', array($this, 'actionAdminInit'));
     }
 
     /**
@@ -84,9 +103,9 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
         // add plugin script
         wp_enqueue_script(
             'WPML_admin',
-            WPML::url('js/wp-mailto-links-admin.js'),
+            WPML::plugin()->getGlobal('pluginUrl') . '/js/wp-mailto-links-admin.js',
             array('jquery'),
-            WPML::get('version')
+            WPML_VERSION
         );
     }
 
@@ -98,17 +117,17 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
      */
     public function filterPluginActionLinks($links, $file)
     {
-        $pluginFile = plugin_basename(WPML::get('file'));
+        $pluginFile = plugin_basename(WPML::plugin()->getGlobal('file'));
         $compareFile = substr($pluginFile, - strlen($file));
 
         if ($file == $compareFile) {
             $page = ($this->settings['mainMenu']) ? 'admin.php' : 'options-general.php';
 
-            $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/'
-                            . $page . '?page=' . WPML::get('adminPage') . '">'
-                            . WPML::__('Settings') . '</a>';
+            $settingsLink = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/'
+                            . $page . '?page=' . WPML::plugin()->getGlobal('adminPage') . '">'
+                            . WPML::plugin()->__('Settings') . '</a>';
 
-            array_unshift($links, $settings_link);
+            array_unshift($links, $settingsLink);
         }
 
         return $links;
@@ -120,18 +139,12 @@ class WPML_Admin extends WPDev_Plugin_AdminPage
      */
     public function actionAdminNotices()
     {
-        if ( ! WPML::get('isCompatible')) {
-            $plugin_title = get_admin_page_title();
-
-            echo '<div class="error">';
-            echo sprintf(WPML::__('<p>Error - The plugin <strong>%1$s</strong> requires PHP %2$s + and WP %3$s +.'
-                    . '  Please upgrade your PHP and/or WordPress.'
-                    . '<br/>Disable the plugin to remove this message.</p>'), $plugin_title, WPML::get('minPhpVersion'), WPML::get('minWpVersion'));
-            echo '</div>';
+        if (!WPML::plugin()->getGlobal('isCompatible')) {
+            echo $this->renderView(WPML::plugin()->getGlobal('dir') . '/views/admin/notice-not-compatible.php');
         }
 
-        if (isset($_GET['page']) && $_GET['page'] === WPML::get('adminPage') && is_plugin_active('email-encoder-bundle/email-encoder-bundle.php')) {
-            $this->renderView(WPML::get('dir') . '/views/admin/notices.php', true);
+        if (isset($_GET['page']) && $_GET['page'] === WPML::plugin()->getGlobal('adminPage') && is_plugin_active('email-encoder-bundle/email-encoder-bundle.php')) {
+            echo $this->renderView(WPML::plugin()->getGlobal('dir') . '/views/admin/notice-eeb-activated.php');
         }
     }
 

@@ -2,28 +2,44 @@
 /**
  * Class WPML
  *
- * @sinlgeton
- *
  * @package  WPML
  * @category WordPress Plugins
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-class WPML extends WPDev_Plugin_Abstract
+final class WPML extends WPDev_Plugin
 {
     /**
-     * @var string  Name of Plugin class to create singleton instance
+     * @var \WPML
      */
-    protected static $className = 'WPML';
+    protected static $instance = null;
+
+    /**
+     * Factory method
+     * @param array $globals  Optional, only on first call
+     */
+    public static function create(array $globals = array())
+    {
+        self::$instance = new WPML($globals);
+        return self::$instance;
+    }
+
+    /**
+     * @return \WPML
+     */
+    public static function plugin()
+    {
+        return self::$instance;
+    }
 
     /**
      * Init
      */
     protected function init()
     {
-        // load text domain for translations
-        load_plugin_textdomain(self::get('domain'), false, self::get('dir') . '/languages');
+        // for translations
+        load_plugin_textdomain($this->getGlobal('domain'), false, $this->getGlobal('dir') . '/languages');
 
         add_action('init', array($this, 'actionInit'), 5);
     }
@@ -33,32 +49,21 @@ class WPML extends WPDev_Plugin_Abstract
      */
     public function actionInit()
     {
-        $optionValues = $this->initOptionValues();
+        $option = $this->createOption();
 
         if (is_admin()) {
             // create admin
-            $admin = new WPML_Admin(array(
-                'file' => self::get('file'),
-                'key' => self::get('key'),
-                'pageKey' => self::get('adminPage'),
-                'pageTitle' => self::__('WP Mailto Links'),
-                'menuIcon' => self::url('images/icon-wp-mailto-links-16.png'),
-                'mainMenu' => (bool) $optionValues->get('own_admin_menu'),
-                'viewVars' => array('values' => $optionValues->get()),
-                'viewPage' => self::get('dir') . '/views/admin/page.php',
-                'viewMetabox' => self::get('dir') . '/views/admin/metaboxes/{{key}}.php',
-                'viewHelptab' => self::get('dir') . '/views/admin/helptabs/{{key}}.php',
-            ));
+            (new WPML_Admin($option));
         } else {
             // create front
-            $front = new WPML_Front($optionValues);
+            (new WPML_Front($option));
         }
     }
 
     /**
-     * Init option values
+     * @return \WPDev_Option
      */
-    protected function initOptionValues()
+    protected function createOption()
     {
         $defaultValues = array(
             'version' => null,
@@ -80,17 +85,17 @@ class WPML extends WPDev_Plugin_Abstract
             'own_admin_menu' => 0,
         );
 
-        $optionGroup = self::get('key');
-        $optionName = self::get('optionName');
+        $optionGroup = $this->getGlobal('key');
+        $optionName = $this->getGlobal('optionName');
 
         // options instance
-        $optionValues = new WPDev_Plugin_OptionValues($optionGroup, $optionName, $defaultValues);
+        $option = new WPDev_Option($optionGroup, $optionName, $defaultValues);
 
         // check if this is an update
-        if ($optionValues->get('version') !== self::get('version')) {
+        if ($option->getValue('version') !== WPML_VERSION) {
             // update version
-            $optionValues->set('version', self::get('version'));
-            $optionValues->save();
+            $option->setValue('version', WPML_VERSION);
+            $option->save();
 
             // check for old values of 1.x version
             $oldValues = get_option('WP_Mailto_Links_options');
@@ -99,11 +104,11 @@ class WPML extends WPDev_Plugin_Abstract
                 $defaultValues = $oldValues;
 
                 // set new instance with old values as defaults
-                $optionValues = new WPDev_Plugin_OptionValues($optionGroup, $optionName, $defaultValues);
+                $option = new WPDev_Option($optionGroup, $optionName, $defaultValues);
             }
         }
         
-        return $optionValues;
+        return $option;
     }
 
 }

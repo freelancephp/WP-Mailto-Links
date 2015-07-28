@@ -15,8 +15,8 @@ define('WPML_MIN_PHP_VERSION', '5.2.4');
 define('WPML_MIN_WP_VERSION', '3.6');
 
 // includes
-if (!class_exists('WPDev_Plugin_Abstract')) {
-    require_once(dirname(__FILE__) . '/classes/WPDev/Plugin/Abstract.php');
+if (!class_exists('WPDev_Plugin')) {
+    require_once(dirname(__FILE__) . '/classes/WPDev/Plugin.php');
 }
 require_once(dirname(__FILE__) . '/classes/WPML.php');
 
@@ -29,9 +29,8 @@ if (!isset($wp_version)) {
 $compatiblePhpVersion = version_compare(phpversion(), WPML_MIN_PHP_VERSION, '>=');
 $compatibleWpVersion = version_compare($wp_version, WPML_MIN_WP_VERSION, '>=');
 
-// init plugin
-WPML::getInstance(array(
-    'version' => WPML_VERSION,
+// create plugin
+WPML::create(array(
     'key' => 'WP_Mailto_Links',
     'domain' => 'wp-mailto-links',
     'optionName' => 'WP_Mailto_Links_options',
@@ -40,7 +39,5 @@ WPML::getInstance(array(
     'dir' => dirname(__FILE__),
     'pluginUrl' => plugins_url('', __FILE__),
     'wpVersion' => $wp_version,
-    'minPhpVersion' => WPML_MIN_PHP_VERSION,
-    'minWpVersion' => WPML_MIN_WP_VERSION,
     'isCompatible' => ($compatiblePhpVersion && $compatibleWpVersion),
 ));

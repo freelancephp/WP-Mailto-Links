@@ -1,6 +1,6 @@
 <div class="wrap wpml-admin">
-    <div class="icon32" id="icon-options-custom" style="background:url(<?php echo WPML::url('images/icon-wp-mailto-links.png') ?>) no-repeat 50% 50%"><br></div>
-    <h2><?php echo get_admin_page_title() ?> - <em><small><?php WPML::_e('Manage Email Links') ?></small></em></h2>
+    <div class="icon32" id="icon-options-custom" style="background:url(<?php echo $plugin->getGlobal('pluginUrl') . '/images/icon-wp-mailto-links.png' ?>) no-repeat 50% 50%"><br></div>
+    <h2><?php echo get_admin_page_title() ?> - <em><small><?php $plugin->_e('Manage Email Links') ?></small></em></h2>
 
     <?php if (isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && $values['own_admin_menu']): ?>
     <div class="updated settings-error" id="setting-error-settings_updated">
@@ -9,9 +9,9 @@
     <?php endif; ?>
 
     <form method="post" action="options.php">
-        <?php settings_fields(WPML::get('key')); ?>
+        <?php settings_fields($plugin->getGlobal('key')); ?>
 
-        <input type="hidden" name="<?php echo WPML::get('key') ?>_nonce" value="<?php echo wp_create_nonce(WPML::get('key')) ?>" />
+        <input type="hidden" name="<?php echo $plugin->getGlobal('key') ?>_nonce" value="<?php echo wp_create_nonce($plugin->getGlobal('key')) ?>" />
         <?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false); ?>
         <?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false); ?>
 
