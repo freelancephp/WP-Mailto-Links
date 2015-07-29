@@ -43,7 +43,7 @@ class WPDev_Option
         // first set all defaults
         $this->values = $defaultValues;
 
-        $this->setSavedValues($defaultValues);
+        $this->setSavedValues();
 
         // add actions
         add_action('admin_init', array($this, 'register'), 1);
