@@ -57,7 +57,7 @@ final class WPML_Front
             }
         }
 
-        if ($this->option->getValue('filter_widgets')) {
+        if (!$this->option->getValue('filter_body') && $this->option->getValue('filter_widgets')) {
             // create WidgetOutput filter
             if (! WPDev_Filter_WidgetOutput::isCreated()) {
                 global $wp_registered_widgets; // not very nice but need to get global WP var by reference
