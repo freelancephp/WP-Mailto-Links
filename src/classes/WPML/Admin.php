@@ -94,22 +94,6 @@ final class WPML_Admin extends WPDev_Admin_Page
     }
 
     /**
-     * WP action callback
-     */
-    public function loadPage()
-    {
-        parent::loadPage();
-        
-        // add plugin script
-        wp_enqueue_script(
-            'WPML_admin',
-            WPML::plugin()->getGlobal('pluginUrl') . '/js/wp-mailto-links-admin.js',
-            array('jquery'),
-            WPML_VERSION
-        );
-    }
-
-    /**
      * Callback add links on plugin page
      * @param array $links
      * @param string $file

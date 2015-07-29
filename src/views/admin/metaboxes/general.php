@@ -1,3 +1,19 @@
+<script>
+jQuery(function ($) {
+    $('input#filter_body')
+        .change(function () {
+            var $i = $('input#filter_posts, input#filter_comments, input#filter_widgets');
+
+            if ($(this).attr('checked')) {
+                $i.attr('disabled', true)
+                    .attr('checked', true);
+            } else {
+                $i.attr('disabled', false);
+            }
+        })
+        .change();
+});
+</script>
 <fieldset class="options">
     <table class="form-table">
     <tr>

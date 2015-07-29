@@ -1,4 +1,26 @@
-<div class="wrap wpml-admin">
+<script>
+jQuery(function ($) {
+    var $wrap = $('.plugin-page');
+
+    // Workaround for saving disabled checkboxes in options db
+    // prepare checkboxes before submit
+    $wrap.find('form').submit(function () {
+        // force value 0 being saved in options
+        $('*[type="checkbox"]:not(:checked)')
+            .css({ 'visibility': 'hidden' })
+            .attr({
+                'value': '0',
+                'checked': 'checked'
+            });
+    });
+
+    // enable submit buttons
+    $wrap.find('*[type="submit"]')
+        .attr('disabled', false)
+        .removeClass('submit'); // remove class to fix button background
+});
+</script>
+<div class="wrap plugin-page">
     <div class="icon32" id="icon-options-custom" style="background:url(<?php echo $plugin->getGlobal('pluginUrl') . '/images/icon-wp-mailto-links.png' ?>) no-repeat 50% 50%"><br></div>
     <h2><?php echo get_admin_page_title() ?> - <em><small><?php $plugin->_e('Manage Email Links') ?></small></em></h2>
 

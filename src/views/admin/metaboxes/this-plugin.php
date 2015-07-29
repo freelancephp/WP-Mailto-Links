@@ -1,3 +1,11 @@
+<script>
+jQuery(function ($) {
+    $('.wpml-help-link').click(function (e) {
+        $('#contextual-help-link').click();
+        e.preventDefault();
+    });
+});
+</script>
 <ul>
     <li><a href="#" class="wpml-help-link"><?php $plugin->_e('Documentation') ?></a></li>
     <li><a href="http://wordpress.org/support/plugin/wp-mailto-links#postform" target="_blank"><?php $plugin->_e('Report a problem') ?></a></li>
