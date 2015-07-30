@@ -10,9 +10,9 @@ License: Dual licensed under the MIT and GPL licenses
 Text Domain: wp-mailto-links
 Domain Path: /languages
 */
-define('WPML_VERSION', '1.6.0');
-define('WPML_MIN_PHP_VERSION', '5.2.4');
-define('WPML_MIN_WP_VERSION', '3.6');
+if (!defined('WPML_VERSION')) { define('WPML_VERSION', '1.6.0'); }
+if (!defined('WPML_MIN_PHP_VERSION')) { define('WPML_MIN_PHP_VERSION', '5.2.4'); }
+if (!defined('WPML_MIN_WP_VERSION')) { define('WPML_MIN_WP_VERSION', '3.6'); }
 
 // includes
 if (!class_exists('WPDev_Plugin')) {
