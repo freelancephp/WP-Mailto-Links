@@ -500,7 +500,6 @@ final class WPML_Front
         if (!function_exists('wpml_mailto')):
             function wpml_mailto($email, $display = null, $attrs = array())
             {
-                global $front;
                 if (is_array($display)) {
                    // backwards compatibility (old params: $display, $attrs = array())
                    $attrs   = $display;
