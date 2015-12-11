@@ -54,28 +54,26 @@ jQuery(function ($) {
 
     $('*[name="wp-mailto-links[mail_icon]"').on('change', function () {
         var value = $(this).val();
-        var $images = $('.icon-images');
-        var $selectDashicons = $('.dashicons');
-        var $selectFontAwesome = $('.fontawesome');
+        var $images = $('.wrap-icon-images');
+        var $selectDashicons = $('.wrap-dashicons');
+        var $selectFontAwesome = $('.wrap-fontawesome');
 
         $images.hide();
         $selectDashicons.hide();
         $selectFontAwesome.hide();
 
-        if ($(this).attr('checked')) {
-            if (value === 'image') {
-                $images.show();
-            }
+        if (value === 'image') {
+            $images.show();
+        }
 
-            if (value === 'dashicons') {
-                $selectDashicons.show();
-            }
+        if (value === 'dashicons') {
+            $selectDashicons.show();
+        }
 
-            if (value === 'fontawesome') {
-                $selectFontAwesome.show();
-            }
+        if (value === 'fontawesome') {
+            $selectFontAwesome.show();
         }
     })
-    .trigger('change');
+    .filter(':checked').change();
 
 });

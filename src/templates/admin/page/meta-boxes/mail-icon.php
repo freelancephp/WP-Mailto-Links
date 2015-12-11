@@ -23,7 +23,7 @@
                     <span class="description"><?php _e('(deprecated)', 'wp-mailto-links') ?></span>
                 </label>
 
-                <div class="icon-images inside">
+                <div class="wrap-icon-images inside">
                     <div style="width:12%;float:left">
                     <?php for ($x = 1; $x <= 25; $x++): ?>
                         <label>
@@ -42,16 +42,17 @@
                     </div>
                     <br class="clear">
                 </div>
-                <br>
 
+                <br>
                 <label>
                     <input type="radio"
                            name="<?php echo $option->getFieldName('mail_icon'); ?>"
                            value="dashicons"
                            <?php checked('dashicons', $option->getValue('mail_icon')); ?>>
                     <span><?php _e('Dashicons', 'wp-mailto-links') ?></span>
+                    <span class="description"><?php _e('(default WordPress icons)', 'wp-mailto-links') ?></span>
                 </label>
-                <div class="inside dashicons">
+                <div class="wrap-dashicons inside">
                     <select class="select-dashicons"
                             name="<?php echo $option->getFieldName('dashicons'); ?>"
                             style="font-family:'dashicons'; font-size:1.5em;">
@@ -66,10 +67,10 @@
                            <?php checked('fontawesome', $option->getValue('mail_icon')); ?>>
                     <span><?php _e('Font Awesome Icons', 'wp-mailto-links') ?></span>
                 </label>
-                <div class="inside fontawesome">
+                <div class="wrap-fontawesome inside">
                     <select class="select-fontawesome" 
                             name="<?php echo $option->getFieldName('fontawesome'); ?>"
-                            style="font-family:'FontAwesome'; font-size:1.5em;">
+                            style="font-family:'FontAwesome'; font-size:1.5em; position:static;">
                     </select>
                 </div>
             </td>
