@@ -90,6 +90,13 @@ final class WPML_FrontSite
                     array('jquery'));
             }
 
+            // add css font icons
+            if ($this->option->getValue('mail_icon') === 'dashicons') {
+                wp_enqueue_style('dashicons');
+            } elseif ($this->option->getValue('mail_icon') === 'fontawesome') {
+                wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+            }
+
             if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
                 add_filter('final_output', array($this, 'filterPage'), 10, 1);
             }
