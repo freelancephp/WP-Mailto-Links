@@ -22,9 +22,9 @@ WPDev_Loader::addPath(__DIR__ . '/classes');
 // start plugin
 WPML::create(array(
     'key'   => 'wp-mailto-links',
-    'FILE'  => __FILE__,
+    'FILE'  => defined('WPML_DEV_FILE') ? constant('WPML_DEV_FILE') : __FILE__,
     'DIR'   => __DIR__,
-    'URL'   => defined('WPML_BASE_URL') ? constant('WPML_BASE_URL') : plugins_url('', __FILE__),
+    'URL'   => defined('WPML_DEV_FILE') ? plugins_url('', constant('WPML_DEV_FILE')) : plugins_url('', __FILE__),
 ));
 
 /*?>*/
