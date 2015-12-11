@@ -4,7 +4,7 @@
             <input type="text"
                    id="class_name"
                    name="<?php echo $option->getFieldName('class_name'); ?>"
-                   value="<?php echo $option->getValue('class_name'); ?>">
+                   value="<?php echo esc_attr($option->getValue('class_name')); ?>">
             <p class="description"><?php _e('Add extra classes to mailto links (or leave blank).', 'wp-mailto-links') ?></p>
         </label>
     </p>

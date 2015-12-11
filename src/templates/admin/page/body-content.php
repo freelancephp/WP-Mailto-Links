@@ -60,7 +60,7 @@
                                    id="protection_text"
                                    name="<?php echo $option->getFieldName('protection_text'); ?>"
                                    class="regular-text"
-                                   value="<?php echo $option->getValue('protection_text'); ?>">
+                                   value="<?php echo esc_attr($option->getValue('protection_text')); ?>">
                             <p class="description"><?php _e('This text will be shown for protected emailaddresses.', 'wp-mailto-links'); ?></p>
                         </label>
                     </td>

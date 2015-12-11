@@ -100,7 +100,7 @@
                            id="no_icon_class"
                            name="<?php echo $option->getFieldName('no_icon_class'); ?>"
                            class="regular-text"
-                           value="<?php echo $option->getValue('no_icon_class'); ?>">
+                           value="<?php echo esc_attr($option->getValue('no_icon_class')); ?>">
                     <p class="description"><?php _e('Use this class when a mailto link should not show an icon.', 'wp-mailto-links') ?></p>
                 </label>
             </td>
