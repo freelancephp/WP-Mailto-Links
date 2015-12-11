@@ -1,22 +1,6 @@
-<script>
-jQuery(function ($) {
-    $('input#filter_body')
-        .change(function () {
-            var $i = $('input#filter_posts, input#filter_comments, input#filter_widgets');
-
-            if ($(this).attr('checked')) {
-                $i.attr('disabled', true)
-                    .attr('checked', true);
-            } else {
-                $i.attr('disabled', false);
-            }
-        })
-        .change();
-});
-</script>
 <div id="post-body-content">
     <div class="stuffbox">
-        <h3><?php _e('Security Settings', 'plugin-example'); ?></h3>
+        <h3><?php _e('Security Settings', 'wp-mailto-links'); ?></h3>
         <div class="inside">
             <fieldset>
                 <table class="form-table">
@@ -122,7 +106,6 @@ jQuery(function ($) {
                     <td colspan="3">
                         <label>
                             <input type="checkbox"
-                                   id="filter_body"
                                    name="<?php echo $option->getFieldName('filter_body'); ?>"
                                    value="1"
                                    <?php checked('1', $option->getValue('filter_body')); ?>>
@@ -133,7 +116,7 @@ jQuery(function ($) {
                         <br>&nbsp;&nbsp;
                         <label>
                             <input type="checkbox"
-                                   id="filter_posts"
+                                   class="filter-body-child"
                                    name="<?php echo $option->getFieldName('filter_posts'); ?>"
                                    value="1"
                                    <?php checked('1', $option->getValue('filter_posts')); ?>>
@@ -142,7 +125,7 @@ jQuery(function ($) {
                         <br>&nbsp;&nbsp;
                         <label>
                             <input type="checkbox"
-                                   id="filter_comments"
+                                   class="filter-body-child"
                                    name="<?php echo $option->getFieldName('filter_comments'); ?>"
                                    value="1"
                                    <?php checked('1', $option->getValue('filter_comments')); ?>>
@@ -151,7 +134,7 @@ jQuery(function ($) {
                         <br>&nbsp;&nbsp;
                         <label>
                             <input type="checkbox"
-                                   id="filter_widgets"
+                                   class="filter-body-child"
                                    name="<?php echo $option->getFieldName('filter_widgets'); ?>"
                                    value="1"
                                    <?php checked('1', $option->getValue('filter_widgets')); ?>>

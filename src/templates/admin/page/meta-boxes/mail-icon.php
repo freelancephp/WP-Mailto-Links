@@ -5,31 +5,32 @@
                 <?php _e('Choose Mail Icon', 'wp-mailto-links'); ?>
             </th>
             <td colspan="3">
-                    <label>
-                        <input type="radio"
-                               name="<?php echo $option->getFieldName('mail_icon'); ?>"
-                               value=""
-                               <?php checked('image', $option->getValue('mail_icon')); ?>>
-                        <span><?php _e('No icon', 'wp-mailto-links') ?></span>
-                    </label>
+                <label>
+                    <input type="radio"
+                           name="<?php echo $option->getFieldName('mail_icon'); ?>"
+                           value=""
+                           <?php checked('', $option->getValue('mail_icon')); ?>>
+                    <span><?php _e('No icon', 'wp-mailto-links') ?></span>
+                </label>
                 <br>
-                    <label>
-                        <input type="radio"
-                               name="<?php echo $option->getFieldName('mail_icon'); ?>"
-                               value="image"
-                               <?php checked('image', $option->getValue('mail_icon')); ?>>
-                        <span><?php _e('Image', 'wp-mailto-links') ?></span>
-                        <span class="description"><?php _e('(deprecated)', 'wp-mailto-links') ?></span>
-                    </label>
+                <br>
+                <label>
+                    <input type="radio"
+                           name="<?php echo $option->getFieldName('mail_icon'); ?>"
+                           value="image"
+                           <?php checked('image', $option->getValue('mail_icon')); ?>>
+                    <span><?php _e('Image', 'wp-mailto-links') ?></span>
+                    <span class="description"><?php _e('(deprecated)', 'wp-mailto-links') ?></span>
+                </label>
 
-                <br class="clear">
+                <div class="icon-images inside">
                     <div style="width:12%;float:left">
                     <?php for ($x = 1; $x <= 25; $x++): ?>
                         <label>
                             <input type="radio"
-                                   name="<?php echo $option->getFieldName('icon'); ?>"
+                                   name="<?php echo $option->getFieldName('image'); ?>"
                                    value="<?php echo $x ?>"
-                                   <?php checked((string) $x, $option->getValue('icon')); ?>>
+                                   <?php checked((string) $x, $option->getValue('image')); ?>>
                             <img src="<?php echo WPML::glob('URL') . '/images/mail-icon-'. $x .'.png' ?>">
                         </label>
                         <br>
@@ -39,43 +40,38 @@
                         <?php endif; ?>
                     <?php endfor; ?>
                     </div>
-                <br class="clear">
+                    <br class="clear">
+                </div>
                 <br>
-                    <label>
-                        <input type="radio"
-                               name="<?php echo $option->getFieldName('mail_icon'); ?>"
-                               value="dashicons"
-                               <?php checked('dashicons', $option->getValue('mail_icon')); ?>>
-                        <span><?php _e('DashIcons', 'wp-mailto-links') ?></span>
-                    </label>
-                    <select style="font-family: 'dashicons'; font-size:1em; padding:0.5em;">
-                        <option>&#xf103</option>
-                        <option>&#xf233</option>
-                        <option>&#xf319</option>
-                        <option>&#xf233</option>
-                        <option>&#xf319</option>
-                        <option>&#xf103</option>
-                        <option>&#xf233</option>
-                        <option>&#xf319</option>
+
+                <label>
+                    <input type="radio"
+                           name="<?php echo $option->getFieldName('mail_icon'); ?>"
+                           value="dashicons"
+                           <?php checked('dashicons', $option->getValue('mail_icon')); ?>>
+                    <span><?php _e('Dashicons', 'wp-mailto-links') ?></span>
+                </label>
+                <div class="inside dashicons">
+                    <select class="select-dashicons"
+                            name="<?php echo $option->getFieldName('dashicons'); ?>"
+                            style="font-family:'dashicons'; font-size:1.5em;">
                     </select>
+                </div>
+
                 <br>
-                    <label>
-                        <input type="radio"
-                               name="<?php echo $option->getFieldName('mail_icon'); ?>"
-                               value="fontawesome"
-                               <?php checked('fontawesome', $option->getValue('mail_icon')); ?>>
-                        <span><?php _e('FontAwesome', 'wp-mailto-links') ?></span>
-                    </label>
-                    <select style="font-family: 'FontAwesome'; font-size:1.5em; padding:0.5em;">
-                        <option>&#xf286</option>
-                        <option>&#xf289</option>
-                        <option>&#xf1b9</option>
-                        <option>&#xf289</option>
-                        <option>&#xf1b9</option>
-                        <option>&#xf286</option>
-                        <option>&#xf289</option>
-                        <option>&#xf1b9</option>
+                <label>
+                    <input type="radio"
+                           name="<?php echo $option->getFieldName('mail_icon'); ?>"
+                           value="fontawesome"
+                           <?php checked('fontawesome', $option->getValue('mail_icon')); ?>>
+                    <span><?php _e('Font Awesome Icons', 'wp-mailto-links') ?></span>
+                </label>
+                <div class="inside fontawesome">
+                    <select class="select-fontawesome" 
+                            name="<?php echo $option->getFieldName('fontawesome'); ?>"
+                            style="font-family:'FontAwesome'; font-size:1.5em;">
                     </select>
+                </div>
             </td>
         </tr>
         <tr>

@@ -25,13 +25,18 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
      */
     public function enqueueScripts()
     {
-//        wp_enqueue_script(
-//            'plugin-example-admin'
-//            , PluginExample::glob('URL') . '/js/admin.js'
-//            , array('jquery')
-//            , false
-//            , true
-//        );
+        wp_enqueue_script(
+            'wp-mailto-links-admin'
+            , WPML::glob('URL') . '/js/src/wp-mailto-links-admin.js'
+            , array('jquery')
+            , false
+            , true
+        );
+
+        wp_enqueue_style(
+            'font-awesome'
+            , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+        );
     }
 
     /**
@@ -62,12 +67,12 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                     'title' => __('Mail Icon', 'wp-mailto-links'),
                     'context' => 'normal',
                  ),
-                'admin' => array(
-                    'title' => __('Admin Settings', 'wp-mailto-links'),
-                    'context' => 'normal',
-                 ),
                 'additional-classes' => array(
                     'title' => __('Additional Classes', 'wp-mailto-links'),
+                    'context' => 'side',
+                 ),
+                'admin' => array(
+                    'title' => __('Admin Menu', 'wp-mailto-links'),
                     'context' => 'side',
                  ),
                 'this-plugin' => array(

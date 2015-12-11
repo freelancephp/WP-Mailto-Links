@@ -2,6 +2,8 @@
 /**
  * Class WPML_Front
  *
+ * @todo Refactor and cleanup
+ *
  * @package  WPML
  * @category WordPress Plugins
  * @author   Victor Villaverde Laan
@@ -84,7 +86,7 @@ final class WPML_FrontSite
             // set js file
             if ($this->option->getValue('protect')) {
                 wp_enqueue_script('wp-mailto-links',
-                    WPML::glob('pluginUrl') . '/js/wp-mailto-links.js',
+                    WPML::glob('URL') . '/js/wp-mailto-links.js',
                     array('jquery'));
             }
 
@@ -131,7 +133,7 @@ final class WPML_FrontSite
      */
     public function filterWpHead()
     {
-        $icon = $this->option->getValue('icon');
+        $icon = $this->option->getValue('image');
         $className = $this->option->getValue('class_name');
 
         // add style to <head>
@@ -362,11 +364,11 @@ final class WPML_FrontSite
         $class_ori = (empty($attrs['class'])) ? '' : $attrs['class'];
 
         // set icon class, unless no-icon class isset or another icon class ('mail-icon-...') is found and display does not contain image
-        if ($this->option->getValue('icon') > 0 && (!$this->option->getValue('no_icon_class')
+        if ($this->option->getValue('image') > 0 && (!$this->option->getValue('no_icon_class')
                 || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE) && strpos($class_ori, 'mail-icon-') === FALSE
                 && !($this->option->getValue('image_no_icon') == 1
                 && (bool) preg_match($this->regexps['image'], $display))) {
-            $icon_class = 'mail-icon-' . $this->option->getValue('icon');
+            $icon_class = 'mail-icon-' . $this->option->getValue('image');
 
             $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
         }
