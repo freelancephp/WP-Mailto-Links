@@ -376,6 +376,7 @@ final class WPML_FrontSite
 //                    && !($this->option->getValue('image_no_icon') == 1) && (bool) preg_match($this->regexps['image'], $display)) {
 //error_log($this->option->getValue('mail_icon'));
 
+            // @todo Fix no-icon and no image
             if ($this->option->getValue('mail_icon') === 'image') {
             // image
                 if ($this->option->getValue('image') > 0 && strpos($class_ori, 'mail-icon-') === FALSE) {
