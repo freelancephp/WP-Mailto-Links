@@ -115,3 +115,5 @@ final class WPML extends WPDev_Plugin
     }
 
 }
+
+/*?>*/

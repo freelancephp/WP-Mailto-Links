@@ -26,7 +26,7 @@ final class WPML_FrontSite
      */
     public function __construct()
     {
-        $this->option = WPML::get('option');
+        $this->option = WPML::glob('option');
 
         // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
         $regexpEmail = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
@@ -84,9 +84,8 @@ final class WPML_FrontSite
             // set js file
             if ($this->option->getValue('protect')) {
                 wp_enqueue_script('wp-mailto-links',
-                    WPML::plugin()->getGlobal('pluginUrl') . '/js/wp-mailto-links.js',
-                    array('jquery'),
-                    WPML_VERSION);
+                    WPML::glob('pluginUrl') . '/js/wp-mailto-links.js',
+                    array('jquery'));
             }
 
             if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
@@ -149,7 +148,7 @@ final class WPML_FrontSite
         // add icon styling
         if ($icon) {
             $padding = ($icon < 19) ? 15 : 17;
-            echo '.mail-icon-' . $icon . ' { background:url(' . WPML::plugin()->getGlobal('pluginUrl') . '/images/mail-icon-' . $icon . '.png) no-repeat 100% 75%; padding-right:' . $padding . 'px; }';
+            echo '.mail-icon-' . $icon . ' { background:url(' . WPML::glob('URL') . '/images/mail-icon-' . $icon . '.png) no-repeat 100% 75%; padding-right:' . $padding . 'px; }';
         }
 
         echo '</style>'."\n";
@@ -312,7 +311,7 @@ final class WPML_FrontSite
     public function filterRss($content)
     {
         $content = $this->replacePlainEmails($content);
-        $content = preg_replace($this->regexps['emailMailto'], 'mailto:'.WPML::plugin()->__($this->option->getValue('protection_text')), $content);
+        $content = preg_replace($this->regexps['emailMailto'], 'mailto:' . __($this->option->getValue('protection_text'), 'wp-mailto-links'), $content);
         return $content;
     }
 
@@ -324,7 +323,7 @@ final class WPML_FrontSite
      */
     public function replacePlainEmails($content, $emailReplacement = null)
     {
-        $emailReplacement = ($emailReplacement === null) ? WPML::plugin()->__($this->option->getValue('protection_text')) : $emailReplacement;
+        $emailReplacement = ($emailReplacement === null) ? __($this->option->getValue('protection_text'), 'wp-mailto-links') : $emailReplacement;
         return preg_replace($this->regexps['emailPlain'], $emailReplacement, $content);
     }
 
@@ -504,16 +503,18 @@ final class WPML_FrontSite
                    $attrs['href'] = 'mailto:'.$email;
                }
 
-               return WPML::plugin()->getGlobal('frontObject')->protectedMailto($display, $attrs);
+               return WPML::glob('frontObject')->protectedMailto($display, $attrs);
             }
         endif;
 
         if (!function_exists('wpml_filter')):
             function wpml_filter($content)
             {
-                return WPML::plugin()->getGlobal('frontObject')->filterContent($content);
+                return WPML::glob('frontObject')->filterContent($content);
             }
         endif;
     }
 
 }
+
+/*?>*/

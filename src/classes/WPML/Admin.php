@@ -58,20 +58,20 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
         // create meta boxes
         new WPDev_Admin_MetaBoxes(
             array(
-                'style' => array(
-                    'title' => __('Style Settings', 'wp-mailto-links'),
+                'mail-icon' => array(
+                    'title' => __('Mail Icon', 'wp-mailto-links'),
                     'context' => 'normal',
                  ),
                 'admin' => array(
                     'title' => __('Admin Settings', 'wp-mailto-links'),
                     'context' => 'normal',
                  ),
-                'this-plugin' => array(
-                    'title' => __('Support', 'wp-mailto-links'),
+                'additional-classes' => array(
+                    'title' => __('Additional Classes', 'wp-mailto-links'),
                     'context' => 'side',
                  ),
-                'mail-icon' => array(
-                    'title' => __('Mail Icon', 'wp-mailto-links'),
+                'this-plugin' => array(
+                    'title' => __('Support', 'wp-mailto-links'),
                     'context' => 'side',
                  ),
 //                'other-plugins' => array(
@@ -117,3 +117,5 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
     }
 
 }
+
+/*?>*/

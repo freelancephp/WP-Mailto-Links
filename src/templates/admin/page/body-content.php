@@ -54,7 +54,7 @@ jQuery(function ($) {
                                    value="1"
                                    <?php checked('1', $option->getValue('convert_emails')); ?>>
                             <span><?php _e('Yes, protect plain emails with protection text *', 'wp-mailto-links') ?></span>
-                            <span class="description"><?php _e('(Recommended)') ?></span>
+                            <span class="description"><?php _e('(Recommended)', 'wp-mailto-links') ?></span>
                         </label>
                         <br>
                         <label>

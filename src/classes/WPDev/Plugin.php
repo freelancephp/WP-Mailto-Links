@@ -30,6 +30,7 @@ abstract class WPDev_Plugin
     public static function create(array $globals = array())
     {
         static::$instance = new static($globals);
+        static::$instance->init();
         return static::$instance;
     }
 
@@ -58,7 +59,6 @@ abstract class WPDev_Plugin
     protected function __construct(array $globals = array())
     {
         $this->globals = array_merge($this->globals, $globals);
-        $this->init();
     }
 
     /**
