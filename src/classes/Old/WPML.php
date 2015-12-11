@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-final class WPML extends WPDev_Plugin
+final class Old_WPML extends Old_WPDev_Plugin
 {
     /**
      * @var \WPML
@@ -16,47 +16,52 @@ final class WPML extends WPDev_Plugin
     protected static $instance = null;
 
     /**
+     * Factory method
+     * @param array $globals  Optional, only on first call
+     */
+    public static function create(array $globals = array())
+    {
+        self::$instance = new self($globals);
+        return self::$instance;
+    }
+
+    /**
+     * @return \WPML
+     */
+    public static function plugin()
+    {
+        return self::$instance;
+    }
+
+    /**
      * Init
      */
     protected function init()
     {
-        // create option and make it global
-        $option = new WPDev_Option($this->getGlobal('key'), array(
-            'mail_icon' => null,
+        // for translations
+        load_plugin_textdomain($this->getGlobal('domain'), false, $this->getGlobal('dir') . '/languages');
 
-            'version' => null,
-            'convert_emails' => 1,
-            'protect' => 1,
-            'filter_body' => 1,
-            'filter_posts' => 1,
-            'filter_comments' => 1,
-            'filter_widgets' => 1,
-            'filter_rss' => 1,
-            'filter_head' => 1,
-            'input_strong_protection' => 0,
-            'protection_text' => '*protected email*',
-            'icon' => 0,
-            'image_no_icon' => 0,
-            'no_icon_class' => 'no-mail-icon',
-            'class_name' => 'mail-link',
-            'widget_logic_filter' => 0,
-            'own_admin_menu' => 0,
-        ));
+        add_action('init', array($this, 'actionInit'), 5);
+    }
 
-        $this->setGlobal('option', $option);
-
-        // delete option from DB on uninstall
-        register_uninstall_hook($this->getGlobal('FILE'), array(__CLASS__, 'uninstall'));
+    /**
+     * WP action callback
+     */
+    public function actionInit()
+    {
+        $option = $this->createOption();
 
         if (is_admin()) {
-            new WPML_Admin();
+            // create admin
+            (new Old_WPML_Admin($option));
         } else {
-            new WPML_FrontSite();
+            // create front
+            (new Old_WPML_Front($option));
         }
     }
 
     /**
-     * @return \WPDev_Option
+     * @return \Old_WPDev_Option
      */
     protected function createOption()
     {
@@ -84,7 +89,7 @@ final class WPML extends WPDev_Plugin
         $optionName = $this->getGlobal('optionName');
 
         // options instance
-        $option = new WPDev_Option($optionGroup, $optionName, $defaultValues);
+        $option = new Old_WPDev_Option($optionGroup, $optionName, $defaultValues);
 
         // check if this is an update
         if ($option->getValue('version') !== WPML_VERSION) {
@@ -99,19 +104,11 @@ final class WPML extends WPDev_Plugin
                 $defaultValues = $oldValues;
 
                 // set new instance with old values as defaults
-                $option = new WPDev_Option($optionGroup, $optionName, $defaultValues);
+                $option = new Old_WPDev_Option($optionGroup, $optionName, $defaultValues);
             }
         }
         
         return $option;
-    }
-
-    /**
-     * Uninstall plugin
-     */
-    public static function uninstall()
-    {
-        $this->getGlobal('option')->delete();
     }
 
 }

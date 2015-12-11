@@ -1,17 +1,19 @@
 <?php
 /**
- * Class WPDev_Filter_FinalOutput
+ * Class Old_WPDev_Filter_FinalOutput
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.2.0
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  *
  * @example
- *      WPDev_Filter_FinalOutput::create();
+ *      if (! Old_WPDev_Filter_FinalOutput::isCreated()) {
+ *          Old_WPDev_Filter_FinalOutput::create('final_output');
+ *      }
  *
  *      add_filter('final_output', 'wp_replace_b_tags', 10, 1);
  *
@@ -21,37 +23,47 @@
  *          return $content;
  *      }
  */
-class WPDev_Filter_FinalOutput
+class Old_WPDev_Filter_FinalOutput
 {
 
     /**
      * Filter name
      * @var string
      */
-    protected $filterName = 'final_output';
+    private $filterName = 'final_output';
 
     /**
-     * @var \WPDev_Filter_FinalOutput
+     * @var \Old_WPDev_Filter_FinalOutput
      */
-    protected static $instance = null;
+    private static $instance = null;
 
     /**
      * Factory method
-     * @return \WPDev_Filter_FinalOutput
+     * @return \Old_WPDev_Filter_FinalOutput
      */
     public static function create()
     {
-        if (self::$instance === null) {
-            self::$instance = new self;
+        if (self::isCreated()) {
+            throw new Exception('Final Output filter already created.');
         }
 
+        self::$instance = new Old_WPDev_Filter_FinalOutput;
         return self::$instance;
+    }
+
+    /**
+     * Check if already instantiated
+     * @return boolean
+     */
+    public static function isCreated()
+    {
+        return (self::$instance !== null);
     }
 
     /**
      * Constructor
      */
-    protected function __construct()
+    private function __construct()
     {
         add_action('wp', array($this, 'bufferStart'), 1);
     }
@@ -72,5 +84,3 @@ class WPDev_Filter_FinalOutput
     }
 
 }
-
-/*?>*/

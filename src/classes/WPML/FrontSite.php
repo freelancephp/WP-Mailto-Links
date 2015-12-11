@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-final class WPML_Front
+final class WPML_FrontSite
 {
     /**
      * Regular expressions
@@ -24,9 +24,9 @@ final class WPML_Front
     /**
      * Constructor
      */
-    public function __construct(WPDev_Option $option)
+    public function __construct()
     {
-        $this->option = $option;
+        $this->option = WPML::get('option');
 
         // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
         $regexpEmail = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
@@ -52,17 +52,13 @@ final class WPML_Front
     {
         if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
             // create FinalOutput filter
-            if (! WPDev_Filter_FinalOutput::isCreated()) {
-                WPDev_Filter_FinalOutput::create();
-            }
+            WPDev_Filter_FinalOutput::create();
         }
 
         if (!$this->option->getValue('filter_body') && $this->option->getValue('filter_widgets')) {
             // create WidgetOutput filter
-            if (! WPDev_Filter_WidgetOutput::isCreated()) {
-                global $wp_registered_widgets; // not very nice but need to get global WP var by reference
-                WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
-            }
+            global $wp_registered_widgets; // not very nice but need to get global WP var by reference
+            WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
         }
     }
 

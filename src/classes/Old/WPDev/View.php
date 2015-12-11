@@ -1,16 +1,16 @@
 <?php
 /**
- * Class WPDev_View
+ * Class Old_WPDev_View
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.2.0
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_View
+class Old_WPDev_View
 {
 
     /**
@@ -30,11 +30,11 @@ class WPDev_View
      * Create view instance (factory method)
      * @param string $file
      * @param array $vars  Optional
-     * @return \WPDev_View
+     * @return \Old_WPDev_View
      */
     public static function create($file, array $vars = array())
     {
-        return new self($file, $vars);
+        return new Old_WPDev_View($file, $vars);
     }
 
     /**
@@ -49,22 +49,13 @@ class WPDev_View
     }
 
     /**
-     * View file exists
-     * @return boolean
-     */
-    public function exists()
-    {
-        return file_exists($this->file);
-    }
-
-    /**
      * Render a view
      * @param string $file
      * @param boolean $show  Optional, default false
      * @return string  Rendered content
      */
     public function render($show = false) {
-        if (!$this->exists()) {
+        if (!file_exists($this->file)) {
             throw new Exception('The file "' . $this->file . '" could not be rendered as view (file does not exist or is not readable).');
         }
 
@@ -91,5 +82,3 @@ class WPDev_View
     }
 
 }
-
-/*?>*/

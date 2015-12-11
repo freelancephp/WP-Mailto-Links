@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPDev_Admin_Page
+ * Class Old_WPDev_Admin_Page
  *
  * Creating an admin options page with a menu item
  *
@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page
+class Old_WPDev_Admin_Page
 {
 
     /**
@@ -222,7 +222,7 @@ class WPDev_Admin_Page
      * @return string
      */
     protected function renderView($file) {
-        return WPDev_View::create($file, $this->settings['viewVars'])->render(false);
+        return Old_WPDev_View::create($file, $this->settings['viewVars'])->render(false);
     }
 
 }

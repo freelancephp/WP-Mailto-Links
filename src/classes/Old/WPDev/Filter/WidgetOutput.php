@@ -1,12 +1,14 @@
 <?php
 /**
- * Class WPDev_Filter_WidgetOutput
+ * Class Old_WPDev_Filter_WidgetOutput
  *
- * Original idea and code taken from the Widget Logic plugin
+ * Original idea taken from the Widget Logic plugin
+ *
+ * @singleton
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.2.0
+ * @version  1.0.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
@@ -14,7 +16,9 @@
  * @license  MIT license
  *
  * @example
- *      WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
+ *      if (! Old_WPDev_Filter_WidgetOutput::isCreated()) {
+ *          Old_WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
+ *      }
  *
  *      add_filter('widget_output', 'wp_replace_b_tags', 10, 1);
  *
@@ -24,44 +28,54 @@
  *          return $content;
  *      }
  */
-class WPDev_Filter_WidgetOutput
+final class Old_WPDev_Filter_WidgetOutput
 {
 
     /**
      * Filter name
      * @var string
      */
-    protected $filterName = 'widget_output';
+    private $filterName = 'widget_output';
 
     /**
      * @var array
      */
-    protected $wpRegisteredWidgets = null;
+    private $wpRegisteredWidgets = null;
 
     /**
-     * @var \WPDev_Filter_WidgetOutput
+     * @var \Old_WPDev_Filter_WidgetOutput
      */
-    protected static $instance = null;
+    private static $instance = null;
 
     /**
      * Factory method
      * @param array &$wpRegisteredWidgets Contains WP global $wp_registered_widgets
-     * @return \WPDev_Filter_WidgetOutput
+     * @return \Old_WPDev_Filter_WidgetOutput
      * @throw Exception
      */
     public static function create(array & $wpRegisteredWidgets)
     {
-        if (self::$instance === null) {
-            self::$instance = new self($wpRegisteredWidgets);
+        if (self::isCreated()) {
+            throw new Exception('Widget Output filter already created.');
         }
 
+        self::$instance = new Old_WPDev_Filter_WidgetOutput($wpRegisteredWidgets);
         return self::$instance;
+    }
+
+    /**
+     * Check if already instantiated
+     * @return boolean
+     */
+    public static function isCreated()
+    {
+        return (self::$instance !== null);
     }
 
     /**
      * @param array &$wpRegisteredWidgets
      */
-    protected function __construct(array & $wpRegisteredWidgets)
+    private function __construct(array & $wpRegisteredWidgets)
     {
         $this->wpRegisteredWidgets = & $wpRegisteredWidgets;
 
@@ -106,5 +120,3 @@ class WPDev_Filter_WidgetOutput
     }
 
 }
-
-/*?>*/
