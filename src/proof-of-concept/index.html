@@ -4,103 +4,107 @@
 <title>Proof of Concept</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel='stylesheet' id='dashicons-css'  href='http://localhost/wp/wp-latest/wp-includes/css/dashicons.css?ver=4.3.1' type='text/css' media='all'>
+<script type='text/javascript' src='http://localhost/wp/wp-latest/wp-includes/js/jquery/jquery.js?ver=1.11.3'></script>
+<script>
+jQuery(function ($) {
+
+    var $resultFA = $('.ajax-result-fa');
+    $resultFA.hide()
+        .load('fontawesome.html', null, function (data) {
+            readFAIcons();
+        });
+
+    var $resultDash = $('.ajax-result-dash');
+    $resultDash.hide()
+        .load('dashicons.html', null, function (data) {
+            readDashIcons();
+        });
+
+    function readFAIcons()
+    {
+        var $select = $('.select-fa-icon');
+        var obj = {
+            icons: [
+
+            ]
+        };
+
+        $resultFA.find('i.fa').each(function () {
+            $parent = $(this).parent();
+
+            // unicode
+            var text = '\\u'+ $(this).text();
+
+            // class
+            $parent.children().remove();
+            var value = $parent.text();
+
+            $('<option value="'+ value +'">'+ text.replace('\\u', '&#x') +'</option>')
+                .appendTo($select)
+            ;
+
+            obj.icons.push({
+                'unicode': $.trim(text),
+                'css': $.trim(value)
+            });
+        });
+
+        $('.output-fa').html(JSON.stringify(obj));
+    }
+
+    function readDashIcons()
+    {
+        var $select = $('.select-dash-icon');
+        var obj = {
+            icons: [
+
+            ]
+        };
+
+        $resultDash.find('div.dashicons').each(function () {
+            // unicode
+            var text = '\\u'+ $(this).attr('alt');
+
+            // class
+            var value = $(this).text();
+
+            $('<option value="'+ value +'">'+ text.replace('\\u', '&#x') +'</option>')
+                .appendTo($select)
+            ;
+
+            obj.icons.push({
+                'unicode': $.trim(text),
+                'css': $.trim(value)
+            });
+        });
+
+        $('.output-dash').html(JSON.stringify(obj));
+    }
+
+});
+</script>
 </head>
 <body>
+    <h2>Font Awesome</h2>
+<textarea class="output-fa" style="width:50%; height:200px;">
+</textarea>
+<div class="ajax-result-fa"></div>
+<p>
+    <select class="select-fa-icon" style="font-family: 'FontAwesome'; font-size:1.5em; padding:0.5em;">
+    </select>
+</p>
+
+    <h2>DashIcons</h2>
+<textarea class="output-dash" style="width:50%; height:200px;">
+</textarea>
+<div class="ajax-result-dash"></div>
+<p>
+    <select class="select-dash-icon" style="font-family: 'dashicons'; font-size:1.5em; padding:0.5em;">
+    </select>
+</p>
+
+<h2>Tests</h2>
 <p>My post <a href="mailto:test@test.nl" class=""><i class="fa fa-fort-awesome"></i> email</a> content goes here.</p>
 <p>My post <a href="mailto:test@test.nl" class=""><i class="dashicons-before dashicons-testimonial"></i> email</a> content goes here.</p>
-<p>
-    <select style="font-family: 'FontAwesome'; font-size:1.5em; padding:0.5em;">
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-        <option>&#xf286</option>
-        <option>&#xf289</option>
-        <option>&#xf1b9</option>
-    </select>
-</p>
-<p>
-    <select style="font-family: 'dashicons'; font-size:1.5em; padding:0.5em;">
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-        <option>&#xf103</option>
-        <option>&#xf233</option>
-        <option>&#xf319</option>
-    </select>
-</p>
 </body>
 </html>
