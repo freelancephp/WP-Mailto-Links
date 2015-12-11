@@ -53,12 +53,12 @@ final class WPML_FrontSite
     protected function createCustomFilterHooks()
     {
         if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
-            // create FinalOutput filter
+            // final_output filter
             WPDev_Filter_FinalOutput::create();
         }
 
         if (!$this->option->getValue('filter_body') && $this->option->getValue('filter_widgets')) {
-            // create WidgetOutput filter
+            // widget_output filter
             global $wp_registered_widgets; // not very nice but need to get global WP var by reference
             WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
         }
@@ -363,15 +363,37 @@ final class WPML_FrontSite
         $email     = '';
         $class_ori = (empty($attrs['class'])) ? '' : $attrs['class'];
 
-        // set icon class, unless no-icon class isset or another icon class ('mail-icon-...') is found and display does not contain image
-        if ($this->option->getValue('image') > 0 && (!$this->option->getValue('no_icon_class')
-                || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE) && strpos($class_ori, 'mail-icon-') === FALSE
-                && !($this->option->getValue('image_no_icon') == 1
-                && (bool) preg_match($this->regexps['image'], $display))) {
-            $icon_class = 'mail-icon-' . $this->option->getValue('image');
 
-            $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
-        }
+        // does not contain no-icon class and no icon when contains <img>
+//        if (!$this->option->getValue('no_icon_class') || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE
+//                    && !($this->option->getValue('image_no_icon') == 1) && (bool) preg_match($this->regexps['image'], $display)) {
+//error_log($this->option->getValue('mail_icon'));
+
+            if ($this->option->getValue('mail_icon') === 'image') {
+            // image
+                if ($this->option->getValue('image') > 0 && strpos($class_ori, 'mail-icon-') === FALSE) {
+                    $icon_class = 'mail-icon-' . $this->option->getValue('image');
+
+                    $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
+                }
+            } elseif ($this->option->getValue('mail_icon') === 'dashicons') {
+            // dashicons
+                $fontIcon = ' <i class="dashicons-before ' . $this->option->getValue('dashicons') . '"></i>';
+            } elseif ($this->option->getValue('mail_icon') === 'fontawesome') {
+            // fontawesome
+                $fontIcon = ' <i class="fa ' . $this->option->getValue('fontawesome') . '"></i>';
+            }
+//        }
+
+//        // set icon class, unless no-icon class isset or another icon class ('mail-icon-...') is found and display does not contain image
+//        if ($this->option->getValue('image') > 0 && (!$this->option->getValue('no_icon_class')
+//                || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE) && strpos($class_ori, 'mail-icon-') === FALSE
+//                && !($this->option->getValue('image_no_icon') == 1
+//                && (bool) preg_match($this->regexps['image'], $display))) {
+//            $icon_class = 'mail-icon-' . $this->option->getValue('image');
+//
+//            $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
+//        }
 
         // set user-defined class
         if ($this->option->getValue('class_name') && strpos($class_ori, $this->option->getValue('class_name')) === FALSE) {
@@ -406,6 +428,11 @@ final class WPML_FrontSite
 
         $link .= '>';
         $link .= ($this->option->getValue('protect') && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
+
+        if (!empty($fontIcon)) {
+            $link .= $fontIcon;
+        }
+
         $link .= '</a>';
 
         // filter
