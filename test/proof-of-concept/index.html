@@ -50,13 +50,13 @@ jQuery(function ($) {
             $parent = $(this).parent();
 
             // unicode
-            var text = '\\u'+ $(this).text();
+            var text = $(this).text();
 
             // class
             $parent.children().remove();
             var value = $parent.text();
 
-            $('<option value="'+ value +'">'+ text.replace('\\u', '&#x') +'</option>')
+            $('<option value="'+ value +'">&#x'+ text +'</option>')
                 .appendTo($select)
             ;
 
@@ -74,13 +74,13 @@ jQuery(function ($) {
 
         $resultDash.find('div.dashicons').each(function () {
             // unicode
-            var text = '\\u'+ $(this).attr('alt');
+            var text = $(this).attr('alt');
 
             // class
             $(this).removeClass('dashicons');
             var value = $(this).attr('class');
 
-            $('<option value="'+ value +'">'+ text.replace('\\u', '&#x') +'</option>')
+            $('<option value="'+ value +'">&#x'+ text +'</option>')
                 .appendTo($select)
             ;
 
