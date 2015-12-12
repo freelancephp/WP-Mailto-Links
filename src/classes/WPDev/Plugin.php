@@ -14,6 +14,7 @@ abstract class WPDev_Plugin
 {
 
     /**
+     * This property should also be included in child classes to prevent conflicts
      * @var \WPDev_Plugin
      */
     protected static $instance = null;

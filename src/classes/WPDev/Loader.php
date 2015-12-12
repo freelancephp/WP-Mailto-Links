@@ -34,9 +34,6 @@ class WPDev_Loader
 
         self::$registered = true;
 
-        // add path for WPDev classes
-        self::$paths[] = realpath(dirname(__DIR__));
-
         spl_autoload_register(array(__CLASS__, 'loadClass'));
     }
 

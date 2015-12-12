@@ -54,15 +54,13 @@ class WPDev_Test_MockFunction
             if (!key_exists($funcName, self::$functionMocks)) {
                 throw new Exception('Function already exists and therefore could not be mocked.');
             }
-
-            $mock = self::$functionMocks[$funcName];
-            $mock->clearCalls();
         } else {
         // create mock
             eval('function ' . $funcName . '(){ return ' . __CLASS__ . '::_registerCall(__FUNCTION__, func_get_args()); }');
-            $mock = new self($funcName);
-            self::$functionMocks[$funcName] = $mock;
         }
+
+        $mock = new self($funcName);
+        self::$functionMocks[$funcName] = $mock;
 
         return $mock;
     }
@@ -85,16 +83,6 @@ class WPDev_Test_MockFunction
     public static function getAllMocks()
     {
         return self::$functionMocks;
-    }
-
-    /**
-     * Clear all created mocks
-     */
-    public static function clearAllMocks()
-    {
-        foreach (self::$functionMocks as $mockFunction) {
-            $mockFunction->clearCalls();
-        }
     }
 
     /**
@@ -155,14 +143,6 @@ class WPDev_Test_MockFunction
 
         $index = $callNumber - 1;
         return $this->calls[$index];
-    }
-
-    /**
-     * Clear all made calls
-     */
-    protected function clearCalls()
-    {
-        $this->calls = array();
     }
 
 }

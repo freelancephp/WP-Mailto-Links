@@ -20,7 +20,10 @@ class WPDev_Admin_HelpTabs
      * @var array
      */
     protected $settings = array(
-        'adminPage'       => null, // instanceof WPDev_Admin_Page_Interface
+        // adminPage should be a pageHook name or an instanceof WPDev_Admin_Page_Interface
+        // when true helptabs will be shown on all admin pages
+        // else will never be shown
+        'adminPage'       => null,
         'templatesPath'   => '',
         'templateVars'    => array(),
         'templateFileExt' => '.php',

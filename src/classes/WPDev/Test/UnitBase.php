@@ -29,16 +29,4 @@ class WPDev_Test_UnitBase extends PHPUnit_Framework_TestCase
         return WPDev_Test_MockFunction::getMock($funcName);
     }
 
-    /**
-     * On end of each test
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        if (class_exists('WPDev_Test_MockFunction')) {
-            WPDev_Test_MockFunction::clearAllMocks();
-        }
-    }
-
 }
