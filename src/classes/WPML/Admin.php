@@ -27,7 +27,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
     {
         wp_enqueue_script(
             'wp-mailto-links-admin'
-            , WPML::glob('URL') . '/js/src/wp-mailto-links-admin.js'
+            , WPML::glob('URL') . '/js/wp-mailto-links-admin.js'
             , array('jquery')
             , false
             , true

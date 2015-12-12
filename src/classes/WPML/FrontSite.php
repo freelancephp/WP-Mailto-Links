@@ -255,7 +255,7 @@ final class WPML_FrontSite
         // get mailto links
         $filtered = preg_replace_callback($this->regexps['mailtoLink'], array($this, 'pregReplaceMailto'), $filtered);
 
-        // convert plain emails
+        // convert plain emails (only when mailto links protection on)
         if ($this->option->getValue('convert_emails') == 1) {
             // protect plain emails
             $filtered = $this->replacePlainEmails($filtered);
@@ -263,7 +263,7 @@ final class WPML_FrontSite
             // make mailto links from plain emails
             $filtered = preg_replace_callback($this->regexps['emailPlain'], array($this, 'pregReplacePlainEmail'), $filtered);
         }
-
+ 
         // when no filtered content
         if (!$filtered || strlen(trim($filtered)) === 0) {
             return $content;
