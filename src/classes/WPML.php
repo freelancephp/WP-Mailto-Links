@@ -10,7 +10,9 @@
  */
 final class WPML extends WPDev_Plugin
 {
+
     /**
+     * This property should also be included in child classes to prevent conflicts
      * @var \WPML
      */
     protected static $instance = null;
@@ -36,6 +38,7 @@ final class WPML extends WPDev_Plugin
             'image'              => 1,  // new
             'dashicons'         => '',  // new
             'fontawesome'       => '',  // new
+            'show_icon_before'  => 0,   // new
             'image_no_icon'     => 0,
             'no_icon_class'     => 'no-mail-icon',
             'class_name'        => 'mail-link',

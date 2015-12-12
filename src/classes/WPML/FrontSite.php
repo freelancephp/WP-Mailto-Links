@@ -94,7 +94,12 @@ final class WPML_FrontSite
             if ($this->option->getValue('mail_icon') === 'dashicons') {
                 wp_enqueue_style('dashicons');
             } elseif ($this->option->getValue('mail_icon') === 'fontawesome') {
-                wp_enqueue_style('fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+                wp_enqueue_style(
+                    'font-awesome'
+                    , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+                    , array()
+                    , null // use caching CDN file
+                );
             }
 
             if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
@@ -142,6 +147,7 @@ final class WPML_FrontSite
     {
         $icon = $this->option->getValue('image');
         $className = $this->option->getValue('class_name');
+        $showBefore = $this->option->getValue('show_icon_before');
 
         // add style to <head>
         echo '<style type="text/css" media="all">'."\n";
@@ -156,8 +162,14 @@ final class WPML_FrontSite
 
         // add icon styling
         if ($icon) {
-            $padding = ($icon < 19) ? 15 : 17;
-            echo '.mail-icon-' . $icon . ' { background:url(' . WPML::glob('URL') . '/images/mail-icon-' . $icon . '.png) no-repeat 100% 75%; padding-right:' . $padding . 'px; }';
+            echo '.mail-icon-' . $icon . ' {';
+            echo 'background:url(' . WPML::glob('URL') . '/images/mail-icon-' . $icon . '.png) no-repeat ';
+            if ($showBefore) {
+                echo '0% 50%; padding-left:18px;';
+            } else {
+                echo '100% 50%; padding-right:18px;';
+            }
+            echo '}';
         }
 
         echo '</style>'."\n";
@@ -372,11 +384,8 @@ final class WPML_FrontSite
 
 
         // does not contain no-icon class and no icon when contains <img>
-//        if (!$this->option->getValue('no_icon_class') || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE
-//                    && !($this->option->getValue('image_no_icon') == 1) && (bool) preg_match($this->regexps['image'], $display)) {
-//error_log($this->option->getValue('mail_icon'));
-
-            // @todo Fix no-icon and no image
+        if ((!$this->option->getValue('no_icon_class') || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE)
+                    && !($this->option->getValue('image_no_icon') == 1 && (bool) preg_match($this->regexps['image'], $display))) {
             if ($this->option->getValue('mail_icon') === 'image') {
             // image
                 if ($this->option->getValue('image') > 0 && strpos($class_ori, 'mail-icon-') === FALSE) {
@@ -386,22 +395,12 @@ final class WPML_FrontSite
                 }
             } elseif ($this->option->getValue('mail_icon') === 'dashicons') {
             // dashicons
-                $fontIcon = ' <i class="dashicons-before ' . $this->option->getValue('dashicons') . '"></i>';
+                $fontIcon = '<i class="dashicons-before ' . $this->option->getValue('dashicons') . '"></i>';
             } elseif ($this->option->getValue('mail_icon') === 'fontawesome') {
             // fontawesome
-                $fontIcon = ' <i class="fa ' . $this->option->getValue('fontawesome') . '"></i>';
+                $fontIcon = '<i class="fa ' . $this->option->getValue('fontawesome') . '"></i>';
             }
-//        }
-
-//        // set icon class, unless no-icon class isset or another icon class ('mail-icon-...') is found and display does not contain image
-//        if ($this->option->getValue('image') > 0 && (!$this->option->getValue('no_icon_class')
-//                || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE) && strpos($class_ori, 'mail-icon-') === FALSE
-//                && !($this->option->getValue('image_no_icon') == 1
-//                && (bool) preg_match($this->regexps['image'], $display))) {
-//            $icon_class = 'mail-icon-' . $this->option->getValue('image');
-//
-//            $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
-//        }
+        }
 
         // set user-defined class
         if ($this->option->getValue('class_name') && strpos($class_ori, $this->option->getValue('class_name')) === FALSE) {
@@ -435,10 +434,15 @@ final class WPML_FrontSite
         $link = substr($link, 0, -1);
 
         $link .= '>';
+
+        if (!empty($fontIcon) && $this->option->getValue('show_icon_before')) {
+            $link .= $fontIcon . ' ';
+        }
+
         $link .= ($this->option->getValue('protect') && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
 
-        if (!empty($fontIcon)) {
-            $link .= $fontIcon;
+        if (!empty($fontIcon) && !$this->option->getValue('show_icon_before')) {
+            $link .= ' ' . $fontIcon;
         }
 
         $link .= '</a>';

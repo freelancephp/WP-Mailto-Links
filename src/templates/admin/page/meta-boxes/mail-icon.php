@@ -81,6 +81,21 @@
         </tr>
         <tr>
             <th scope="row">
+                <?php _e('Show icon left side', 'wp-mailto-links'); ?>
+            </th>
+            <td colspan="3">
+                <label>
+                    <input type="checkbox"
+                           id="show_icon_before"
+                           name="<?php echo $option->getFieldName('show_icon_before'); ?>"
+                           value="1"
+                           <?php checked('1', $option->getValue('show_icon_before')); ?>>
+                    <span><?php _e('Show icon in front of the text (on the left side), ', 'wp-mailto-links') ?></span>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
                 <?php _e('Skip icon containing <code>&lt;img&gt;</code>', 'wp-mailto-links'); ?>
             </th>
             <td colspan="3">
