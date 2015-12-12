@@ -46,13 +46,14 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
     {
         $templatesBasePath = WPML::glob('DIR') . '/templates/admin/page';
         $globals = WPML::plugin()->getAllGlobals();
+        $mainMenu = (bool) WPML::glob('option')->getValue('own_admin_menu');
 
         // create page
         $adminPage = new WPDev_Admin_Page_MetaBox(array(
             'id'              => $globals['key'] . '-option-page',
             'title'           => __('WP Mailto Links', 'wp-mailto-links'),
             'menuTitle'       => __('Mailto Links', 'wp-mailto-links'),
-            'parentSlug'      => null,
+            'parentSlug'      => $mainMenu ? null : 'options-general.php',
             'iconUrl'         => 'dashicons-email',
             'defaultColumns'  => 2,
             'maxColumns'      => 2,
