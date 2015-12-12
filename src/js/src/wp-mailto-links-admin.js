@@ -12,7 +12,7 @@ jQuery(function ($) {
             .css({
                 'visibility': 'hidden'
             })
-            .attr({
+            .prop({
                 'value': '0',
                 'checked': 'checked'
             });
@@ -21,10 +21,14 @@ jQuery(function ($) {
     // fill dashicons  select options
     $.get(wpmlSettings.pluginUrl + '/data/json/fontawesome.json', null, function (data) {
         var $select = $('.select-fontawesome');
-        fillSelect($select, data['icons'], 'unicode', 'className');
+
+        // create select options
+        fillSelect($select, data.icons, 'unicode', 'className');
+
+        // select saved value
         $select.find('option').each(function () {
             if (this.value === wpmlSettings.fontawesomeValue) {
-                $(this).attr('selected', true);
+                $(this).prop('selected', true);
             }
         });
     });
@@ -32,11 +36,14 @@ jQuery(function ($) {
     // fill fontawesome select options
     $.get(wpmlSettings.pluginUrl + '/data/json/dashicons.json', null, function (data) {
         var $select = $('.select-dashicons');
-        fillSelect($select, data['icons'], 'unicode', 'className');
-        $select.val(wpmlSettings.dashiconsValue);
+
+        // create select options
+        fillSelect($select, data.icons, 'unicode', 'className');
+
+        // select saved value
         $select.find('option').each(function () {
             if (this.value === wpmlSettings.dashiconsValue) {
-                $(this).attr('selected', true);
+                $(this).prop('selected', true);
             }
         });
     });
@@ -52,20 +59,21 @@ jQuery(function ($) {
     }
 
     // filter body + childs
-    $('*[name="wp-mailto-links[filter_body]').on('change', function () {
+    $('*[name="wp-mailto-links[filter_body]"]').on('change', function () {
         var $fields = $('.filter-body-child');
 
-        if ($(this).attr('checked')) {
-            $fields.attr('disabled', true);
-            $fields.attr('checked', true);
+        if ($(this).prop('checked')) {
+            $fields.prop('disabled', true);
+            $fields.prop('checked', true);
         } else {
-            $fields.attr('disabled', false);
+            $fields.prop('disabled', false);
         }
     })
+    // trigger immediatly
     .trigger('change');
 
     // mail icon
-    $('*[name="wp-mailto-links[mail_icon]"').on('change', function () {
+    $('body').on('change', '*[name="wp-mailto-links[mail_icon]"]', function () {
         var value = $(this).val();
         var $images = $('.wrap-icon-images');
         var $selectDashicons = $('.wrap-dashicons');
@@ -77,16 +85,13 @@ jQuery(function ($) {
 
         if (value === 'image') {
             $images.show();
-        }
-
-        if (value === 'dashicons') {
+        } else if (value === 'dashicons') {
             $selectDashicons.show();
-        }
-
-        if (value === 'fontawesome') {
+        } else if (value === 'fontawesome') {
             $selectFontAwesome.show();
         }
-    })
-    .filter(':checked').change();
+    });
+    // trigger immediatly
+    $('*[name="wp-mailto-links[mail_icon]"]:checked').change();
 
 });
