@@ -18,12 +18,12 @@ jQuery(function ($) {
     });
 
     // get dashicons and fontawesome
-    $.get(userSettings.url + 'wp-content/plugins/wp-mailto-links/data/json/font-awesome.json', null, function (data) {
+    $.get(userSettings.url + 'wp-content/plugins/wp-mailto-links/data/json/fontawesome.json', null, function (data) {
         var $select = $('.select-fontawesome');
         fillSelect($select, data['icons'], 'unicode', 'className');
     });
 
-    $.get(userSettings.url + 'wp-content/plugins/wp-mailto-links/data/json/dash-icons.json', null, function (data) {
+    $.get(userSettings.url + 'wp-content/plugins/wp-mailto-links/data/json/dashicons.json', null, function (data) {
         var $select = $('.select-dashicons');
         fillSelect($select, data['icons'], 'unicode', 'className');
     });
@@ -32,9 +32,9 @@ jQuery(function ($) {
     {
         $.each(list, function (index, item) {
             var value = item[keyValue];
-            var text = item[keyText].replace('\\u', '&#x');
+            var text = item[keyText];
 
-            $select.append('<option value="'+ value +'">'+ text +'</option>');
+            $select.append('<option value="'+ value +'">&#x'+ text +'</option>');
         });
     }
 
