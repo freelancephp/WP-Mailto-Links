@@ -32,10 +32,17 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
             , false
             , true
         );
+        wp_localize_script('wp-mailto-links-admin', 'wpmlSettings', array(
+            'pluginUrl' => WPML::glob('URL'),
+            'dashiconsValue' => WPML::glob('option')->getValue('dashicons'),
+            'fontawesomeValue' => WPML::glob('option')->getValue('fontawesome'),
+        ));
 
         wp_enqueue_style(
             'font-awesome'
             , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+            , array()
+            , null
         );
     }
 

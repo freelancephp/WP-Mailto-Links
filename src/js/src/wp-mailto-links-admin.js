@@ -1,4 +1,5 @@
 /* WP Mailto Links Admin */
+/*global jQuery, wpmlSettings*/
 jQuery(function ($) {
 
     'use strict';
@@ -17,19 +18,31 @@ jQuery(function ($) {
             });
     });
 
-    // get dashicons and fontawesome
-    $.get(userSettings.url + 'wp-content/plugins/wp-mailto-links/data/json/fontawesome.json', null, function (data) {
+    // fill dashicons  select options
+    $.get(wpmlSettings.pluginUrl + '/data/json/fontawesome.json', null, function (data) {
         var $select = $('.select-fontawesome');
         fillSelect($select, data['icons'], 'unicode', 'className');
+        $select.find('option').each(function () {
+            if (this.value === wpmlSettings.fontawesomeValue) {
+                $(this).attr('selected', true);
+            }
+        });
     });
 
-    $.get(userSettings.url + 'wp-content/plugins/wp-mailto-links/data/json/dashicons.json', null, function (data) {
+    // fill fontawesome select options
+    $.get(wpmlSettings.pluginUrl + '/data/json/dashicons.json', null, function (data) {
         var $select = $('.select-dashicons');
         fillSelect($select, data['icons'], 'unicode', 'className');
+        $select.val(wpmlSettings.dashiconsValue);
+        $select.find('option').each(function () {
+            if (this.value === wpmlSettings.dashiconsValue) {
+                $(this).attr('selected', true);
+            }
+        });
     });
 
-    function fillSelect($select, list, keyText, keyValue)
-    {
+    // fill select helper function
+    function fillSelect($select, list, keyText, keyValue) {
         $.each(list, function (index, item) {
             var value = item[keyValue];
             var text = item[keyText];
@@ -38,7 +51,7 @@ jQuery(function ($) {
         });
     }
 
-
+    // filter body + childs
     $('*[name="wp-mailto-links[filter_body]').on('change', function () {
         var $fields = $('.filter-body-child');
 
@@ -51,7 +64,7 @@ jQuery(function ($) {
     })
     .trigger('change');
 
-
+    // mail icon
     $('*[name="wp-mailto-links[mail_icon]"').on('change', function () {
         var value = $(this).val();
         var $images = $('.wrap-icon-images');
