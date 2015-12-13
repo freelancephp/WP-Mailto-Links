@@ -131,6 +131,16 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 
 == Changelog ==
 
+= 2.0.0 =
+ * Needs PHP version 5.3+
+ * Complete refactor
+ * Added Font Awesome Icons and Dashicons
+ * Added security check for admin users
+ * Added "wpml_filter_content" template tag
+ * Deprecated "wpml_ready" action
+ * Deprecated "wpml_mailto" filter
+ * Deprecated "wpml_filter" template tag (use instead "wpml_filter_content")
+
 = 1.6.0 =
 * Added option strong protection for emails in input fields
 * JavaScript depends on jQuery
