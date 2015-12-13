@@ -10,62 +10,67 @@
  */
 final class WPML extends WPDev_Plugin
 {
+
     /**
+     * This property should also be included in child classes to prevent conflicts
      * @var \WPML
      */
     protected static $instance = null;
-
-    /**
-     * Factory method
-     * @param array $globals  Optional, only on first call
-     */
-    public static function create(array $globals = array())
-    {
-        self::$instance = new WPML($globals);
-        return self::$instance;
-    }
-
-    /**
-     * @return \WPML
-     */
-    public static function plugin()
-    {
-        return self::$instance;
-    }
 
     /**
      * Init
      */
     protected function init()
     {
-        // for translations
-        load_plugin_textdomain($this->getGlobal('domain'), false, $this->getGlobal('dir') . '/languages');
+        // create option and make it global
+        $option = new WPDev_Option($this->getGlobal('key'), array(
+            'protect'           => 1,
+            'convert_emails'    => 1,
+            'filter_body'       => 1,
+            'filter_posts'      => 1,
+            'filter_comments'   => 1,
+            'filter_widgets'    => 1,
+            'filter_rss'        => 1,
+            'filter_head'       => 1,
+            'input_strong_protection' => 0,
+            'protection_text'   => '*protected email*',
+            'mail_icon'         => '',  // type
+            'image'              => 1,  // new
+            'dashicons'         => '',  // new
+            'fontawesome'       => '',  // new
+            'show_icon_before'  => 0,   // new
+            'image_no_icon'     => 0,
+            'no_icon_class'     => 'no-mail-icon',
+            'class_name'        => 'mail-link',
+            'security_check'    => 1,
+            'own_admin_menu'    => 1,
+        ));
 
-        add_action('init', array($this, 'actionInit'), 5);
-    }
+        $this->setGlobal('option', $option);
 
-    /**
-     * WP action callback
-     */
-    public function actionInit()
-    {
-        $option = $this->createOption();
+        // activation also after upgrade
+        register_activation_hook($this->getGlobal('FILE'), array(__CLASS__, 'upgrade'));
 
+        // delete option from DB on uninstall
+        register_uninstall_hook($this->getGlobal('FILE'), array(__CLASS__, 'uninstall'));
+
+        // load admin or front site
         if (is_admin()) {
-            // create admin
-            (new WPML_Admin($option));
+            new WPML_Admin();
         } else {
-            // create front
-            (new WPML_Front($option));
+            new WPML_FrontSite();
         }
     }
 
     /**
-     * @return \WPDev_Option
+     * Upgrade procedure
+     * Convert old to new option values
      */
-    protected function createOption()
+    public static function upgrade()
     {
-        $defaultValues = array(
+        $option = self::glob('option');
+
+        $defaultOldValues = array(
             'version' => null,
             'convert_emails' => 1,
             'protect' => 1,
@@ -85,30 +90,42 @@ final class WPML extends WPDev_Plugin
             'own_admin_menu' => 0,
         );
 
-        $optionGroup = $this->getGlobal('key');
-        $optionName = $this->getGlobal('optionName');
+        // get old option name "WP_Mailto_Links_options"
+        $oldOption = new WPDev_Option('WP_Mailto_Links_options', $defaultOldValues);
+        $oldValues = $oldOption->getValues();
 
-        // options instance
-        $option = new WPDev_Option($optionGroup, $optionName, $defaultValues);
+        if (!empty($oldValues)) {
+            foreach ($oldValues as $key => $oldValue) {
+                // take old value
+                if ($key === 'icon') {
+                    // old 'icon' contained the image number
+                    // new 'mail_icon' contains type (image, dashicons, fontawesome)
+                    $newValue = empty($oldValue) ? '' : 'image';
+                    $option->setValue('mail_icon', $newValue, false);
 
-        // check if this is an update
-        if ($option->getValue('version') !== WPML_VERSION) {
-            // update version
-            $option->setValue('version', WPML_VERSION);
-            $option->save();
-
-            // check for old values of 1.x version
-            $oldValues = get_option('WP_Mailto_Links_options');
-
-            if ($oldValues) {
-                $defaultValues = $oldValues;
-
-                // set new instance with old values as defaults
-                $option = new WPDev_Option($optionGroup, $optionName, $defaultValues);
+                    // mail_icon === 'image' ---> 'image' contains number
+                    if (!empty($oldValue)) {
+                        $option->setValue('image', $oldValue, false);
+                    }
+                } else {
+                    $option->setValue($key, $oldValue, false);
+                }
             }
+
+            $option->update();
+            $oldOption->delete();
         }
-        
-        return $option;
+    }
+
+    /**
+     * Uninstall plugin
+     */
+    public static function uninstall()
+    {
+        // remove option values
+        $this->getGlobal('option')->delete();
     }
 
 }
+
+/*?>*/

@@ -4,7 +4,7 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  1.0.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
@@ -34,7 +34,7 @@ class WPDev_View
      */
     public static function create($file, array $vars = array())
     {
-        return new WPDev_View($file, $vars);
+        return new self($file, $vars);
     }
 
     /**
@@ -49,13 +49,22 @@ class WPDev_View
     }
 
     /**
+     * View file exists
+     * @return boolean
+     */
+    public function exists()
+    {
+        return file_exists($this->file);
+    }
+
+    /**
      * Render a view
      * @param string $file
      * @param boolean $show  Optional, default false
      * @return string  Rendered content
      */
     public function render($show = false) {
-        if (!file_exists($this->file)) {
+        if (!$this->exists()) {
             throw new Exception('The file "' . $this->file . '" could not be rendered as view (file does not exist or is not readable).');
         }
 
@@ -82,3 +91,5 @@ class WPDev_View
     }
 
 }
+
+/*?>*/

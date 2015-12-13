@@ -3,8 +3,8 @@
  * Class WPDev_Plugin
  *
  * @package  WPDev
- * @category WordPress Plugins
- * @version  1.0.0
+ * @category WordPress Library
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
@@ -14,67 +14,64 @@ abstract class WPDev_Plugin
 {
 
     /**
+     * This property should also be included in child classes to prevent conflicts
+     * @var \WPDev_Plugin
+     */
+    protected static $instance = null;
+
+    /**
      * @var array
      */
-    protected $globals = array(
-        'key' => null,
-        'domain' => null,
-        'optionName' => null,
-        'adminPage' => null,
-        'file' => null,
-        'dir' => null,
-        'pluginUrl' => null,
-    );
+    protected $globals = array();
 
     /**
+     * Factory method
      * @param array $globals  Optional, only on first call
      */
-    public function __construct(array $globals = array())
+    public static function create(array $globals = array())
     {
-        spl_autoload_register(array($this, 'autoload'));
-
-        $this->setGlobals($globals);
-        $this->init();
+        static::$instance = new static($globals);
+        static::$instance->init();
+        return static::$instance;
     }
 
     /**
-     * @param array $globals
+     * @return \WPDev_Plugin
      */
-    protected function setGlobals(array $globals)
+    public static function plugin()
     {
-        foreach ($globals as $key => $value) {
-            $this->setGlobal($key, $value);
-        }
+        return static::$instance;
     }
 
     /**
-     * Init
+     * Short call for getting a global
+     * @param string $key
+     * @return mixed
+     */
+    public static function glob($key)
+    {
+        return static::$instance->getGlobal($key);
+    }
+
+    /**
+     * Constructor
+     * @param array $globals  Optional
+     */
+    protected function __construct(array $globals = array())
+    {
+        $this->globals = array_merge($this->globals, $globals);
+    }
+
+    /**
+     * Init plugin
+     * Should be implemented
      */
     abstract protected function init();
 
     /**
-     * Get translation
-     * @param string $text
-     * @return string
-     */
-    public function __($text)
-    {
-        return __($text, $this->getGlobal('domain'));
-    }
-
-    /**
-     * Echo translation
-     * @param string $text
-     */
-    public function _e($text)
-    {
-        _e($text, $this->getGlobal('domain'));
-    }
-
-    /**
-     * Get global setting
+     * Get global
      * @param string $key
-     * @return mixed|null
+     * @return mixed
      */
     public function getGlobal($key)
     {
@@ -86,34 +83,24 @@ abstract class WPDev_Plugin
     }
 
     /**
-     * Set global setting
-     * @param string $key
-     * @param mixed $value  Optional
-     * @return mixed|null
+     * Get all globals
+     * @return array
      */
-    public function setGlobal($key, $value = null)
+    public function getAllGlobals()
+    {
+        return $this->globals;
+    }
+
+    /**
+     * Set global
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function setGlobal($key, $value)
     {
         $this->globals[$key] = $value;
     }
 
-    /**
-     * autoload callback
-     * @param string $className
-     * @return void
-     */
-    protected function autoload($className)
-    {
-        if (class_exists($className)) {
-            return;
-        }
-
-        $internalPath = str_replace('_', DIRECTORY_SEPARATOR, $className);
-        $file = $this->getGlobal('dir') . DIRECTORY_SEPARATOR . 'classes'
-                . DIRECTORY_SEPARATOR . $internalPath . '.php';
-
-        if (file_exists($file)) {
-            include $file;
-        }
-    }
-
 }
+
+/*?>*/

@@ -2,13 +2,11 @@
 /**
  * Class WPDev_Filter_WidgetOutput
  *
- * Original idea taken from the Widget Logic plugin
- *
- * @singleton
+ * Original idea and code taken from the Widget Logic plugin
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  1.0.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
@@ -16,9 +14,7 @@
  * @license  MIT license
  *
  * @example
- *      if (! WPDev_Filter_WidgetOutput::isCreated()) {
- *          WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
- *      }
+ *      WPDev_Filter_WidgetOutput::create($wp_registered_widgets);
  *
  *      add_filter('widget_output', 'wp_replace_b_tags', 10, 1);
  *
@@ -28,24 +24,24 @@
  *          return $content;
  *      }
  */
-final class WPDev_Filter_WidgetOutput
+class WPDev_Filter_WidgetOutput
 {
 
     /**
      * Filter name
      * @var string
      */
-    private $filterName = 'widget_output';
+    protected $filterName = 'widget_output';
 
     /**
      * @var array
      */
-    private $wpRegisteredWidgets = null;
+    protected $wpRegisteredWidgets = null;
 
     /**
      * @var \WPDev_Filter_WidgetOutput
      */
-    private static $instance = null;
+    protected static $instance = null;
 
     /**
      * Factory method
@@ -55,27 +51,17 @@ final class WPDev_Filter_WidgetOutput
      */
     public static function create(array & $wpRegisteredWidgets)
     {
-        if (self::isCreated()) {
-            throw new Exception('Widget Output filter already created.');
+        if (self::$instance === null) {
+            self::$instance = new self($wpRegisteredWidgets);
         }
 
-        self::$instance = new WPDev_Filter_WidgetOutput($wpRegisteredWidgets);
         return self::$instance;
-    }
-
-    /**
-     * Check if already instantiated
-     * @return boolean
-     */
-    public static function isCreated()
-    {
-        return (self::$instance !== null);
     }
 
     /**
      * @param array &$wpRegisteredWidgets
      */
-    private function __construct(array & $wpRegisteredWidgets)
+    protected function __construct(array & $wpRegisteredWidgets)
     {
         $this->wpRegisteredWidgets = & $wpRegisteredWidgets;
 
@@ -120,3 +106,5 @@ final class WPDev_Filter_WidgetOutput
     }
 
 }
+
+/*?>*/
