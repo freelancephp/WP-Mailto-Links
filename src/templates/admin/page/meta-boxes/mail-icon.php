@@ -22,7 +22,6 @@
                                value="image"
                                <?php checked('image', $option->getValue('mail_icon')); ?>>
                         <span><?php _e('Image', 'wp-mailto-links') ?></span>
-                        <span class="description"><?php _e('(deprecated)', 'wp-mailto-links') ?></span>
                     </label>
                 </p>
                 <div class="wrap-icon-images inside">
@@ -52,8 +51,8 @@
                                value="dashicons"
                                <?php checked('dashicons', $option->getValue('mail_icon')); ?>>
                         <span><?php _e('Dashicons', 'wp-mailto-links') ?></span>
-                        <span class="description"><?php _e('(default WordPress icons)', 'wp-mailto-links') ?></span>
                     </label>
+                    <span class="description inside"><?php _e('(Default WordPress icons)', 'wp-mailto-links') ?></span>
                 </p>
                 <div class="wrap-dashicons inside">
                     <select class="select-dashicons"
@@ -120,8 +119,8 @@
                            name="<?php echo $option->getFieldName('no_icon_class'); ?>"
                            class="regular-text"
                            value="<?php echo esc_attr($option->getValue('no_icon_class')); ?>">
-                    <p class="description"><?php _e('Use this class when a mailto link should not show an icon.', 'wp-mailto-links') ?></p>
                 </label>
+                <p class="description"><?php _e('Use this class when a mailto link should not show an icon.', 'wp-mailto-links') ?></p>
             </td>
         </tr>
     </table>

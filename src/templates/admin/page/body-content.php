@@ -1,6 +1,5 @@
 <div id="post-body-content">
     <div class="stuffbox">
-        <h3><?php _e('Security Settings', 'wp-mailto-links'); ?></h3>
         <div class="inside">
             <fieldset>
                 <table class="form-table">
@@ -42,8 +41,8 @@
                                        value="1"
                                        <?php checked('1', $option->getValue('convert_emails')); ?>>
                                 <span><?php _e('Yes, protect plain emails with protection text *', 'wp-mailto-links') ?></span>
-                                <span class="description"><?php _e('(Recommended)', 'wp-mailto-links') ?></span>
                             </label>
+                            <span class="description inside"><?php _e('(Recommended)', 'wp-mailto-links') ?></span>
                         </p>
                         <p>
                             <label>
@@ -67,8 +66,8 @@
                                    name="<?php echo $option->getFieldName('protection_text'); ?>"
                                    class="regular-text"
                                    value="<?php echo esc_attr($option->getValue('protection_text')); ?>">
-                            <p class="description"><?php _e('This text will be shown for protected emailaddresses.', 'wp-mailto-links'); ?></p>
                         </label>
+                        <p class="description"><?php _e('This text will be shown for protected emailaddresses.', 'wp-mailto-links'); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -104,8 +103,8 @@
                                        value="1"
                                        <?php checked('1', $option->getValue('input_strong_protection')); ?> >
                                 <span><?php _e('Strong protection for input form fields', 'wp-mailto-links'); ?></span>
-                                <span class="description"><?php _e('(Warning: this option could conflict with certain form plugins. Test it first.)', 'wp-mailto-links'); ?></span>
                             </label>
+                            <p class="description"><?php _e('Warning: this option could conflict with certain form plugins. Test it first.', 'wp-mailto-links'); ?></p>
                         </p>
                     </td>
                 </tr>
@@ -121,8 +120,8 @@
                                        value="1"
                                        <?php checked('1', $option->getValue('filter_body')); ?>>
                                 <span><?php _e('All contents', 'wp-mailto-links'); ?></span>
-                                <span class="description"><?php _e('(the whole <code>&lt;body&gt;</code>)', 'wp-mailto-links'); ?></span>
                             </label>
+                            <span class="description inside"><?php _e('(the whole <code>&lt;body&gt;</code>)', 'wp-mailto-links'); ?></span>
                         </p>
                         <div class="inside">
                             <p>

@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1><?php echo get_admin_page_title() ?> <i class="dashicons-before dashicons-email"></i></h1>
+    <h1><?php echo get_admin_page_title() ?></h1>
 
     <form method="post" action="options.php">
         <?php $option->settingsFields(); ?>
