@@ -70,7 +70,7 @@ final class WPML extends WPDev_Plugin
     {
         $option = self::glob('option');
 
-        $defaultValues = array(
+        $defaultOldValues = array(
             'version' => null,
             'convert_emails' => 1,
             'protect' => 1,
@@ -91,17 +91,17 @@ final class WPML extends WPDev_Plugin
         );
 
         // get old option name "WP_Mailto_Links_options"
-        $oldOption = new WPDev_Option('WP_Mailto_Links_options', $defaultValues);
+        $oldOption = new WPDev_Option('WP_Mailto_Links_options', $defaultOldValues);
         $oldValues = $oldOption->getValues();
 
         if (!empty($oldValues)) {
             foreach ($oldValues as $key => $oldValue) {
                 // take old value
-                if ($key === 'mail_icon') {
-                    // old 'mail_icon' contained the image number
+                if ($key === 'icon') {
+                    // old 'icon' contained the image number
                     // new 'mail_icon' contains type (image, dashicons, fontawesome)
                     $newValue = empty($oldValue) ? '' : 'image';
-                    $option->setValue($key, $newValue, false);
+                    $option->setValue('mail_icon', $newValue, false);
 
                     // mail_icon === 'image' ---> 'image' contains number
                     if (!empty($oldValue)) {
