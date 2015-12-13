@@ -80,7 +80,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                     'context' => 'side',
                  ),
                 'admin' => array(
-                    'title' => __('Admin Menu', 'wp-mailto-links'),
+                    'title' => __('Admin', 'wp-mailto-links'),
                     'context' => 'normal',
                  ),
                 'support' => array(

@@ -32,13 +32,13 @@
 <h4><?php _e('Other plugins by the author', 'wp-mailto-links') ?></h4>
 <ul>
     <li>
-        <a href="http://wordpress.org/extend/plugins/wp-mailto-links/other_notes/" target="_blank">
+        <a href="https://wordpress.org/plugins/wp-external-links/" target="_blank">
             <i class="dashicons-before dashicons-external"></i>
             <?php _e('WP External Links', 'wp-mailto-links') ?>
         </a>
     </li>
     <li>
-        <a href="http://wordpress.org/support/plugin/wp-mailto-links#postform" target="_blank">
+        <a href="https://wordpress.org/plugins/email-encoder-bundle/" target="_blank">
             <i class="dashicons-before dashicons-email-alt"></i>
             <?php _e('Email Encoder Bundle', 'wp-mailto-links') ?>
         </a>
