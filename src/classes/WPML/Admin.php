@@ -104,13 +104,13 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                 'shortcodes' => array(
                     'title' => __('Shortcode', 'wp-mailto-links'),
                  ),
-                'templatefunctions' => array(
-                    'title' => __('Template Functions', 'wp-mailto-links'),
+                'template-tags' => array(
+                    'title' => __('Template Tags', 'wp-mailto-links'),
                  ),
-                'filterhooks' => array(
+                'filter-hook' => array(
                     'title' => __('Filter Hook', 'wp-mailto-links'),
                  ),
-                'actionhooks' => array(
+                'action-hook' => array(
                     'title' => __('Action Hook', 'wp-mailto-links'),
                  ),
             )

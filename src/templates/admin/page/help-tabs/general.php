@@ -12,7 +12,7 @@
         <td><code><b>[wpml_mailto</b> email="..."<b>]</b>...<b>[/wpml_mailto]</b></code></td>
     </tr>
     <tr>
-        <td><?php _e('Template tag:', 'wp-mailto-links'); ?></td>
+        <td><?php _e('Template tags:', 'wp-mailto-links'); ?></td>
         <td><code><b>wpml_mailto(</b> $email [, $display] [, $attrs] <b>)</b>;</code></td>
     </tr>
     <tr>
