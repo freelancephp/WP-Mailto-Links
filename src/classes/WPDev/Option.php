@@ -6,7 +6,7 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.2.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
