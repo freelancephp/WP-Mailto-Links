@@ -154,6 +154,7 @@ final class WPML_FrontSite
         echo '/* WP Mailto Links Plugin */'."\n";
         echo '.wpml-nodis { display:none; }';
         echo '.wpml-rtl { unicode-bidi:bidi-override; direction:rtl; }';
+        echo '.wpml-encoded { position:absolute; margin-top:-0.3em; z-index:1000; color:green; }';
 
         // add nowrap style
         if ($className) {
@@ -452,6 +453,12 @@ final class WPML_FrontSite
 
         // just in case there are still email addresses f.e. within title-tag
         $link = $this->replacePlainEmails($link);
+
+        // mark link as successfullly encoded (for admin users)
+        if (current_user_can('manage_options') && $this->option->getValue('security_check')) {
+            $link .= '<i class="wpml-encoded dashicons-before dashicons-lock" title="' . __('Email encoded successfully!', 'wp-mailto-links') . '"></i>';
+        }
+
 
         return $link;
     }

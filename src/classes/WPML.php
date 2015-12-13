@@ -42,6 +42,7 @@ final class WPML extends WPDev_Plugin
             'image_no_icon'     => 0,
             'no_icon_class'     => 'no-mail-icon',
             'class_name'        => 'mail-link',
+            'security_check'    => 1,
             'own_admin_menu'    => 1,
         ));
 

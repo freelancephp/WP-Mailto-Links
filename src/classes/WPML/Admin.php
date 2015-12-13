@@ -81,7 +81,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                  ),
                 'admin' => array(
                     'title' => __('Admin Menu', 'wp-mailto-links'),
-                    'context' => 'side',
+                    'context' => 'normal',
                  ),
                 'support' => array(
                     'title' => __('Support', 'wp-mailto-links'),
@@ -102,19 +102,16 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                     'title' => __('General', 'wp-mailto-links'),
                  ),
                 'shortcodes' => array(
-                    'title' => __('Shortcodes', 'wp-mailto-links'),
+                    'title' => __('Shortcode', 'wp-mailto-links'),
                  ),
                 'templatefunctions' => array(
-                    'title' => __('Template functions', 'wp-mailto-links'),
-                 ),
-                'actionhooks' => array(
-                    'title' => __('Action Hooks', 'wp-mailto-links'),
+                    'title' => __('Template Functions', 'wp-mailto-links'),
                  ),
                 'filterhooks' => array(
-                    'title' => __('Filter Hooks', 'wp-mailto-links'),
+                    'title' => __('Filter Hook', 'wp-mailto-links'),
                  ),
-                'faq' => array(
-                    'title' => __('FAQ', 'wp-mailto-links'),
+                'actionhooks' => array(
+                    'title' => __('Action Hook', 'wp-mailto-links'),
                  ),
             )
             , array(
