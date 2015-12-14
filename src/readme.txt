@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email link, protection
 Requires at least: 3.6.0
 Tested up to: 4.4.0
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
 
@@ -19,7 +19,6 @@ Protect email addresses and mailto links from spambots and spamming. Easy to use
 * Use of template tags `wpml_mailto()` and `wpml_filter()`
 
 The plugin combines the best email protection methods (css and javascript techniques).
-Some techniques are inspired by an [article of Jeff Starr](http://perishablepress.com/press/2010/08/01/best-method-for-email-obfuscation/).
 
 = Easy to use =
 The WPML plugin works out-of-the-box. After activating the plugin all options are already set for protecting your emails and mailto links. Optionally you can also set some style options, like adding an icon.
@@ -43,8 +42,9 @@ This plugin is free and I don't accept any donations. If you want to show your a
 == Frequently Asked Questions ==
 
 = How does it work? =
-The plugin combines the best email protection methods (css and javascript techniques).
-Some of them are explained in [this article](http://perishablepress.com/press/2010/08/01/best-method-for-email-obfuscation/) by Jeff Starr.
+The plugin combines the best email protection methods (css and javascript techniques). Some of them are explained in [this article](http://perishablepress.com/press/2010/08/01/best-method-for-email-obfuscation/) by Jeff Starr.
+
+A webpage contains code on the backside. In the code all email addresses will be obfuscated, to hide them from spambots. Only when people see the page and click on the mailto link, the encoded email address will be translated to a normal email address.
 
 = What's the best way to protect my email address(es) on my site? =
 Offcourse by activating this plugin on your site. But even still it's not recommended to use email addresses directly in your posts or in your theme templates.
@@ -69,7 +69,6 @@ add_filter('wpml_mailto', 'special_mailto', 10, 4);`
 
 = Shortcode does not work in widgets. How can I make it work? =
 By default shortcodes are not applied to (text) widgets. To support that you can add it to the text widget filter ([for more](http://www.wprecipes.com/how-to-add-shortcodes-in-sidebar-widgets)).
-
 If you are not a coder, then just activate [this plugin](http://wordpress.org/extend/plugins/shortcodes-in-sidebar-widgets/), which does the same thing.
 
 Do you have a problem or found a bug, please [report it](https://wordpress.org/support/plugin/wp-mailto-links#postform).
@@ -131,12 +130,16 @@ add_action('wpml_ready', 'extra_filters');`
 
 == Changelog ==
 
+= 2.0.1 =
+ * Removed realpath(), causing errors on existing installs
+ * Fixed only load js on wpml admin page
+ * Security check default off
+
 = 2.0.0 =
  * Needs PHP version 5.3+
  * Complete refactor
  * Added Font Awesome Icons and Dashicons
  * Added security check for admin users
- * Added "wpml_filter_content" template tag
  * Deprecated "wpml_ready" action
  * Deprecated "wpml_mailto" filter
 

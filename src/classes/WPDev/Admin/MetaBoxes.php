@@ -116,7 +116,7 @@ class WPDev_Admin_MetaBoxes
     {
         $id = $box['args'][0];
 
-        $templateFile = realpath($this->settings['templatesPath'] . '/' . $id . $this->settings['templateFileExt']);
+        $templateFile = $this->settings['templatesPath'] . '/' . $id . $this->settings['templateFileExt'];
         $view = WPDev_View::create($templateFile, $this->settings['templateVars']);
 
         if ($view->exists()) {
