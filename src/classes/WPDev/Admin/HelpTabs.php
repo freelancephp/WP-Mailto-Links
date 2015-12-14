@@ -109,7 +109,7 @@ class WPDev_Admin_HelpTabs
      * @return string
      */
     protected function renderTemplate($key) {
-        $templateFile = realpath($this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt']);
+        $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
         $view = WPDev_View::create($templateFile, $this->settings['templateVars']);
 

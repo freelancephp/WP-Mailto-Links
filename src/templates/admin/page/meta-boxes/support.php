@@ -1,1 +1,1 @@
-<?php include realpath(__DIR__ . '/../help-tabs/sidebar.php'); ?>
+<?php include __DIR__ . '/../help-tabs/sidebar.php'; ?>

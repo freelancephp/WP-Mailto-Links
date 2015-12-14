@@ -16,7 +16,7 @@ if (!defined('WP_MAILTO_LINKS_FILE')) {
 
 // autoloader
 if (!class_exists('WPDev_Loader')) {
-    require_once realpath(__DIR__ . '/classes/WPDev/Loader.php');
+    require_once __DIR__ . '/classes/WPDev/Loader.php';
 }
 WPDev_Loader::register();
 WPDev_Loader::addPath(__DIR__ . '/classes');
