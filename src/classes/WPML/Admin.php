@@ -12,6 +12,11 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
 {
 
     /**
+     * @var WPDev_Admin_Page_Interface
+     */
+    protected $adminPage = null;
+
+    /**
      * Initialize, add action and filter hooks
      */
     public function __construct()
@@ -23,8 +28,12 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
     /**
      * Add scripts
      */
-    public function enqueueScripts()
+    public function enqueueScripts($hook)
     {
+        if ($hook !== $this->adminPage->getHook()) {
+            return;
+        }
+
         wp_enqueue_script(
             'wp-mailto-links-admin'
             , WPML::glob('URL') . '/js/wp-mailto-links-admin.js'
@@ -56,7 +65,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
         $mainMenu = (bool) WPML::glob('option')->getValue('own_admin_menu');
 
         // create page
-        $adminPage = new WPDev_Admin_Page_MetaBox(array(
+        $this->adminPage = new WPDev_Admin_Page_MetaBox(array(
             'id'              => $globals['key'] . '-option-page',
             'title'           => __('WP Mailto Links', 'wp-mailto-links'),
             'menuTitle'       => __('Mailto Links', 'wp-mailto-links'),
@@ -89,7 +98,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                  ),
             )
             , array(
-                'adminPage'     => $adminPage,
+                'adminPage'     => $this->adminPage,
                 'templatesPath' => $templatesBasePath . '/meta-boxes',
                 'templateVars'  => $globals,
             )
@@ -115,7 +124,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox
                  ),
             )
             , array(
-                'adminPage'     => $adminPage,
+                'adminPage'     => $this->adminPage,
                 'templatesPath' => $templatesBasePath . '/help-tabs',
                 'templateVars'  => $globals,
             )
