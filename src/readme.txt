@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email link, protection
 Requires at least: 3.6.0
 Tested up to: 4.4.0
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
 
@@ -129,6 +129,11 @@ function extra_filters($filter_callback, $object) {
 add_action('wpml_ready', 'extra_filters');`
 
 == Changelog ==
+
+= 2.0.1 =
+ * Removed realpath(), causing errors on existing installs
+ * Fixed only load js on wpml admin page
+ * Security check default off
 
 = 2.0.0 =
  * Needs PHP version 5.3+
