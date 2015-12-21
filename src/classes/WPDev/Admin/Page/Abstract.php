@@ -6,13 +6,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.3.0
+ * @version  0.4.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page_Abstract implements WPDev_Admin_Page_Interface
+class WPDev_Admin_Page_Abstract_04 implements WPDev_Admin_Page_Interface_04
 {
 
     /**
@@ -30,6 +30,12 @@ class WPDev_Admin_Page_Abstract implements WPDev_Admin_Page_Interface
         'pageTemplate'  => '',
         'templateVars'  => array(),
     );
+
+    /**
+     * Vars passed on to the page template
+     * @var array
+     */
+    protected $templateVars = array();
 
     /**
      * Page hook
@@ -93,6 +99,28 @@ class WPDev_Admin_Page_Abstract implements WPDev_Admin_Page_Interface
                 , $this->settings['function']
             );
         }
+
+        // load plugin page
+        add_action('load-' . $this->hook, array($this, 'loadPage'));
+    }
+
+    /**
+     * Load page
+     */
+    public function loadPage()
+    {
+        // show updated message for pages outsite the "Settings" menu
+        if (isset($_GET['settings-updated']) && 'options-general.php' !== $this->settings['parentSlug']) {
+            $showUpdatedMessage = true;
+        } else {
+            $showUpdatedMessage = false;
+        }
+
+        // prepare templateVars
+        $this->templateVars = array_merge($this->settings['templateVars'], array(
+            'id' => $this->settings['id'],
+            'showUpdatedMessage' => $showUpdatedMessage,
+        ));
     }
 
     /**
@@ -100,9 +128,7 @@ class WPDev_Admin_Page_Abstract implements WPDev_Admin_Page_Interface
      */
     public function showPage()
     {
-        echo $this->renderTemplate(array(
-            'id' => $this->settings['id'],
-        ));
+        echo $this->renderTemplate($this->templateVars);
     }
 
     /**
@@ -111,8 +137,7 @@ class WPDev_Admin_Page_Abstract implements WPDev_Admin_Page_Interface
      */
     protected function renderTemplate($templateVars = array())
     {
-        $vars = array_merge($this->settings['templateVars'], $templateVars);
-        $view = WPDev_View::create($this->settings['pageTemplate'], $vars);
+        $view = WPDev_View_04::create($this->settings['pageTemplate'], $templateVars);
 
         if (!$view->exists()) {
             return false;

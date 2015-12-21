@@ -6,13 +6,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.3.0
+ * @version  0.4.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_HelpTabs
+class WPDev_Admin_HelpTabs_04
 {
 
     /**
@@ -20,10 +20,7 @@ class WPDev_Admin_HelpTabs
      * @var array
      */
     protected $settings = array(
-        // adminPage should be a pageHook name or an instanceof WPDev_Admin_Page_Interface
-        // when true helptabs will be shown on all admin pages
-        // else will never be shown
-        'adminPage'       => null,
+        'adminPage'        => '',      // pageHook name or instanceof WPDev_Admin_Page_Interface
         'templatesPath'   => '',
         'templateVars'    => array(),
         'templateFileExt' => '.php',
@@ -44,13 +41,11 @@ class WPDev_Admin_HelpTabs
 
     /**
      * Constructor
-     * @param array $helpTabs
      * @param array $settings
      */
-    public function __construct(array $helpTabs, array $settings)
+    public function __construct(array $settings)
     {
         $this->settings = array_merge($this->settings, $settings);
-        $this->helpTabs = $helpTabs;
 
         add_action('admin_menu', array($this, 'init'));
     }
@@ -64,7 +59,7 @@ class WPDev_Admin_HelpTabs
 
         if ($adminPage === true) {
             $actionName = 'admin_head';
-        } elseif ($adminPage instanceof WPDev_Admin_Page_Interface) {
+        } elseif ($adminPage instanceof WPDev_Admin_Page_Interface_04) {
             $actionName = 'load-' . $adminPage->getHook();
         } elseif (is_string($adminPage)) {
             $actionName = 'load-' . $adminPage;
@@ -73,6 +68,17 @@ class WPDev_Admin_HelpTabs
         if (isset($actionName)) {
             add_action($actionName, array($this, 'addHelptabs'));
         }
+    }
+
+    /**
+     * Add help tab
+     * @param string $key
+     * @param string $title
+     */
+    public function addHelpTab($key, $title) {
+        $this->helpTabs[$key] = array(
+            'title' => $title,
+        );
     }
 
     /**
@@ -111,7 +117,7 @@ class WPDev_Admin_HelpTabs
     protected function renderTemplate($key) {
         $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
-        $view = WPDev_View::create($templateFile, $this->settings['templateVars']);
+        $view = WPDev_View_04::create($templateFile, $this->settings['templateVars']);
 
         if (!$view->exists()) {
             return false;

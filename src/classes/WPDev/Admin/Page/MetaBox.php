@@ -6,13 +6,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.3.0
+ * @version  0.4.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page_MetaBox extends WPDev_Admin_Page_Abstract
+class WPDev_Admin_Page_MetaBox_04 extends WPDev_Admin_Page_Abstract_04
 {
 
     /**
@@ -40,43 +40,24 @@ class WPDev_Admin_Page_MetaBox extends WPDev_Admin_Page_Abstract
     }
 
     /**
-     * Create page with menu item
-     */
-    public function createPage()
-    {
-        parent::createPage();
-
-        // load plugin page
-        add_action('load-' . $this->hook, array($this, 'loadPage'));
-    }
-
-    /**
      * Load page
      */
     public function loadPage()
     {
+        parent::loadPage();
+
         // set dashboard postbox
         wp_enqueue_script('dashboard');
 
         // screen settings
-        if (function_exists('add_screen_option')) {
-            add_screen_option('layout_columns', array(
-                'max'       => $this->settings['maxColumns'],
-                'default'   => $this->settings['defaultColumns']
-            ));
-        }
-    }
-
-    /**
-     * Show complete admin page
-     */
-    public function showPage()
-    {
-        echo $this->renderTemplate(array(
-            'id'            => $this->settings['id'],
-            'bodyTemplate'  => $this->settings['bodyTemplate'],
-            'columnCount'   => (1 == get_current_screen()->get_columns()) ? 1 : 2,
+        add_screen_option('layout_columns', array(
+            'max'       => $this->settings['maxColumns'],
+            'default'   => $this->settings['defaultColumns']
         ));
+
+        // add template vars
+        $this->templateVars['bodyTemplate'] = $this->settings['bodyTemplate'];
+        $this->templateVars['columnCount'] = (1 == get_current_screen()->get_columns()) ? 1 : 2;
     }
 
 }

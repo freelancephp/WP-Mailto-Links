@@ -6,13 +6,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.3.0
+ * @version  0.4.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Test_UnitBase extends PHPUnit_Framework_TestCase
+class WPDev_Test_UnitBase_04 extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -22,11 +22,11 @@ class WPDev_Test_UnitBase extends PHPUnit_Framework_TestCase
      */
     public function mockFunction($funcName)
     {
-        if (!class_exists('WPDev_Test_MockFunction')) {
+        if (!class_exists('WPDev_Test_MockFunction_04')) {
             require_once 'MockFunction.php';
         }
 
-        return WPDev_Test_MockFunction::getMock($funcName);
+        return WPDev_Test_MockFunction_04::getMock($funcName);
     }
 
 }
