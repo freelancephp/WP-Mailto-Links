@@ -6,13 +6,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.4.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_MetaBoxes_04
+class WPDev_Admin_MetaBoxes
 {
 
     /**
@@ -20,8 +20,10 @@ class WPDev_Admin_MetaBoxes_04
      * @var array
      */
     protected $settings = array(
-        'adminPage'        => '',      // pageHook name or instanceof WPDev_Admin_Page_Interface
-        'screen'           => null,    // 'post','page','dashboard','link','attachment','custom_post_type','comment'
+        // adminPage should be a pageHook name or an instanceof WPDev_Admin_Page_Interface
+        // when true metaboxes will be shown on all admin pages
+        // else will never be shown
+        'adminPage'        => null,
         'templatesPath'    => '',
         'templateFileExt'  => '.php',
         'templateVars'     => array(),
@@ -34,8 +36,8 @@ class WPDev_Admin_MetaBoxes_04
      *          'general' => array(
      *             'title'    => __('General Settings'),
      *             'context'  => 'advanced',  // Optional 'normal', 'advanced', or 'side'
+     *             'screen'   => null,        // Optional 'post', 'page', 'dashboard', 'link', 'attachment', 'custom_post_type', 'comment'
      *             'priority' => 'default',   // Optional 'high', 'core', 'default' or 'low'
-     *             'callback' => null,        // Optional
      *          ),
      *      );
      * @var array
@@ -45,10 +47,13 @@ class WPDev_Admin_MetaBoxes_04
     /**
      * Constructor
      * @param array $settings
+     * @param array $metaBoxes Optional
+     * @param array $helptabs  Optional
      */
-    public function __construct(array $settings)
+    public function __construct(array $metaBoxes, array $settings = array())
     {
         $this->settings = array_merge($this->settings, $settings);
+        $this->metaBoxes = $metaBoxes;
 
         add_action('admin_menu', array($this, 'init'));
     }
@@ -60,13 +65,12 @@ class WPDev_Admin_MetaBoxes_04
     {
         $adminPage = $this->settings['adminPage'];
 
-        if ($adminPage instanceof WPDev_Admin_Page_Interface_04) {
+        if ($adminPage === true) {
+            $actionName = 'admin_head';
+        } elseif ($adminPage instanceof WPDev_Admin_Page_Interface) {
             $actionName = 'load-' . $adminPage->getHook();
         } elseif (is_string($adminPage)) {
             $actionName = 'load-' . $adminPage;
-        } elseif ($this->settings['screen'] !== null) {
-            // to support 'screen' setting
-            $actionName = 'admin_head';
         }
 
         if (isset($actionName)) {
@@ -75,38 +79,29 @@ class WPDev_Admin_MetaBoxes_04
     }
 
     /**
-     * Add help tab
-     * @param string $key
-     * @param string $title
-     */
-    public function addMetaBox($key, $title, $context = 'advanced', $priority = 'default', $callback = null) {
-        $this->metaBoxes[$key] = array(
-            'title' => $title,
-            'context' => $context,
-            'screen' => $this->settings['screen'],
-            'priority' => $priority,
-        );
-
-        if ($callback === null) {
-            $this->metaBoxes[$key]['callback'] = array($this, 'showMetaBox');
-        } else {
-            $this->metaBoxes[$key]['callback'] = $callback;
-        }
-    }
-
-    /**
      * Add metaBoxes
      */
     public function addMetaBoxes()
     {
+        $defaultMetaBoxSettings = array(
+            'title'    => '',
+            'callback' => array($this, 'showMetaBox'),
+            'context'  => 'advanced',
+            'screen'   => null,
+            'priority' => 'default',
+        );
+
         foreach ($this->metaBoxes as $id => $params) {
+            // combine with defaults
+            $settings = array_merge($defaultMetaBoxSettings, $params);
+
             add_meta_box(
                 $id
-                , $params['title']
-                , $params['callback']
-                , $params['screen']
-                , $params['context']
-                , $params['priority']
+                , $settings['title']
+                , $settings['callback']
+                , $settings['screen']
+                , $settings['context']
+                , $settings['priority']
                 , array($id)
             );
         }
@@ -122,7 +117,7 @@ class WPDev_Admin_MetaBoxes_04
         $id = $box['args'][0];
 
         $templateFile = $this->settings['templatesPath'] . '/' . $id . $this->settings['templateFileExt'];
-        $view = WPDev_View_04::create($templateFile, $this->settings['templateVars']);
+        $view = WPDev_View::create($templateFile, $this->settings['templateVars']);
 
         if ($view->exists()) {
             echo $view->render();

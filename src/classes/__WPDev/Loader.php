@@ -4,13 +4,13 @@
  *
  * @package  WPDev
  * @category WordPress Plugins
- * @version  0.4.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Loader_04
+class WPDev_Loader
 {
 
     /**
@@ -66,21 +66,11 @@ class WPDev_Loader_04
             return;
         }
 
-        // versionized WPDev class name
-        if (strpos($className, 'WPDev_') !== false) {
-            // remove version postfix
-            $explodeClassName = explode('_', $className);
-            array_pop($explodeClassName);
-
-            $pureClassName = implode('_', $explodeClassName);
-        } else {
-            $pureClassName = $className;
-        }
-
-        $internalPath = str_replace('_', DIRECTORY_SEPARATOR, $pureClassName);
+        $internalPath = str_replace('_', DIRECTORY_SEPARATOR, $className);
+        $internalPath .= '.php';
 
         foreach (self::$paths as $path) {
-            $file = $path . DIRECTORY_SEPARATOR . $internalPath . '.php';
+            $file = $path . DIRECTORY_SEPARATOR . $internalPath;
 
             if (file_exists($file)) {
                 include $file;

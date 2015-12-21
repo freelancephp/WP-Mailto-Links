@@ -6,13 +6,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.4.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Option_04
+class WPDev_Option
 {
 
     /**
@@ -55,15 +55,6 @@ class WPDev_Option_04
         if (is_string($registerHook)) {
             add_action($registerHook, array($this, 'register'), 1);
         }
-    }
-
-    /**
-     * Get option name
-     * @return string
-     */
-    public function getOptionName()
-    {
-        return $this->optionName;
     }
 
     /**

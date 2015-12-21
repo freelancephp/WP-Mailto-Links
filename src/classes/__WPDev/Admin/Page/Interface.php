@@ -1,19 +1,21 @@
 <?php
 /**
- * Class WPDev_Admin_Page_Option
+ * Class WPDev_Admin_Page_Interface
  *
- * Creating a normal admin options page
+ * Interface for admin page
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.4.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page_Option_04 extends WPDev_Admin_Page_Abstract_04
+interface WPDev_Admin_Page_Interface
 {
+
+    public function getHook();
 
 }
 

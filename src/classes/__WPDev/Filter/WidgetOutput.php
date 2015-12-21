@@ -6,7 +6,7 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.4.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
@@ -24,7 +24,7 @@
  *          return $content;
  *      }
  */
-class WPDev_Filter_WidgetOutput_04
+class WPDev_Filter_WidgetOutput
 {
 
     /**

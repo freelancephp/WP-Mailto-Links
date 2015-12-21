@@ -7,13 +7,13 @@
  *
  * @package  WPDev
  * @category WordPress Library
- * @version  0.4.0
+ * @version  0.3.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Test_MockFunction_04
+class WPDev_Test_MockFunction
 {
 
     /**
