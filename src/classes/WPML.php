@@ -68,7 +68,7 @@ final class WPML extends WPDev_Plugin_04
      */
     public static function upgrade()
     {
-        $option = self::glob('option');
+        $option = static::glob('option');
 
         $defaultOldValues = array(
             'version' => null,
