@@ -10,6 +10,8 @@ Protect email addresses and mailto links from spambots and spamming. Easy to use
 == Description ==
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
 
+http://www.youtube.com/watch?v=NxHnJWQnyuY
+
 = Features =
 * Protect mailto links automatically
 * Protect plain email addresses or convert them to mailto links
