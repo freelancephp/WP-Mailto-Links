@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-abstract class WPDev_Plugin_04
+abstract class WPDev_Plugin_0x4x0
 {
 
     /**

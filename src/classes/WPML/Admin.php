@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-final class WPML_Admin extends WPDev_Admin_Page_MetaBox_04
+final class WPML_Admin extends WPDev_Admin_Page_MetaBox_0x4x0
 {
 
     /**
@@ -64,7 +64,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox_04
         $mainMenu = (bool) WPML::glob('option')->getValue('own_admin_menu');
 
         // create admin page
-        $adminPage = new WPDev_Admin_Page_Integrated_04(array(
+        $adminPage = new WPDev_Admin_Page_Integrated_0x4x0(array(
             'id'              => WPML::glob('key') . '-option-page',
             'title'           => __('WP Mailto Links', 'wp-mailto-links'),
             'menuTitle'       => __('Mailto Links', 'wp-mailto-links'),
@@ -74,7 +74,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox_04
             'maxColumns'      => 2,
             'pageTemplate'    => WPML::glob('DIR') . '/templates/admin/page/page.php',
             'templateVars'    => WPML::plugin()->getAllGlobals(),
-        ), WPDev_Admin_Page_Integrated_04::TYPE_METABOX_PAGE);
+        ), WPDev_Admin_Page_Integrated_0x4x0::TYPE_METABOX_PAGE);
 
         // add meta-boxes
         $adminPage->addMetaBox(

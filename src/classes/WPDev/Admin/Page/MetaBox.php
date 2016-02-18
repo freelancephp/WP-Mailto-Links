@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page_MetaBox_04 extends WPDev_Admin_Page_Abstract_04
+class WPDev_Admin_Page_MetaBox_0x4x0 extends WPDev_Admin_Page_Abstract_0x4x0
 {
 
     /**

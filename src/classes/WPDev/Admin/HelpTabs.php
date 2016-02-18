@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_HelpTabs_04
+class WPDev_Admin_HelpTabs_0x4x0
 {
 
     /**
@@ -59,7 +59,7 @@ class WPDev_Admin_HelpTabs_04
 
         if ($adminPage === true) {
             $actionName = 'admin_head';
-        } elseif ($adminPage instanceof WPDev_Admin_Page_Interface_04) {
+        } elseif ($adminPage instanceof WPDev_Admin_Page_Interface_0x4x0) {
             $actionName = 'load-' . $adminPage->getHook();
         } elseif (is_string($adminPage)) {
             $actionName = 'load-' . $adminPage;
@@ -117,7 +117,7 @@ class WPDev_Admin_HelpTabs_04
     protected function renderTemplate($key) {
         $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
-        $view = WPDev_View_04::create($templateFile, $this->settings['templateVars']);
+        $view = WPDev_View_0x4x0::create($templateFile, $this->settings['templateVars']);
 
         if (!$view->exists()) {
             return false;

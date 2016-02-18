@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Test_UnitBase_04 extends PHPUnit_Framework_TestCase
+class WPDev_Test_UnitBase_0x4x0 extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -22,11 +22,11 @@ class WPDev_Test_UnitBase_04 extends PHPUnit_Framework_TestCase
      */
     public function mockFunction($funcName)
     {
-        if (!class_exists('WPDev_Test_MockFunction_04')) {
+        if (!class_exists('WPDev_Test_MockFunction_0x4x0')) {
             require_once 'MockFunction.php';
         }
 
-        return WPDev_Test_MockFunction_04::getMock($funcName);
+        return WPDev_Test_MockFunction_0x4x0::getMock($funcName);
     }
 
 }

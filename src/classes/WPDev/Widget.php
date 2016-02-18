@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Widget_04 extends WP_Widget
+class WPDev_Widget_0x4x0 extends WP_Widget
 {
 
     /**
@@ -133,7 +133,7 @@ class WPDev_Widget_04 extends WP_Widget
     protected function renderTemplate($key, array $templateVars = array()) {
         $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
-        $view = WPDev_View_04::create($templateFile, $templateVars);
+        $view = WPDev_View_0x4x0::create($templateFile, $templateVars);
 
         if (!$view->exists()) {
             return false;

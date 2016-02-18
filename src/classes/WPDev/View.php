@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_View_04
+class WPDev_View_0x4x0
 {
 
     /**

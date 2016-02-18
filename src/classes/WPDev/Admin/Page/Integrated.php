@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page_Integrated_04 implements WPDev_Admin_Page_Interface_04
+class WPDev_Admin_Page_Integrated_0x4x0 implements WPDev_Admin_Page_Interface_0x4x0
 {
 
     const TYPE_OPTION_PAGE = 'option';
@@ -40,9 +40,9 @@ class WPDev_Admin_Page_Integrated_04 implements WPDev_Admin_Page_Interface_04
     {
         // create page
         if ($type === self::TYPE_METABOX_PAGE) {
-            $this->adminPage = new WPDev_Admin_Page_MetaBox_04($settings);
+            $this->adminPage = new WPDev_Admin_Page_MetaBox_0x4x0($settings);
         } else {
-            $this->adminPage = new WPDev_Admin_Page_Option_04($settings);
+            $this->adminPage = new WPDev_Admin_Page_Option_0x4x0($settings);
         }
 
         // get values for help-tabs and meta-boxes
@@ -51,7 +51,7 @@ class WPDev_Admin_Page_Integrated_04 implements WPDev_Admin_Page_Interface_04
 
         // create meta boxes
         if ($type === self::TYPE_METABOX_PAGE) {
-            $this->metaBoxes = new WPDev_Admin_MetaBoxes_04(array(
+            $this->metaBoxes = new WPDev_Admin_MetaBoxes_0x4x0(array(
                 'adminPage'     => $this->adminPage,
                 'templatesPath' => $templatesBasePath . '/meta-boxes',
                 'templateVars'  => $templateVars,
@@ -59,7 +59,7 @@ class WPDev_Admin_Page_Integrated_04 implements WPDev_Admin_Page_Interface_04
         }
 
         // create help tabs
-        $this->helpTabs = new WPDev_Admin_HelpTabs_04(array(
+        $this->helpTabs = new WPDev_Admin_HelpTabs_0x4x0(array(
             'adminPage'     => $this->adminPage,
             'templatesPath' => $templatesBasePath . '/help-tabs',
             'templateVars'  => $templateVars,

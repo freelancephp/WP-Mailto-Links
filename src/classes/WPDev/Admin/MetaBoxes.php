@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_MetaBoxes_04
+class WPDev_Admin_MetaBoxes_0x4x0
 {
 
     /**
@@ -60,7 +60,7 @@ class WPDev_Admin_MetaBoxes_04
     {
         $adminPage = $this->settings['adminPage'];
 
-        if ($adminPage instanceof WPDev_Admin_Page_Interface_04) {
+        if ($adminPage instanceof WPDev_Admin_Page_Interface_0x4x0) {
             $actionName = 'load-' . $adminPage->getHook();
         } elseif (is_string($adminPage)) {
             $actionName = 'load-' . $adminPage;
@@ -122,7 +122,7 @@ class WPDev_Admin_MetaBoxes_04
         $id = $box['args'][0];
 
         $templateFile = $this->settings['templatesPath'] . '/' . $id . $this->settings['templateFileExt'];
-        $view = WPDev_View_04::create($templateFile, $this->settings['templateVars']);
+        $view = WPDev_View_0x4x0::create($templateFile, $this->settings['templateVars']);
 
         if ($view->exists()) {
             echo $view->render();

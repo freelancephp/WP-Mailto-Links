@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @license  MIT license
  */
-final class WPML extends WPDev_Plugin_04
+final class WPML extends WPDev_Plugin_0x4x0
 {
 
     /**
@@ -23,7 +23,7 @@ final class WPML extends WPDev_Plugin_04
     protected function init()
     {
         // create option and make it global
-        $option = new WPDev_Option_04($this->getGlobal('key'), array(
+        $option = new WPDev_Option_0x4x0($this->getGlobal('key'), array(
             'protect'           => 1,
             'convert_emails'    => 1,
             'filter_body'       => 1,
@@ -91,7 +91,7 @@ final class WPML extends WPDev_Plugin_04
         );
 
         // get old option name "WP_Mailto_Links_options"
-        $oldOption = new WPDev_Option_04('WP_Mailto_Links_options', $defaultOldValues);
+        $oldOption = new WPDev_Option_0x4x0('WP_Mailto_Links_options', $defaultOldValues);
         $oldValues = $oldOption->getValues();
 
         if (!empty($oldValues)) {

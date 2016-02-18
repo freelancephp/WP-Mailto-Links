@@ -54,13 +54,13 @@ final class WPML_FrontSite
     {
         if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
             // final_output filter
-            WPDev_Filter_FinalOutput_04::create();
+            WPDev_Filter_FinalOutput_0x4x0::create();
         }
 
         if (!$this->option->getValue('filter_body') && $this->option->getValue('filter_widgets')) {
             // widget_output filter
             global $wp_registered_widgets; // not very nice but need to get global WP var by reference
-            WPDev_Filter_WidgetOutput_04::create($wp_registered_widgets);
+            WPDev_Filter_WidgetOutput_0x4x0::create($wp_registered_widgets);
         }
     }
 

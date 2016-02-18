@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_DashboardWidget_04
+class WPDev_Admin_DashboardWidget_0x4x0
 {
 
     /**
@@ -84,7 +84,7 @@ class WPDev_Admin_DashboardWidget_04
      */
     public function showForm()
     {
-        if ($this->settings['option'] instanceof WPDev_Option_04) {
+        if ($this->settings['option'] instanceof WPDev_Option_0x4x0) {
             $optionName = $this->settings['option']->getOptionName();
 
             if('POST' === $_SERVER['REQUEST_METHOD'] && !empty($_POST[$optionName])) {
@@ -116,7 +116,7 @@ class WPDev_Admin_DashboardWidget_04
     protected function renderTemplate($key) {
         $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
-        $view = WPDev_View_04::create($templateFile, $this->settings['templateVars']);
+        $view = WPDev_View_0x4x0::create($templateFile, $this->settings['templateVars']);
 
         if (!$view->exists()) {
             return false;

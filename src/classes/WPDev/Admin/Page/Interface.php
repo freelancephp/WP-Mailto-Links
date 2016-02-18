@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-interface WPDev_Admin_Page_Interface_04
+interface WPDev_Admin_Page_Interface_0x4x0
 {
 
     public function getHook();

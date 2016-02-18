@@ -15,11 +15,11 @@ if (!defined('WP_MAILTO_LINKS_FILE')) {
 }
 
 // autoloader
-if (!class_exists('WPDev_Loader_04')) {
+if (!class_exists('WPDev_Loader_0x4x0')) {
     require_once __DIR__ . '/classes/WPDev/Loader.php';
 }
-WPDev_Loader_04::register();
-WPDev_Loader_04::addPath(__DIR__ . '/classes');
+WPDev_Loader_0x4x0::register();
+WPDev_Loader_0x4x0::addPath(__DIR__ . '/classes');
 
 // start plugin
 WPML::create(array(

@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Admin_Page_Abstract_04 implements WPDev_Admin_Page_Interface_04
+class WPDev_Admin_Page_Abstract_0x4x0 implements WPDev_Admin_Page_Interface_0x4x0
 {
 
     /**
@@ -137,7 +137,7 @@ class WPDev_Admin_Page_Abstract_04 implements WPDev_Admin_Page_Interface_04
      */
     protected function renderTemplate($templateVars = array())
     {
-        $view = WPDev_View_04::create($this->settings['pageTemplate'], $templateVars);
+        $view = WPDev_View_0x4x0::create($this->settings['pageTemplate'], $templateVars);
 
         if (!$view->exists()) {
             return false;

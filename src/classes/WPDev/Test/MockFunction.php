@@ -13,7 +13,7 @@
  * @link     https://github.com/freelancephp/WPDev
  * @license  MIT license
  */
-class WPDev_Test_MockFunction_04
+class WPDev_Test_MockFunction_0x4x0
 {
 
     /**

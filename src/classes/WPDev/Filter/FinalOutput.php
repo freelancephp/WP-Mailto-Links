@@ -21,7 +21,7 @@
  *          return $content;
  *      }
  */
-class WPDev_Filter_FinalOutput_04
+class WPDev_Filter_FinalOutput_0x4x0
 {
 
     /**
