@@ -14,7 +14,7 @@ final class WPML_Admin extends WPDev_Admin_Page_MetaBox_0x4x0
     /**
      * @var WPDev_Admin_Page_Interface
      */
-    protected $adminPage = null;
+    private $adminPage = null;
 
     /**
      * Initialize, add action and filter hooks

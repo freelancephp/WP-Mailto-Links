@@ -16,12 +16,12 @@ final class WPML_FrontSite
      * Regular expressions
      * @var array
      */
-    protected $regexps = array();
+    private $regexps = array();
 
     /**
      * @var \WPDev_Option
      */
-    protected $option = array();
+    private $option = array();
 
     /**
      * Constructor
@@ -50,7 +50,7 @@ final class WPML_FrontSite
         add_filter('wp_head', array($this, 'filterWpHead'), 10);
     }
 
-    protected function createCustomFilterHooks()
+    private function createCustomFilterHooks()
     {
         if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
             // final_output filter
@@ -218,7 +218,7 @@ final class WPML_FrontSite
      * @param array $match
      * @return string
      */
-    protected function filterHead($match)
+    private function filterHead($match)
     {
         if (count($match) == 0) {
             return '';
@@ -232,7 +232,7 @@ final class WPML_FrontSite
      * @param array $match
      * @return string
      */
-    protected function filterBody($match)
+    private function filterBody($match)
     {
         if (count($match) == 0) {
             return '';
@@ -468,7 +468,7 @@ final class WPML_FrontSite
      * @param string $email
      * @return string
      */
-    protected function getEncEmail($email)
+    private function getEncEmail($email)
     {
         $encEmail = $email;
 
@@ -535,7 +535,7 @@ final class WPML_FrontSite
     /**
      * Create the global template functions
      */
-    protected function createTemplateFunctions()
+    private function createTemplateFunctions()
     {
         // set this object as "global" to use in template functions
         WPML::plugin()->setGlobal('frontObject', $this);
