@@ -32,7 +32,7 @@
                                    name="<?php echo $option->getFieldName('image'); ?>"
                                    value="<?php echo $x ?>"
                                    <?php checked((string) $x, $option->getValue('image')); ?>>
-                            <img src="<?php echo WPML::glob('URL') . '/images/mail-icon-'. $x .'.png' ?>">
+                            <img src="<?php echo WPML_Plugin::plugin()->getUrl('/images/mail-icon-'. $x .'.png'); ?>">
                         </label>
                         <br>
                         <?php if ($x % 5 == 0): ?>
