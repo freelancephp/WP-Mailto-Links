@@ -1,4 +1,4 @@
-<fieldset class="options">
+<fieldset>
     <table class="form-table">
         <tr>
             <th scope="row">
