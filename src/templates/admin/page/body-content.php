@@ -8,8 +8,8 @@
                         <?php _e('Protect mailto links', 'wp-mailto-links'); ?>
                     </th>
                     <td>
-                        <?php $fields->checkField('protect', '1'); ?>
-                        <?php $fields->label('protect', __('Protect mailto links against spambots', 'wp-mailto-links')); ?>
+                        <?php $fieldsView->checkField('protect', '1'); ?>
+                        <?php $fieldsView->label('protect', __('Protect mailto links against spambots', 'wp-mailto-links')); ?>
                     </td>
                 </tr>
                 <tr>
@@ -19,20 +19,20 @@
                     <td>
                         <p>
                             <label>
-                                <?php $fields->radioField('convert_emails', '0'); ?>
+                                <?php $fieldsView->radioField('convert_emails', '0'); ?>
                                 <span><?php _e('No, keep plain emails as they are', 'wp-mailto-links'); ?></span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <?php $fields->radioField('convert_emails', '1'); ?>
+                                <?php $fieldsView->radioField('convert_emails', '1'); ?>
                                 <span><?php _e('Yes, protect plain emails with protection text *', 'wp-mailto-links'); ?></span>
                                 <span class="description inside"><?php _e('(Recommended)', 'wp-mailto-links') ?></span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <?php $fields->radioField('convert_emails', '2'); ?>
+                                <?php $fieldsView->radioField('convert_emails', '2'); ?>
                                 <span><?php _e('Yes, convert plain emails to mailto links', 'wp-mailto-links'); ?></span>
                             </label>
                         </p>
@@ -43,7 +43,7 @@
                         <?php _e('Set protection text *', 'wp-mailto-links'); ?>
                     </th>
                     <td colspan="3">
-                        <?php $fields->textField('protection_text'); ?>
+                        <?php $fieldsView->textField('protection_text'); ?>
                         <p class="description"><?php _e('This text will be shown for protected emailaddresses.', 'wp-mailto-links'); ?></p>
                     </td>
                 </tr>
@@ -53,16 +53,16 @@
                     </th>
                     <td colspan="3">
                         <p>
-                            <?php $fields->checkField('filter_head', '1'); ?>
-                            <?php $fields->label('filter_head', __('<code>&lt;head&gt;</code>-section by replacing emails with protection text *', 'wp-mailto-links')); ?>
+                            <?php $fieldsView->checkField('filter_head', '1'); ?>
+                            <?php $fieldsView->label('filter_head', __('<code>&lt;head&gt;</code>-section by replacing emails with protection text *', 'wp-mailto-links')); ?>
                         </p>
                         <p>
-                            <?php $fields->checkField('filter_rss', '1'); ?>
-                            <?php $fields->label('filter_rss', __('RSS feed by replacing emails with protection text *', 'wp-mailto-links')); ?>
+                            <?php $fieldsView->checkField('filter_rss', '1'); ?>
+                            <?php $fieldsView->label('filter_rss', __('RSS feed by replacing emails with protection text *', 'wp-mailto-links')); ?>
                         </p>
                         <p>
-                            <?php $fields->checkField('input_strong_protection', '1'); ?>
-                            <?php $fields->label('input_strong_protection', __('Strong protection for input form fields', 'wp-mailto-links')); ?>
+                            <?php $fieldsView->checkField('input_strong_protection', '1'); ?>
+                            <?php $fieldsView->label('input_strong_protection', __('Strong protection for input form fields', 'wp-mailto-links')); ?>
                             <p class="description"><?php _e('Warning: this option could conflict with certain form plugins. Test it first.', 'wp-mailto-links'); ?></p>
                         </p>
                     </td>
@@ -73,22 +73,22 @@
                     </th>
                     <td colspan="3">
                         <p>
-                            <?php $fields->checkField('filter_body', '1'); ?>
-                            <?php $fields->label('filter_body', __('All contents', 'wp-mailto-links')); ?>
+                            <?php $fieldsView->checkField('filter_body', '1'); ?>
+                            <?php $fieldsView->label('filter_body', __('All contents', 'wp-mailto-links')); ?>
                             <span class="description inside"><?php _e('(the whole <code>&lt;body&gt;</code>)', 'wp-mailto-links'); ?></span>
                         </p>
                         <div class="inside">
                             <p>
-                                <?php $fields->checkField('filter_posts', '1', 'filter-body-child'); ?>
-                                <?php $fields->label('filter_posts', __('Post contents', 'wp-mailto-links')); ?>
+                                <?php $fieldsView->checkField('filter_posts', '1', 'filter-body-child'); ?>
+                                <?php $fieldsView->label('filter_posts', __('Post contents', 'wp-mailto-links')); ?>
                             </p>
                             <p>
-                                <?php $fields->checkField('filter_comments', '1', 'filter-body-child'); ?>
-                                <?php $fields->label('filter_comments', __('Comments', 'wp-mailto-links')); ?>
+                                <?php $fieldsView->checkField('filter_comments', '1', 'filter-body-child'); ?>
+                                <?php $fieldsView->label('filter_comments', __('Comments', 'wp-mailto-links')); ?>
                             </p>
                             <p>
-                                <?php $fields->checkField('filter_widgets', '1', 'filter-body-child'); ?>
-                                <?php $fields->label('filter_widgets', __('All widgets', 'wp-mailto-links')); ?>
+                                <?php $fieldsView->checkField('filter_widgets', '1', 'filter-body-child'); ?>
+                                <?php $fieldsView->label('filter_widgets', __('All widgets', 'wp-mailto-links')); ?>
                             </p>
                         </div>
                     </td>
@@ -97,7 +97,7 @@
             </fieldset>
 
             <p>
-                <?php echo $fields->submitButton(); ?>
+                <?php echo $fieldsView->submitButton(); ?>
             </p>
         </div>
     </div>

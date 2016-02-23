@@ -39,7 +39,7 @@ final class WPML_Admin_Page
     /**
      * @var WPLim_Fields_Decorator_View_0x4x0
      */
-    private $fields = null;
+    private $fieldsView = null;
 
     
     public function load()
@@ -62,7 +62,7 @@ final class WPML_Admin_Page
     {
         $this->templateBasePath = WPML_Plugin::plugin()->getPath('/templates/admin/page');
         $this->option = WPML_Plugin::plugin()->getOption();
-        $this->fields = new WPLim_Fields_Decorator_View_0x4x0($this->option);
+        $this->fieldsView = new WPLim_Fields_Decorator_View_0x4x0($this->option);
     }
 
     private function createPage()
@@ -81,7 +81,7 @@ final class WPML_Admin_Page
             'pageTemplate'    => $this->templateBasePath . '/page.php',
             'templateVars'    => array(
                 'option' => $this->option,
-                'fields' => $this->fields,
+                'fieldsView' => $this->fieldsView,
             ),
         ));
     }
@@ -93,7 +93,7 @@ final class WPML_Admin_Page
             'templatesPath' => $this->templateBasePath . '/meta-boxes',
             'templateVars'  => array(
                 'option' => $this->option,
-                'fields' => $this->fields,
+                'fieldsView' => $this->fieldsView,
             ),
         ));
 

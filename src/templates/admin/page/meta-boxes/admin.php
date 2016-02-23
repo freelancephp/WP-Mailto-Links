@@ -6,8 +6,8 @@
         </th>
         <td>
             <p>
-                <?php $fields->checkField('security_check', '1'); ?>
-                <?php $fields->label('security_check', __('Mark emails on the site as successfully encoded', 'wp-mailto-links')); ?>
+                <?php $fieldsView->checkField('security_check', '1'); ?>
+                <?php $fieldsView->label('security_check', __('Mark emails on the site as successfully encoded', 'wp-mailto-links')); ?>
                 <i class="dashicons-before dashicons-lock"></i>
                 <span class="description inside"><?php _e('Only visible for admin users.', 'wp-mailto-links') ?></span>
             </p>
@@ -19,8 +19,8 @@
         </th>
         <td>
             <p>
-                <?php $fields->checkField('own_admin_menu', '1'); ?>
-                <?php $fields->label('own_admin_menu', __('Show this page in the main menu item', 'wp-mailto-links')); ?>
+                <?php $fieldsView->checkField('own_admin_menu', '1'); ?>
+                <?php $fieldsView->label('own_admin_menu', __('Show this page in the main menu item', 'wp-mailto-links')); ?>
                 <span class="description inside"><?php _e('Or else will be shown in "Settings"-menu.', 'wp-mailto-links') ?></span>
             </p>
         </td>
@@ -28,6 +28,6 @@
     </table>
 
     <p>
-        <?php echo $fields->submitButton(); ?>
+        <?php echo $fieldsView->submitButton(); ?>
     </p>
 </fieldset>
