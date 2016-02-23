@@ -131,8 +131,8 @@ abstract class WPLim_Admin_DashboardWidget_Abstract_0x4x0 implements WPLim_Admin
         $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
         // tight coupling
-        $renderer = new WPLim_Template_Render_0x4x0();
-        return $renderer->render($templateFile, $this->settings['templateVars']);
+        $view = new WPLim_View_0x4x0($templateFile, $this->settings['templateVars']);
+        return $view->render();
     }
 
 }

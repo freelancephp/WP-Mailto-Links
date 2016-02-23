@@ -23,10 +23,8 @@ final class WPML_Site
      */
     private $option = array();
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+
+    public function load()
     {
         $this->option = WPML_Plugin::plugin()->getOption();
 

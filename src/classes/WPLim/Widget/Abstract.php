@@ -12,7 +12,7 @@
  * @link     https://github.com/freelancephp/WPLim
  * @license  MIT license
  */
-abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget
+abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget implements WPLim_Widget_Interface_0x4x0
 {
 
     /**
@@ -23,6 +23,7 @@ abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget
         'name'            => '',
         'templatesPath'   => '',
         'templateFileExt' => '.php',
+        'templateVars'  => array(),
         'widgetOptions'   => array(),
         'controlOptions'  => array(),
     );
@@ -89,8 +90,7 @@ abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget
         $this->setValues($instance);
 
         echo $this->renderTemplate('widget', array(
-            'args'   => $args,
-            'widget' => $this,
+            'args' => $args,
         ));
     }
 
@@ -102,9 +102,7 @@ abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget
     {
         $this->setValues($instance);
 
-        echo $this->renderTemplate('form', array(
-            'widget'   => $this,
-        ));
+        echo $this->renderTemplate('form');
     }
 
     /**
@@ -140,6 +138,24 @@ abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget
     }
 
     /**
+     * @param string $key
+     * @return string
+     */
+    public function getFieldName($key)
+    {
+        return $this->get_field_name($key);
+    }
+
+    /**
+     * @param string $key
+     * @return string
+     */
+    public function getFieldId($key)
+    {
+        return $this->get_field_id($key);
+    }
+
+    /**
      * Get values
      * @param array $instance
      * @return array
@@ -152,15 +168,16 @@ abstract class WPLim_Widget_Abstract_0x4x0 extends WP_Widget
     /**
      * Render a template
      * @param string $file
-     * @param array  $templateVars  Optional
+     * @param array  $additionalTemplateVars  Optional
      * @return string
      */
-    protected function renderTemplate($key, array $templateVars = array()) {
+    protected function renderTemplate($key, array $additionalTemplateVars = array()) {
         $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
-
+        $templateVars = array_merge($this->settings['templateVars'], $additionalTemplateVars);
+    
         // tight coupling
-        $renderer = new WPLim_Template_Render_0x4x0();
-        return $renderer->render($templateFile, $templateVars);
+        $view = new WPLim_View_0x4x0($templateFile, $templateVars);
+        return $view->render();
     }
 
     /**

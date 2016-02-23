@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPLim
  * @license  MIT license
  */
-interface WPLim_Option_Interface_0x4x0
+interface WPLim_Option_Interface_0x4x0 extends WPLim_Fields_Interface_0x4x0
 {
 
     /**
@@ -25,11 +25,6 @@ interface WPLim_Option_Interface_0x4x0
      * @return string
      */
     public function getOptionName();
-
-    /**
-     * @return mixed|null
-     */
-    public function getValue($key);
 
     /**
      * @param string  $key
@@ -48,12 +43,6 @@ interface WPLim_Option_Interface_0x4x0
      * @return array
      */
     public function getValues();
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    public function getFieldName($key);
 
     public function update();
 

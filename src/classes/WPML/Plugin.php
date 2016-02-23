@@ -13,7 +13,7 @@ final class WPML_Plugin extends WPLim_Plugin_Abstract_0x4x0 implements WPML_Plug
 
     /**
      * This property should also be included in child classes to prevent conflicts
-     * @var PluginExample_Plugin_Interface
+     * @var WPML_Plugin_Interface
      */
     protected static $instance = null;
 
@@ -23,33 +23,36 @@ final class WPML_Plugin extends WPLim_Plugin_Abstract_0x4x0 implements WPML_Plug
     private $option = null;
 
     /**
-     * Init
+     * @var array
      */
+    private $defaultValues = array(
+        'protect'           => 1,
+        'convert_emails'    => 1,
+        'filter_body'       => 1,
+        'filter_posts'      => 1,
+        'filter_comments'   => 1,
+        'filter_widgets'    => 1,
+        'filter_rss'        => 1,
+        'filter_head'       => 1,
+        'input_strong_protection' => 0,
+        'protection_text'   => '*protected email*',
+        'mail_icon'         => '',  // type
+        'image'              => 1,  // new
+        'dashicons'         => '',  // new
+        'fontawesome'       => '',  // new
+        'show_icon_before'  => 0,   // new
+        'image_no_icon'     => 0,
+        'no_icon_class'     => 'no-mail-icon',
+        'class_name'        => 'mail-link',
+        'security_check'    => 0,
+        'own_admin_menu'    => 1,
+    );
+
+
     protected function init()
     {
-        // create option and make it global
-        $this->option = new WPLim_Option_0x4x0('wp-mailto-links', array(
-            'protect'           => 1,
-            'convert_emails'    => 1,
-            'filter_body'       => 1,
-            'filter_posts'      => 1,
-            'filter_comments'   => 1,
-            'filter_widgets'    => 1,
-            'filter_rss'        => 1,
-            'filter_head'       => 1,
-            'input_strong_protection' => 0,
-            'protection_text'   => '*protected email*',
-            'mail_icon'         => '',  // type
-            'image'              => 1,  // new
-            'dashicons'         => '',  // new
-            'fontawesome'       => '',  // new
-            'show_icon_before'  => 0,   // new
-            'image_no_icon'     => 0,
-            'no_icon_class'     => 'no-mail-icon',
-            'class_name'        => 'mail-link',
-            'security_check'    => 0,
-            'own_admin_menu'    => 1,
-        ));
+        $this->setOption();
+        $this->loadTextdomain();
 
         // activation also after upgrade
         register_activation_hook($this->getFile(), array(__CLASS__, 'upgrade'));
@@ -59,9 +62,9 @@ final class WPML_Plugin extends WPLim_Plugin_Abstract_0x4x0 implements WPML_Plug
 
         // load admin or front site
         if (is_admin()) {
-            new WPML_Admin_Page();
+            $this->loadAdmin();
         } else {
-            new WPML_Site();
+            $this->loadSite();
         }
     }
 
@@ -73,6 +76,30 @@ final class WPML_Plugin extends WPLim_Plugin_Abstract_0x4x0 implements WPML_Plug
         return $this->option;
     }
 
+    private function setOption()
+    {
+        $this->option = new WPLim_Option_0x4x0('wp-mailto-links', $this->defaultValues);
+    }
+
+    private function loadTextdomain()
+    {
+        add_action('plugins_loaded', function () {
+            load_plugin_textdomain('wp-mailto-links', false, $this->getFile(), '/languages');
+        });
+    }
+
+    private function loadAdmin()
+    {
+        $adminPage = new WPML_Admin_Page();
+        $adminPage->load();
+    }
+
+    private function loadSite()
+    {
+        $site = new WPML_Site();
+        $site->load();
+    }
+    
     /**
      * Upgrade procedure
      * Convert old to new option values
@@ -128,9 +155,6 @@ final class WPML_Plugin extends WPLim_Plugin_Abstract_0x4x0 implements WPML_Plug
         }
     }
 
-    /**
-     * Uninstall plugin
-     */
     public static function uninstall()
     {
         // remove option values

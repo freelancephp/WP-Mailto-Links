@@ -129,11 +129,21 @@ abstract class WPLim_Admin_MetaBoxes_Abstract_0x4x0 implements WPLim_Admin_MetaB
     protected function showMetaBox($post, $box)
     {
         $id = $box['args'][0];
-        $templateFile = $this->settings['templatesPath'] . '/' . $id . $this->settings['templateFileExt'];
+
+        echo $this->renderTemplate($id);
+    }
+
+    /**
+     * Render template
+     * @param string $templateFile
+     */
+    protected function renderTemplate($key)
+    {
+        $templateFile = $this->settings['templatesPath'] . '/' . $key . $this->settings['templateFileExt'];
 
         // tight coupling
-        $renderer = new WPLim_Template_Render_0x4x0();
-        echo $renderer->render($templateFile, $this->settings['templateVars']);
+        $view = new WPLim_View_0x4x0($templateFile, $this->settings['templateVars']);
+        return $view->render();
     }
 
 }

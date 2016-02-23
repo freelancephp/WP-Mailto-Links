@@ -134,18 +134,17 @@ abstract class WPLim_Admin_Page_Abstract_0x4x0 implements WPLim_Admin_Page_Inter
      */
     protected function showPage()
     {
-        echo $this->renderTemplate($this->templateVars);
+        echo $this->renderTemplate();
     }
 
     /**
-     * Show page template
-     * @param array $vars  Optional
+     * Render template
      */
-    protected function renderTemplate($templateVars = array())
+    protected function renderTemplate()
     {
         // tight coupling
-        $renderer = new WPLim_Template_Render_0x4x0();
-        return $renderer->render($this->settings['pageTemplate'], $templateVars);
+        $view = new WPLim_View_0x4x0($this->settings['pageTemplate'], $this->templateVars);
+        return $view->render();
     }
 
 }

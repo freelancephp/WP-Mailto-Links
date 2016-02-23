@@ -141,6 +141,16 @@ abstract class WPLim_Option_Abstract_0x4x0 implements WPLim_Option_Interface_0x4
     }
 
     /**
+     * Get form field id
+     * @param string $key
+     * @return string
+     */
+    public function getFieldId($key)
+    {
+        return $this->optionName . '-' . $key;
+    }
+
+    /**
      * Update values
      */
     public function update()
