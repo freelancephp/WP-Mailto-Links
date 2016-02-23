@@ -84,7 +84,11 @@ class WPLim_Fields_Decorator_View_0x4x0 extends WPLim_Fields_Decorator_Abstract_
      */
     public function selectField($key, $checkedValue, array $options = array(), $class = '')
     {
-        echo '<select class="' . $class . '">';
+        echo '<select class="' . $class . '"
+                    class="' . $class . '"
+                    id="' . $this->getFieldId($key) . '"
+                    name="' . $this->getFieldName($key) . '"
+                    >';
 
         foreach ($options as $value => $text) {
             $this->selectOption($text, $value, ($checkedValue == $value));
