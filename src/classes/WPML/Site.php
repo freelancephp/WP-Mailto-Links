@@ -251,7 +251,12 @@ final class WPML_Site
         $filtered = preg_replace_callback($this->regexps['input'], array($this, 'pregReplaceInputValues'), $filtered);
 
         // get mailto links
-        $filtered = preg_replace_callback($this->regexps['mailtoLink'], array($this, 'pregReplaceMailto'), $filtered);
+        $pregReplaceMailto = function ($match) {
+            $attrs = shortcode_parse_atts($match[1]);
+            return $this->protectedMailto($match[4], $attrs);
+        };
+
+        $filtered = preg_replace_callback($this->regexps['mailtoLink'], $pregReplaceMailto, $filtered);
 
         // convert plain emails (only when mailto links protection on)
         if ($this->option->getValue('convert_emails') == 1) {
@@ -259,7 +264,11 @@ final class WPML_Site
             $filtered = $this->replacePlainEmails($filtered);
         } elseif ($this->option->getValue('convert_emails') == 2) {
             // make mailto links from plain emails
-            $filtered = preg_replace_callback($this->regexps['emailPlain'], array($this, 'pregReplacePlainEmail'), $filtered);
+            $pregReplacePlainEmail = function ($match) {
+                return $this->protectedMailto($match[0], array('href' => 'mailto:'.$match[0]));
+            };
+    
+            $filtered = preg_replace_callback($this->regexps['emailPlain'], $pregReplacePlainEmail, $filtered);
         }
  
         // when no filtered content
@@ -296,30 +305,6 @@ final class WPML_Site
         }
 
         return $encodedInput;
-    }
-
-    /**
-     * Convert plain email to protected mailto link
-     * @param array $match
-     * @return string
-     */
-    public function pregReplacePlainEmail($match)
-    {
-        $content = $this->protectedMailto($match[0], array('href' => 'mailto:'.$match[0]));
-        return $content;
-    }
-
-    /**
-     * Make a clean protected mailto link
-     * @param array $match Result of a preg call in filterContent()
-     * @return string Protected mailto link
-     */
-    public function pregReplaceMailto($match)
-    {
-        $attrs = shortcode_parse_atts($match[1]);
-        $link  = $this->protectedMailto($match[4], $attrs);
-
-        return $link;
     }
 
     /**
