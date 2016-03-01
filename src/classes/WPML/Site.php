@@ -23,19 +23,41 @@ final class WPML_Site
         $this->addShortcode();
         $this->createTemplateTags();
 
-        add_action('wp', function () use ($self) {
-            $self->checkFeedProtection();
-            $self->setFilters();
-            $self->enqueueScripts();
-        });
+//        add_action('wp', function () use ($self) {
+//            $self->checkFeedProtection();
+//            $self->setFilters();
+//            $self->enqueueScripts();
+//        });
+        $this->addAction('wp', 'checkFeedProtection');
+        $this->addAction('wp', 'setFilters');
+        $this->addAction('wp', 'enqueueScripts');
 
-        add_filter('wp_head', function () use ($self) {
-            $self->showInHead();
-        }, 10);
+//        add_filter('wp_head', function () use ($self) {
+//            $self->showInHead();
+//        }, 10);
+        $this->addAction('wp_head', 'showInHead');
 
         do_action('wpml_ready', function ($content) use ($self) {
             return $self->filterContent($content);
         }, $this);
+    }
+
+    private function addAction($actionName, $methodName)
+    {
+        $self = $this;
+
+        add_action($actionName, function () use ($self, $methodName) {
+            $self->$methodName();
+        });
+    }
+
+    private function addFilter($filterName, $methodName)
+    {
+        $self = $this;
+
+        add_filter($filterName, function ($content) use ($self, $methodName) {
+            return $self->$methodName($content);
+        });
     }
 
     /**
