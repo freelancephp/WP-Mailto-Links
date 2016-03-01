@@ -21,16 +21,9 @@ final class WPML_Site
      */
     public $regexps = array();
 
-    /**
-     * @var WPDev_Option
-     */
-    private $option = array();
-
 
     public function load()
     {
-        $this->option = WPML_Plugin::plugin()->getOption();
-
         // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
         $regexpEmail = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
 
@@ -38,9 +31,6 @@ final class WPML_Site
             'emailPlain' => '/'.$regexpEmail.'/i',
             'emailMailto' => '/mailto\:[\s+]*'.$regexpEmail.'/i',
             'input' => '/<input([^>]*)value=["\'][\s+]*'.$regexpEmail.'[\s+]*["\']([^>]*)>/is',
-            'mailtoLink' => '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\'])>(.*?)<\/a[\s+]*>/is',
-            'image' => '/<img([^>]*)>/is',
-            'body' => '/(<body(([^>]*)>))/is',
         );
 
         $this->createCustomFilterHooks();
@@ -50,6 +40,11 @@ final class WPML_Site
         // add actions
         add_action('wp', array($this, 'actionWpSite'), 10);
         add_filter('wp_head', array($this, 'filterWpHead'), 10);
+    }
+
+    private function opt($key)
+    {
+        return WPML_Plugin::plugin()->getOption()->getValue($key);
     }
 
     private function addShortcode()
@@ -69,12 +64,12 @@ final class WPML_Site
 
     private function createCustomFilterHooks()
     {
-        if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
+        if ($this->opt('filter_body') || $this->opt('filter_head')) {
             // final_output filter
             WPLim_Filter_FinalOutput_0x4x0::create();
         }
 
-        if (!$this->option->getValue('filter_body') && $this->option->getValue('filter_widgets')) {
+        if (!$this->opt('filter_body') && $this->opt('filter_widgets')) {
             // widget_output filter
             WPLim_Filter_WidgetOutput_0x4x0::create();
         }
@@ -85,31 +80,29 @@ final class WPML_Site
      */
     public function actionWpSite()
     {
-        if (is_feed()) {
-            // rss feed
-            if ($this->option->getValue('filter_rss')) {
-                $rss_filters = array('the_title', 'the_content', 'the_excerpt', 'the_title_rss',
-                    'the_content_rss', 'the_excerpt_rss',
-                    'comment_text_rss', 'comment_author_rss', 'the_category_rss',
-                    'the_content_feed', 'author_feed_link', 'feed_link');
+        $self = $this;
 
-                foreach ($rss_filters as $filter) {
-                    add_filter($filter, array($this, 'filterRss'), 100);
-                }
+        if (is_feed()) {
+            if ($this->opt('filter_rss')) {
+                add_filter('final_output', function ($content) use ($self) {
+                   return $self->filterRss($content);
+                }, 10, 1);
             }
         } else {
             // site
             // set js file
-            if ($this->option->getValue('protect')) {
-                wp_enqueue_script('wp-mailto-links',
-                    WPML_Plugin::plugin()->getUrl('/js/wp-mailto-links.js'),
-                    array('jquery'));
+            if ($this->opt('protect')) {
+                wp_enqueue_script(
+                    'wp-mailto-links'
+                    , WPML_Plugin::plugin()->getUrl('/js/wp-mailto-links.js')
+                    , array('jquery')
+                );
             }
 
             // add css font icons
-            if ($this->option->getValue('mail_icon') === 'dashicons') {
+            if ($this->opt('mail_icon') === 'dashicons') {
                 wp_enqueue_style('dashicons');
-            } elseif ($this->option->getValue('mail_icon') === 'fontawesome') {
+            } elseif ($this->opt('mail_icon') === 'fontawesome') {
                 wp_enqueue_style(
                     'font-awesome'
                     , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
@@ -118,39 +111,48 @@ final class WPML_Site
                 );
             }
 
-            if ($this->option->getValue('filter_body') || $this->option->getValue('filter_head')) {
-                add_filter('final_output', array($this, 'filterPage'), 10, 1);
+            $shouldFilterHead = (bool) $this->opt('filter_head');
+            $shouldFilterBody = (bool) $this->opt('filter_body');
+
+            if ($shouldFilterHead || $shouldFilterBody) {
+                add_filter('final_output', function ($content) use ($self, $shouldFilterHead, $shouldFilterBody) {
+                    return $self->filterPage($content, $shouldFilterHead, $shouldFilterBody);
+                }, 10, 1);
             }
 
-            if (!$this->option->getValue('filter_body')) {
+            if (!$this->opt('filter_body')) {
                 $filters = array();
 
                 // post content
-                if ($this->option->getValue('filter_posts')) {
+                if ($this->opt('filter_posts')) {
                     array_push($filters, 'the_title', 'the_content',
                         'the_excerpt', 'get_the_excerpt');
                 }
 
                 // comments
-                if ($this->option->getValue('filter_comments')) {
+                if ($this->opt('filter_comments')) {
                     array_push($filters, 'comment_text', 'comment_excerpt',
                         'comment_url', 'get_comment_author_url',
                         'get_comment_author_link', 'get_comment_author_url_link');
                 }
 
-                // widgets ( only text widgets )
-                if ($this->option->getValue('filter_widgets')) {
+                // widgets
+                if ($this->opt('filter_widgets')) {
                     array_push($filters, 'widget_output');
                 }
 
                 foreach ($filters as $filter) {
-                    add_filter($filter, array($this, 'filterContent'), 100);
+                    add_filter($filter, function ($content) use ($self) {
+                        return $self->filterContent($content);
+                    }, 100);
                 }
             }
         }
 
         // hook
-        do_action('wpml_ready', array($this, 'filterContent'), $this);
+        do_action('wpml_ready', function ($content) use ($self) {
+            return $self->filterContent($content);
+        }, $this);
     }
 
     /**
@@ -158,9 +160,9 @@ final class WPML_Site
      */
     public function filterWpHead()
     {
-        $icon = $this->option->getValue('image');
-        $className = $this->option->getValue('class_name');
-        $showBefore = $this->option->getValue('show_icon_before');
+        $icon = $this->opt('image');
+        $className = $this->opt('class_name');
+        $showBefore = $this->opt('show_icon_before');
 
         // add style to <head>
         echo '<style type="text/css" media="all">'."\n";
@@ -190,68 +192,31 @@ final class WPML_Site
     }
 
     /**
-     * Filter complete <html>
      * @param string $content
      * @return string
      */
-    public function filterPage($content)
+    private function filterPage($content, $filterHead = true, $filterBody = true)
     {
-        $filtered = $content;
+        $htmlSplit = preg_split('/(<body(([^>]*)>))/is', $content, null, PREG_SPLIT_DELIM_CAPTURE);
 
-        $html_split = preg_split($this->regexps['body'], $filtered, null, PREG_SPLIT_DELIM_CAPTURE);
-
-        if (count($html_split) >= 4) {
-            // protect emails in <head> section
-            if ($this->option->getValue('filter_head')) {
-                $headFiltered = $this->filterHead(array($html_split[0]));
-            } else {
-                $headFiltered = $html_split[0];
-            }
-
-            // only replace links in <body> part
-            if ($this->option->getValue('filter_body')) {
-                $bodyFiltered = $this->filterBody(array($html_split[4]));
-            } else {
-                $bodyFiltered = $html_split[4];
-            }
-
-            $filtered = $headFiltered . $html_split[1] . $bodyFiltered;
-        }
-
-        // when no filtered content
-        if (!$filtered || strlen(trim($filtered)) === 0) {
+        if (count($htmlSplit) < 4) {
             return $content;
         }
 
-        return $filtered;
-    }
-
-    /**
-     * Filter <head>
-     * @param array $match
-     * @return string
-     */
-    private function filterHead($match)
-    {
-        if (count($match) == 0) {
-            return '';
+        if ($filterHead === true) {
+            $filteredHead = $this->filterPlainEmails($htmlSplit[0]);
+        } else {
+            $filteredHead = $htmlSplit[0];
         }
 
-        return $this->replacePlainEmails($match[0]);
-    }
-
-    /**
-     * Filter <body>
-     * @param array $match
-     * @return string
-     */
-    private function filterBody($match)
-    {
-        if (count($match) == 0) {
-            return '';
+        if ($filterBody === true) {
+            $filteredBody = $this->filterContent($htmlSplit[4]);
+        } else {
+            $filteredBody = $htmlSplit[4];
         }
-
-        return $this->filterContent($match[0]);
+        
+        $filteredContent = $filteredHead . $htmlSplit[1] . $filteredBody;
+        return $filteredContent;
     }
 
     /**
@@ -259,68 +224,114 @@ final class WPML_Site
      * @param string $content
      * @return string
      */
-    public function filterContent($content)
+    private function filterContent($content)
     {
         $filtered = $content;
 
-        // first encode email address in input values
-        $filtered = preg_replace_callback($this->regexps['input'], array($this, 'pregReplaceInputValues'), $filtered);
+        $filtered = $this->filterInputFields($filtered);
+        $filtered = $this->filterMailtoLinks($filtered);
 
-        // get mailto links
-        $pregReplaceMailto = function ($match) {
-            $attrs = shortcode_parse_atts($match[1]);
-            return $this->protectedMailto($match[4], $attrs);
-        };
+        // plain emails
+        $convertPlainEmails = $this->opt('convert_emails');
 
-        $filtered = preg_replace_callback($this->regexps['mailtoLink'], $pregReplaceMailto, $filtered);
+        if ($convertPlainEmails == 1) {
+            $filtered = $this->filterPlainEmails($filtered);
 
-        // convert plain emails (only when mailto links protection on)
-        if ($this->option->getValue('convert_emails') == 1) {
-            // protect plain emails
-            $filtered = $this->replacePlainEmails($filtered);
-        } elseif ($this->option->getValue('convert_emails') == 2) {
-            // make mailto links from plain emails
-            $pregReplacePlainEmail = function ($match) {
-                return $this->protectedMailto($match[0], array('href' => 'mailto:'.$match[0]));
-            };
-    
-            $filtered = preg_replace_callback($this->regexps['emailPlain'], $pregReplacePlainEmail, $filtered);
+        } elseif ($convertPlainEmails == 2) {
+            $filtered = $this->filterPlainEmails($filtered, function ($match) {
+                return $this->protectedMailto($match[0], array('href' => 'mailto:' . $match[0]));
+            });
         }
  
-        // when no filtered content
-        if (!$filtered || strlen(trim($filtered)) === 0) {
-            return $content;
-        }
-
         return $filtered;
     }
 
     /**
-     * Encode emails in input values
-     * @param array $match
+     * @param string $content
      * @return string
      */
-    public function pregReplaceInputValues($match)
+    private function filterMailtoLinks($content)
     {
-        $input = $match[0];
-        $email = $match[2];
+        $self = $this;
 
-        $encodedEmail = $this->getEncEmail($email);
+        $callbackEncodeMailtoLinks = function ($match) use ($self) {
+            $attrs = shortcode_parse_atts($match[1]);
+            return $self->protectedMailto($match[4], $attrs);
+        };
 
-        if ($this->option->getValue('input_strong_protection') == 1) {
-            // add data-enc-email after "<input"
-            $encodedInput = substr($input, 0, 6);
-            $encodedInput .= ' data-enc-email="' . $encodedEmail . '"';
-            $encodedInput .= substr($input, 6);
+        $regexpMailtoLink = '/<a[\s+]*(([^>]*)href=["\']mailto\:([^>]*)["\'])>(.*?)<\/a[\s+]*>/is';
 
-            // remove email from value attribute
-            $encodedInput = str_replace($email, '', $encodedInput);
-        } else {
-            // replace email in value attribute
-            $encodedInput = str_replace($email, antispambot($email), $input);
+        return preg_replace_callback($regexpMailtoLink, $callbackEncodeMailtoLinks, $content);
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    private function filterInputFields($content)
+    {
+        $self = $this;
+
+        $callbackEncodeInputFields = function ($match) use ($self) {
+            $input = $match[0];
+            $email = $match[2];
+            $strongEncoding = (bool) $this->opt('input_strong_protection');
+
+            return $this->encodeInputField($input, $email, $strongEncoding);
+        };
+
+        return preg_replace_callback($self->regexps['input'], $callbackEncodeInputFields, $content);
+    }
+
+    /**
+     * @return string
+     */
+    private function getProtectionText()
+    {
+        return __($this->opt('protection_text'), 'wp-mailto-links');
+    }
+
+    /**
+     * Emails will be replaced by '*protected email*'
+     * @param string           $content
+     * @param string|callable  $replaceBy  Optional
+     * @return string
+     */
+    private function filterPlainEmails($content, $replaceBy = null)
+    {
+        if ($replaceBy === null) {
+            $replaceBy = $this->getProtectionText();
         }
 
-        return $encodedInput;
+        if (is_callable($replaceBy)) {
+            return preg_replace_callback($this->regexps['emailPlain'], $replaceBy, $content);
+        }
+        
+        return preg_replace($this->regexps['emailPlain'], $replaceBy, $content);
+    }
+
+    /**
+     * Encode email in input field
+     * @param string $input
+     * @param string $email
+     * @return string
+     */
+    private function encodeInputField($input, $email, $strongEncoding = true)
+    {
+        if ($strongEncoding === false) {
+            // encode email with entities (default wp method)
+            return str_replace($email, antispambot($email), $input);
+        }
+
+        // add data-enc-email after "<input"
+        $inputWithDataAttr = substr($input, 0, 6);
+        $inputWithDataAttr .= ' data-enc-email="' . $this->getEncEmail($email) . '"';
+        $inputWithDataAttr .= substr($input, 6);
+
+        // remove email from value attribute
+        $encInput = str_replace($email, '', $inputWithDataAttr);
+
+        return $encInput;
     }
 
     /**
@@ -328,46 +339,11 @@ final class WPML_Site
      * @param string $content
      * @return string
      */
-    public function filterRss($content)
+    private function filterRss($content)
     {
-        $content = $this->replacePlainEmails($content);
-        $content = preg_replace($this->regexps['emailMailto'], 'mailto:' . __($this->option->getValue('protection_text'), 'wp-mailto-links'), $content);
-        return $content;
-    }
-
-    /**
-     * Emails will be replaced by '*protected email*'
-     * @param string $content
-     * @param string $email_replacement  Optional
-     * @return string
-     */
-    public function replacePlainEmails($content, $emailReplacement = null)
-    {
-        $emailReplacement = ($emailReplacement === null) ? __($this->option->getValue('protection_text'), 'wp-mailto-links') : $emailReplacement;
-        return preg_replace($this->regexps['emailPlain'], $emailReplacement, $content);
-    }
-
-    /**
-     * Shortcode protected mailto link
-     * @param array $attrs
-     * @param string $content Optional
-     * @return string
-     */
-    public function shortcodeProtectedMailto($attrs, $content = '')
-    {
-        if ($this->option->getValue('protect') && preg_match($this->regexps['emailPlain'], $content) > 0) {
-            $content = $this->getProtectedDisplay($content);
-        }
-
-        // set "email" to "href"
-        if (isset($attrs['email'])) {
-            $attrs['href'] = 'mailto:'.$attrs['email'];
-            unset($attrs['email']);
-        }
-
-        $content = $this->protectedMailto($content, $attrs);
-
-        return $content;
+        $filtered = $this->filterPlainEmails($content);
+        $filtered = preg_replace($this->regexps['emailMailto'], 'mailto:' . $this->getProtectionText(), $filtered);
+        return $filtered;
     }
 
     /**
@@ -381,41 +357,40 @@ final class WPML_Site
         $email     = '';
         $class_ori = (empty($attrs['class'])) ? '' : $attrs['class'];
 
-
         // does not contain no-icon class and no icon when contains <img>
-        if ((!$this->option->getValue('no_icon_class') || strpos($class_ori, $this->option->getValue('no_icon_class')) === FALSE)
-                    && !($this->option->getValue('image_no_icon') == 1 && (bool) preg_match($this->regexps['image'], $display))) {
-            if ($this->option->getValue('mail_icon') === 'image') {
+        if ((!$this->opt('no_icon_class') || strpos($class_ori, $this->opt('no_icon_class')) === FALSE)
+                    && !($this->opt('image_no_icon') == 1 && $this->hasImageTag($display))) {
+            if ($this->opt('mail_icon') === 'image') {
             // image
-                if ($this->option->getValue('image') > 0 && strpos($class_ori, 'mail-icon-') === FALSE) {
-                    $icon_class = 'mail-icon-' . $this->option->getValue('image');
+                if ($this->opt('image') > 0 && strpos($class_ori, 'mail-icon-') === FALSE) {
+                    $icon_class = 'mail-icon-' . $this->opt('image');
 
                     $attrs['class'] = (empty($attrs['class'])) ? $icon_class : $attrs['class'] .' '.$icon_class;
                 }
-            } elseif ($this->option->getValue('mail_icon') === 'dashicons') {
+            } elseif ($this->opt('mail_icon') === 'dashicons') {
             // dashicons
-                $fontIcon = '<i class="dashicons-before ' . $this->option->getValue('dashicons') . '"></i>';
-            } elseif ($this->option->getValue('mail_icon') === 'fontawesome') {
+                $fontIcon = '<i class="dashicons-before ' . $this->opt('dashicons') . '"></i>';
+            } elseif ($this->opt('mail_icon') === 'fontawesome') {
             // fontawesome
-                $fontIcon = '<i class="fa ' . $this->option->getValue('fontawesome') . '"></i>';
+                $fontIcon = '<i class="fa ' . $this->opt('fontawesome') . '"></i>';
             }
         }
 
         // set user-defined class
-        if ($this->option->getValue('class_name') && strpos($class_ori, $this->option->getValue('class_name')) === FALSE) {
-            $attrs['class'] = (empty($attrs['class'])) ? $this->option->getValue('class_name') : $attrs['class'].' '.$this->option->getValue('class_name');
+        if ($this->opt('class_name') && strpos($class_ori, $this->opt('class_name')) === FALSE) {
+            $attrs['class'] = (empty($attrs['class'])) ? $this->opt('class_name') : $attrs['class'].' '.$this->opt('class_name');
         }
 
         // check title for email address
         if (!empty($attrs['title'])) {
-            $attrs['title'] = $this->replacePlainEmails($attrs['title'], '{{email}}'); // {{email}} will be replaced in javascript
+            $attrs['title'] = $this->filterPlainEmails($attrs['title'], '{{email}}'); // {{email}} will be replaced in javascript
         }
 
         // create element code
         $link = '<a ';
 
         foreach ($attrs AS $key => $value) {
-            if (strtolower($key) == 'href' && $this->option->getValue('protect')) {
+            if (strtolower($key) == 'href' && $this->opt('protect')) {
                 // get email from href
                 $email = substr($value, 7);
 
@@ -434,13 +409,13 @@ final class WPML_Site
 
         $link .= '>';
 
-        if (!empty($fontIcon) && $this->option->getValue('show_icon_before')) {
+        if (!empty($fontIcon) && $this->opt('show_icon_before')) {
             $link .= $fontIcon . ' ';
         }
 
-        $link .= ($this->option->getValue('protect') && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
+        $link .= ($this->opt('protect') && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
 
-        if (!empty($fontIcon) && !$this->option->getValue('show_icon_before')) {
+        if (!empty($fontIcon) && !$this->opt('show_icon_before')) {
             $link .= ' ' . $fontIcon;
         }
 
@@ -450,15 +425,24 @@ final class WPML_Site
         $link = apply_filters('wpml_mailto', $link, $display, $email, $attrs);
 
         // just in case there are still email addresses f.e. within title-tag
-        $link = $this->replacePlainEmails($link);
+        $link = $this->filterPlainEmails($link);
 
         // mark link as successfullly encoded (for admin users)
-        if (current_user_can('manage_options') && $this->option->getValue('security_check')) {
+        if (current_user_can('manage_options') && $this->opt('security_check')) {
             $link .= '<i class="wpml-encoded dashicons-before dashicons-lock" title="' . __('Email encoded successfully!', 'wp-mailto-links') . '"></i>';
         }
 
 
         return $link;
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    private function hasImageTag($content)
+    {
+        return (bool) preg_match('/<img([^>]*)>/is', $content);
     }
 
     /**
