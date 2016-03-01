@@ -15,31 +15,43 @@
 final class WPML_Site
 {
 
-    /**
-     * Regular expressions
-     * @var array
-     */
-    public $regexps = array();
-
-
     public function load()
     {
-        // @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
-        $regexpEmail = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
-
-        $this->regexps = array(
-            'emailPlain' => '/'.$regexpEmail.'/i',
-            'emailMailto' => '/mailto\:[\s+]*'.$regexpEmail.'/i',
-            'input' => '/<input([^>]*)value=["\'][\s+]*'.$regexpEmail.'[\s+]*["\']([^>]*)>/is',
-        );
+        $self = $this;
 
         $this->createCustomFilterHooks();
         $this->addShortcode();
         $this->createTemplateTags();
 
-        // add actions
-        add_action('wp', array($this, 'actionWpSite'), 10);
-        add_filter('wp_head', array($this, 'filterWpHead'), 10);
+        add_action('wp', function () use ($self) {
+            $self->checkFeedProtection();
+            $self->setFilters();
+            $self->enqueueScripts();
+        });
+
+        add_filter('wp_head', function () use ($self) {
+            $self->showInHead();
+        }, 10);
+
+        do_action('wpml_ready', function ($content) use ($self) {
+            return $self->filterContent($content);
+        }, $this);
+    }
+
+    /**
+     * @link http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
+     * @param boolean $include
+     * @return string
+     */
+    public function getEmailRegExp($include = false)
+    {
+        $baseEmailRegexp = '([_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,}))';
+
+        if ($include === true) {
+            return $baseEmailRegexp;
+        }
+
+        return '/' . $baseEmailRegexp . '/i';
     }
 
     private function opt($key)
@@ -75,120 +87,103 @@ final class WPML_Site
         }
     }
 
-    /**
-     * WP action callback
-     */
-    public function actionWpSite()
+    private function checkFeedProtection()
     {
-        $self = $this;
-
-        if (is_feed()) {
-            if ($this->opt('filter_rss')) {
-                add_filter('final_output', function ($content) use ($self) {
-                   return $self->filterRss($content);
-                }, 10, 1);
-            }
-        } else {
-            // site
-            // set js file
-            if ($this->opt('protect')) {
-                wp_enqueue_script(
-                    'wp-mailto-links'
-                    , WPML_Plugin::plugin()->getUrl('/js/wp-mailto-links.js')
-                    , array('jquery')
-                );
-            }
-
-            // add css font icons
-            if ($this->opt('mail_icon') === 'dashicons') {
-                wp_enqueue_style('dashicons');
-            } elseif ($this->opt('mail_icon') === 'fontawesome') {
-                wp_enqueue_style(
-                    'font-awesome'
-                    , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-                    , array()
-                    , null // use caching CDN file
-                );
-            }
-
-            $shouldFilterHead = (bool) $this->opt('filter_head');
-            $shouldFilterBody = (bool) $this->opt('filter_body');
-
-            if ($shouldFilterHead || $shouldFilterBody) {
-                add_filter('final_output', function ($content) use ($self, $shouldFilterHead, $shouldFilterBody) {
-                    return $self->filterPage($content, $shouldFilterHead, $shouldFilterBody);
-                }, 10, 1);
-            }
-
-            if (!$this->opt('filter_body')) {
-                $filters = array();
-
-                // post content
-                if ($this->opt('filter_posts')) {
-                    array_push($filters, 'the_title', 'the_content',
-                        'the_excerpt', 'get_the_excerpt');
-                }
-
-                // comments
-                if ($this->opt('filter_comments')) {
-                    array_push($filters, 'comment_text', 'comment_excerpt',
-                        'comment_url', 'get_comment_author_url',
-                        'get_comment_author_link', 'get_comment_author_url_link');
-                }
-
-                // widgets
-                if ($this->opt('filter_widgets')) {
-                    array_push($filters, 'widget_output');
-                }
-
-                foreach ($filters as $filter) {
-                    add_filter($filter, function ($content) use ($self) {
-                        return $self->filterContent($content);
-                    }, 100);
-                }
-            }
+        if (!is_feed() || !$this->opt('filter_rss')) {
+            return;
         }
 
-        // hook
-        do_action('wpml_ready', function ($content) use ($self) {
-            return $self->filterContent($content);
-        }, $this);
+        $self = $this;
+
+        add_filter('final_output', function ($content) use ($self) {
+           return $self->filterRss($content);
+        }, 10, 1);
     }
 
     /**
-     * WP filter callbacks
+     * 
      */
-    public function filterWpHead()
+    public function setFilters()
     {
-        $icon = $this->opt('image');
-        $className = $this->opt('class_name');
-        $showBefore = $this->opt('show_icon_before');
+        $self = $this;
 
-        // add style to <head>
-        echo '<style type="text/css" media="all">'."\n";
-        echo '/* WP Mailto Links Plugin */'."\n";
-        echo '.wpml-nodis { display:none; }';
-        echo '.wpml-rtl { unicode-bidi:bidi-override; direction:rtl; }';
-        echo '.wpml-encoded { position:absolute; margin-top:-0.3em; z-index:1000; color:green; }';
+        $shouldFilterHead = (bool) $this->opt('filter_head');
+        $shouldFilterBody = (bool) $this->opt('filter_body');
 
-        // add nowrap style
-        if ($className) {
-            echo '.' . $className . ' { white-space:nowrap; }';
+        if ($shouldFilterHead || $shouldFilterBody) {
+            add_filter('final_output', function ($content) use ($self, $shouldFilterHead, $shouldFilterBody) {
+                return $self->filterPage($content, $shouldFilterHead, $shouldFilterBody);
+            }, 10, 1);
         }
 
-        // add icon styling
-        if ($icon) {
-            echo '.mail-icon-' . $icon . ' {';
-            echo 'background:url(' . WPML_Plugin::plugin()->getUrl('/images/mail-icon-' . $icon . '.png') . ') no-repeat ';
-            if ($showBefore) {
-                echo '0% 50%; padding-left:18px;';
-            } else {
-                echo '100% 50%; padding-right:18px;';
+        if (!$shouldFilterBody) {
+            $filters = array();
+
+            // post content
+            if ($this->opt('filter_posts')) {
+                array_push($filters, 'the_title', 'the_content', 'the_excerpt', 'get_the_excerpt');
             }
-            echo '}';
+
+            // comments
+            if ($this->opt('filter_comments')) {
+                array_push($filters, 'comment_text', 'comment_excerpt', 'comment_url', 'get_comment_author_url',
+                    'get_comment_author_link', 'get_comment_author_url_link');
+            }
+
+            // widgets
+            if ($this->opt('filter_widgets')) {
+                array_push($filters, 'widget_output');
+            }
+
+            foreach ($filters as $filter) {
+                add_filter($filter, function ($content) use ($self) {
+                    return $self->filterContent($content);
+                }, 100);
+            }
+        }
+    }
+
+    /**
+     * Set scripts
+     */
+    private function enqueueScripts()
+    {
+        if ($this->opt('protect')) {
+            wp_enqueue_script(
+                'wp-mailto-links'
+                , WPML_Plugin::plugin()->getUrl('/js/wp-mailto-links.js')
+                , array('jquery')
+            );
         }
 
-        echo '</style>'."\n";
+        // add css font icons
+        if ($this->opt('mail_icon') === 'dashicons') {
+            wp_enqueue_style('dashicons');
+
+        } elseif ($this->opt('mail_icon') === 'fontawesome') {
+            wp_enqueue_style(
+                'font-awesome'
+                , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+                , array()
+                , null // use caching CDN file
+            );
+        }
+    }
+
+    /**
+     * Head
+     */
+    private function showInHead()
+    {
+        $headTemplateFile = WPML_Plugin::plugin()->getPath('/templates/site/head.php');;
+
+        $view = new WPLim_View_0x4x0($headTemplateFile, array(
+            'icon' => $this->opt('image'),
+            'className' => $this->opt('class_name'),
+            'showBefore' => $this->opt('show_icon_before'),
+        ));
+        
+        echo $view->render();
     }
 
     /**
@@ -277,10 +272,12 @@ final class WPML_Site
             $email = $match[2];
             $strongEncoding = (bool) $this->opt('input_strong_protection');
 
-            return $this->encodeInputField($input, $email, $strongEncoding);
+            return $self->encodeInputField($input, $email, $strongEncoding);
         };
+        
+        $regexpInputField = '/<input([^>]*)value=["\'][\s+]*' . $this->getEmailRegExp(true) . '[\s+]*["\']([^>]*)>/is';
 
-        return preg_replace_callback($self->regexps['input'], $callbackEncodeInputFields, $content);
+        return preg_replace_callback($regexpInputField, $callbackEncodeInputFields, $content);
     }
 
     /**
@@ -304,10 +301,10 @@ final class WPML_Site
         }
 
         if (is_callable($replaceBy)) {
-            return preg_replace_callback($this->regexps['emailPlain'], $replaceBy, $content);
+            return preg_replace_callback($this->getEmailRegExp(), $replaceBy, $content);
         }
         
-        return preg_replace($this->regexps['emailPlain'], $replaceBy, $content);
+        return preg_replace($this->getEmailRegExp(), $replaceBy, $content);
     }
 
     /**
@@ -341,8 +338,11 @@ final class WPML_Site
      */
     private function filterRss($content)
     {
+        $regexpHrefMailto = '/mailto\:[\s+]*' . $this->getEmailRegExp(true) . '/i';
+        
         $filtered = $this->filterPlainEmails($content);
-        $filtered = preg_replace($this->regexps['emailMailto'], 'mailto:' . $this->getProtectionText(), $filtered);
+        // @todo Check removing explicit mailto check
+        $filtered = preg_replace($regexpHrefMailto, 'mailto:' . $this->getProtectionText(), $filtered);
         return $filtered;
     }
 
@@ -413,7 +413,7 @@ final class WPML_Site
             $link .= $fontIcon . ' ';
         }
 
-        $link .= ($this->opt('protect') && preg_match($this->regexps['emailPlain'], $display) > 0) ? $this->getProtectedDisplay($display) : $display;
+        $link .= ($this->opt('protect') && preg_match($this->getEmailRegExp(), $display) > 0) ? $this->getProtectedDisplay($display) : $display;
 
         if (!empty($fontIcon) && !$this->opt('show_icon_before')) {
             $link .= ' ' . $fontIcon;

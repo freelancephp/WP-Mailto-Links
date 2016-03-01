@@ -28,7 +28,7 @@ final class WPML_Shortcode_Mailto extends WPLim_Shortcode_Abstract_0x4x0
         $plugin = WPML_Plugin::plugin();
         $site = $plugin->getSite();
 
-        if ($plugin->getOption()->getValue('protect') && preg_match($site->regexps['emailPlain'], $content) > 0) {
+        if ($plugin->getOption()->getValue('protect') && preg_match($site->getEmailRegExp(), $content) > 0) {
             $content = $site->getProtectedDisplay($content);
         }
 
