@@ -1,6 +1,6 @@
 <?php
 /**
- * Interface WPML_Plugin_Interface
+ * Class WPML_Admin
  *
  * @package  WPML
  * @category WordPress Plugins
@@ -10,18 +10,14 @@
  * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
-interface WPML_Plugin_Interface extends WPLim_Plugin_Interface_0x4x0
+final class WPML_Admin
 {
 
-    /**
-     * @return WPML_Site
-     */
-    public function getSite();
-
-    /**
-     * @return WPLim_Option_Interface
-     */
-    public function getOption();
+    public function load()
+    {
+        $settingsPage = new WPML_AdminPage_Settings();
+        $settingsPage->built();
+    }
 
 }
 

@@ -4,20 +4,6 @@ jQuery(function ($) {
 
     'use strict';
 
-    // Workaround for posting disabled checkboxes
-    // prepare checkboxes on submit
-    $('.wrap form').on('submit', function () {
-        // force value 0 being saved in options
-        $('*[type="checkbox"]:not(:checked)')
-            .css({
-                'visibility': 'hidden'
-            })
-            .prop({
-                'value': '0',
-                'checked': 'checked'
-            });
-    });
-
     // fill dashicons  select options
     $.get(wpmlSettings.pluginUrl + '/data/json/fontawesome.json', null, function (data) {
         var $select = $('.select-fontawesome');

@@ -66,16 +66,7 @@ class WPLim_Loader_0x4x0
             return;
         }
 
-        // versionized WPLim class name
-        if (strpos($className, 'WPLim_') !== false) {
-            // remove version postfix
-            $explodeClassName = explode('_', $className);
-            array_pop($explodeClassName);
-
-            $pureClassName = implode('_', $explodeClassName);
-        } else {
-            $pureClassName = $className;
-        }
+        $pureClassName = self::removeVersionFromClassName($className);
 
         $internalPath = str_replace('_', DIRECTORY_SEPARATOR, $pureClassName);
 
@@ -87,6 +78,25 @@ class WPLim_Loader_0x4x0
                 return;
             }
         }
+    }
+
+    /**
+     * @param string $className
+     * @return string
+     */
+    private static function removeVersionFromClassName($className)
+    {
+        if (substr($className, 0, 6) === 'WPLim_') {
+            // remove version postfix
+            $explodeClassName = explode('_', $className);
+            array_pop($explodeClassName);
+
+            $pureClassName = implode('_', $explodeClassName);
+        } else {
+            $pureClassName = $className;
+        }
+
+        return $pureClassName;
     }
 
 }

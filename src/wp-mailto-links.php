@@ -10,23 +10,28 @@ License:        Dual licensed under the MIT and GPL licenses
 Text Domain:    wp-mailto-links
 Domain Path:    /languages
 */
-// constant
+// set constant
 if (!defined('WP_MAILTO_LINKS_FILE')) {
     define('WP_MAILTO_LINKS_FILE', __FILE__);
 }
 
-// autoloader
+// set class auto-loader
 if (!class_exists('WPLim_Loader_0x4x0')) {
     require_once __DIR__ . '/classes/WPLim/Loader.php';
 }
 WPLim_Loader_0x4x0::register();
 WPLim_Loader_0x4x0::addPath(__DIR__ . '/classes');
 
-// start plugin
+// create plugin
 WPML_Plugin::create(array(
     'file'      => WP_MAILTO_LINKS_FILE,
     'dir'       => __DIR__,
     'baseUrl'   => plugins_url('', WP_MAILTO_LINKS_FILE),
 ));
+
+// uninstall, activation and deactivation hooks
+WPML_RegisterHook_Activation::register(WP_MAILTO_LINKS_FILE);
+WPML_RegisterHook_Uninstall::register(WP_MAILTO_LINKS_FILE);
+
 
 /*?>*/

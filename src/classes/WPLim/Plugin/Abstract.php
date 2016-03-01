@@ -14,8 +14,8 @@ abstract class WPLim_Plugin_Abstract_0x4x0 implements WPLim_Plugin_Interface_0x4
 {
 
     /**
-     * This property should also be included in child classes to prevent conflicts
-     * @var WPLim_Plugin
+     * This property should also be included in child classes to prevent shared states between plugins
+     * @var WPLim_Plugin_Interface_0x4x0
      */
     protected static $instance = null;
 
@@ -43,7 +43,7 @@ abstract class WPLim_Plugin_Abstract_0x4x0 implements WPLim_Plugin_Interface_0x4
     }
 
     /**
-     * @return WPLim_Plugin
+     * @return WPLim_Plugin_Interface_0x4x0
      */
     public static function plugin()
     {
@@ -90,6 +90,20 @@ abstract class WPLim_Plugin_Abstract_0x4x0 implements WPLim_Plugin_Interface_0x4
     public function getUrl($url = '')
     {
         return $this->settings['baseUrl'] . $url;
+    }
+
+    /**
+     * Load a plugin text domain
+     * @param string $domainName
+     * @param string $relativePath
+     */
+    protected function loadTextdomain($domainName, $relativePath = '/languages')
+    {
+        add_action('plugins_loaded', function () use ($domainName, $relativePath) {
+            $path = basename(dirname($this->getFile())) . $relativePath;
+
+            load_plugin_textdomain($domainName, false, $path);
+        });
     }
 
 }

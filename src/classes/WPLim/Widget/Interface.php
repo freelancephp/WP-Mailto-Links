@@ -10,12 +10,12 @@
  * @link     https://github.com/freelancephp/WPLim
  * @license  MIT license
  */
-interface WPLim_Widget_Interface_0x4x0 extends WPLim_Fields_Interface_0x4x0
+interface WPLim_Widget_Interface_0x4x0
 {
 
-    public static function register();
-
     public function __construct();
+
+    public function register();
 
     /**
      * @param array $args

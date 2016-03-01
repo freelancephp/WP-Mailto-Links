@@ -1,6 +1,6 @@
 <?php
 /**
- * Interface WPLim_View_Interface
+ * Interface WPLim_AdminPage_Page_Interface
  *
  * @package  WPLim
  * @category WordPress Library
@@ -10,24 +10,20 @@
  * @link     https://github.com/freelancephp/WPLim
  * @license  MIT license
  */
-interface WPLim_View_Interface_0x4x0
+interface WPLim_AdminPage_Page_Interface_0x4x0
 {
 
     /**
-     * @param string $file
-     * @param array  $vars
+     * @param array $settings
      */
-    public function __construct($file, array $vars);
+    public function __construct(array $settings);
 
-    /**
-     * @return boolean
-     */
-    public function exists();
+    public function create();
 
     /**
      * @return string
      */
-    public function render();
+    public function getHook();
 
 }
 

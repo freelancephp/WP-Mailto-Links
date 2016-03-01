@@ -25,11 +25,11 @@ abstract class WPLim_View_Abstract_0x4x0 implements WPLim_View_Interface_0x4x0
      */
     protected $vars = array();
 
-    
+
     /**
      * Protected constructor to force using create factory
      * @param string $file
-     * @param array $vars  Optional
+     * @param array  $vars  Optional
      */
     public function __construct($file, array $vars = array())
     {

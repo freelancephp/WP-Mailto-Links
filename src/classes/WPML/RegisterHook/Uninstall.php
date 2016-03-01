@@ -1,6 +1,6 @@
 <?php
 /**
- * Interface WPML_Plugin_Interface
+ * Class WPML_RegisterHook_Uninstall
  *
  * @package  WPML
  * @category WordPress Plugins
@@ -10,18 +10,14 @@
  * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
-interface WPML_Plugin_Interface extends WPLim_Plugin_Interface_0x4x0
+final class WPML_RegisterHook_Uninstall extends WPLim_RegisterHook_Uninstall_Abstract_0x4x0
 {
 
-    /**
-     * @return WPML_Site
-     */
-    public function getSite();
-
-    /**
-     * @return WPLim_Option_Interface
-     */
-    public function getOption();
+    protected function uninstall()
+    {
+        // remove option values
+        WPML_Plugin::plugin()->getOption()->delete();
+    }
 
 }
 

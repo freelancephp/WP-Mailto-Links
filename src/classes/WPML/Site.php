@@ -8,15 +8,18 @@
  * @category WordPress Plugins
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
+ * @link     https://github.com/freelancephp/WP-Mailto-Links
+ * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
 final class WPML_Site
 {
+
     /**
      * Regular expressions
      * @var array
      */
-    private $regexps = array();
+    public $regexps = array();
 
     /**
      * @var WPDev_Option
@@ -41,11 +44,27 @@ final class WPML_Site
         );
 
         $this->createCustomFilterHooks();
-        $this->createTemplateFunctions();
+        $this->addShortcode();
+        $this->createTemplateTags();
 
         // add actions
         add_action('wp', array($this, 'actionWpSite'), 10);
         add_filter('wp_head', array($this, 'filterWpHead'), 10);
+    }
+
+    private function addShortcode()
+    {
+        $mailtoShortcode = new WPML_Shortcode_Mailto();
+        $mailtoShortcode->add();
+    }
+
+    private function createTemplateTags()
+    {
+        $mailtoFunc = new WPML_TemplateTag_Mailto();
+        $mailtoFunc->create();
+
+        $filterFunc = new WPML_TemplateTag_Filter();
+        $filterFunc->create();
     }
 
     private function createCustomFilterHooks()
@@ -129,9 +148,6 @@ final class WPML_Site
                 }
             }
         }
-
-        // shortcodes
-        add_shortcode('wpml_mailto', array($this, 'shortcodeProtectedMailto'));
 
         // hook
         do_action('wpml_ready', array($this, 'filterContent'), $this);
@@ -512,40 +528,6 @@ final class WPML_Site
         $protected = '<span class="wpml-rtl">'.$protected.'</span>';
 
         return $protected;
-    }
-
-    /**
-     * Create the global template functions
-     */
-    private function createTemplateFunctions()
-    {
-        global $wpml_site_object;
-        $wpml_site_object = $this;
-
-        if (!function_exists('wpml_mailto')):
-            function wpml_mailto($email, $display = null, $attrs = array())
-            {
-                global $wpml_site_object;
-
-                if (is_array($display)) {
-                   // backwards compatibility (old params: $display, $attrs = array())
-                   $attrs   = $display;
-                   $display = $email;
-               } else {
-                   $attrs['href'] = 'mailto:'.$email;
-               }
-
-               return $wpml_site_object->protectedMailto($display, $attrs);
-            }
-        endif;
-
-        if (!function_exists('wpml_filter')):
-            function wpml_filter($content)
-            {
-                global $wpml_site_object;
-                return $wpml_site_object->filterContent($content);
-            }
-        endif;
     }
 
 }

@@ -36,24 +36,34 @@ class WPLim_Fields_Decorator_View_0x4x0 extends WPLim_Fields_Decorator_Abstract_
                     class="' . $class . '"
                     id="' . $this->getFieldId($key) . '"
                     name="' . $this->getFieldName($key) . '"
-                    value="' . esc_attr($this->getValue($key)) . '">';
+                    value="' . esc_attr($this->getValue($key)) . '"
+                >';
     }
 
     /**
      * Show a check field
      * @param string $key
      * @param mixed  $checkedValue
+     * @param mixed  $uncheckedValue
      * @param string $class
      */
-    public function checkField($key, $checkedValue, $class = '')
+    public function checkField($key, $checkedValue, $uncheckedValue = null, $class = '')
     {
+        // workaround for also posting a value when checkbox is unchecked
+        if ($uncheckedValue !== null) {
+            echo '<input type="hidden"
+                        name="' . $this->getFieldName($key) . '"
+                        value="' . esc_attr($uncheckedValue) . '"
+                    >';
+        }
+        
         echo '<input type="checkbox"
                     class="' . $class . '"
                     id="' . $this->getFieldId($key) . '"
                     name="' . $this->getFieldName($key) . '"
                     value="' . esc_attr($checkedValue) . '"
                     ' . $this->getCheckedAttr($key, $checkedValue) . '
-                    >';
+                >';
     }
 
     /**
@@ -65,14 +75,14 @@ class WPLim_Fields_Decorator_View_0x4x0 extends WPLim_Fields_Decorator_Abstract_
     public function radioField($key, $checkedValue, $class = '')
     {
         $id = $this->getFieldId($key) . '-' . sanitize_key($checkedValue);
-        
+
         echo '<input type="radio"
                     class="' . $class . '"
                     id="' . $id . '"
                     name="' . $this->getFieldName($key) . '"
                     value="' . esc_attr($checkedValue) . '"
                     ' . $this->getCheckedAttr($key, $checkedValue) . '
-                    >';
+                >';
     }
 
     /**
@@ -88,7 +98,7 @@ class WPLim_Fields_Decorator_View_0x4x0 extends WPLim_Fields_Decorator_Abstract_
                     class="' . $class . '"
                     id="' . $this->getFieldId($key) . '"
                     name="' . $this->getFieldName($key) . '"
-                    >';
+                >';
 
         foreach ($options as $value => $text) {
             $this->selectOption($text, $value, ($checkedValue == $value));
@@ -117,7 +127,8 @@ class WPLim_Fields_Decorator_View_0x4x0 extends WPLim_Fields_Decorator_Abstract_
     {
         echo '<input type="submit"
                     class="button button-primary button-large"
-                    value="' . __('Save Changes') . '">';
+                    value="' . __('Save Changes') . '"
+                >';
     }
 
     /**
