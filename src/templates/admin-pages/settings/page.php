@@ -2,7 +2,7 @@
     <h1><?php echo get_admin_page_title() ?></h1>
 
     <form method="post" action="options.php">
-        <?php $option->settingsFields(); ?>
+        <?php settings_fields($option->getOptionGroup()); ?>
 
         <input type="hidden" name="<?php echo $id; ?>_nonce" value="<?php echo wp_create_nonce($id) ?>">
         <?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false); ?>

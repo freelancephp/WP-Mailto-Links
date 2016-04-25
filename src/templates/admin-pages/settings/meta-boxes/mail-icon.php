@@ -23,7 +23,7 @@
                     <?php for ($x = 1; $x <= 25; $x++): ?>
                         <label>
                             <?php $fieldsView->radioField('image', $x); ?>
-                            <img src="<?php echo WPML_Plugin::plugin()->getUrl('/images/mail-icon-'. $x .'.png'); ?>">
+                            <img src="<?php echo plugins_url('/images/mail-icon-'. $x .'.png', WP_MAILTO_LINKS_FILE); ?>">
                         </label>
                         <br>
                         <?php if ($x % 5 == 0): ?>

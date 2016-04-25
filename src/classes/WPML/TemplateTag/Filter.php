@@ -10,21 +10,25 @@
  * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
-final class WPML_TemplateTag_Filter extends WPLim_TemplateTag_Abstract_0x4x0
+final class WPML_TemplateTag_Filter extends WPRun_BaseAbstract_0x4x0
 {
 
     /**
-     * @var string
+     * Create template tag "wpml_filter()"
      */
-    protected $tagName = 'wpml_filter';
+    protected function init()
+    {
+        $this->createTemplateTag('wpml_filter', $this->getCallback('filter'));
+    }
 
     /**
      * @param string $content
      * @return string
      */
-    protected function func($content)
+    protected function filter($content)
     {
-        return WPML_Plugin::plugin()->getSite()->filterContent($content);
+        $site = $this->getArgument(0);
+        return $site->filterContent($content);
     }
 
 }

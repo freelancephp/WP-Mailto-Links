@@ -10,29 +10,42 @@
  * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
-final class WPML_TemplateTag_Mailto extends WPLim_TemplateTag_Abstract_0x4x0
+final class WPML_TemplateTag_Mailto extends WPRun_BaseAbstract_0x4x0
 {
 
     /**
-     * @var string
+     * Create template tag "wpml_mailto()"
      */
-    protected $tagName = 'wpml_mailto';
+    protected function init()
+    {
+        $this->createTemplateTag('wpml_mailto', $this->getCallback('mailto'));
+    }
 
     /**
-     * @param string $content
+     * Handle template tag
+     * @param string $email
+     * @param string $display
+     * @param array  $atts
      * @return string
      */
-    protected function func($email, $display = null, $attrs = array())
+    protected function mailto($email, $display = null, $atts = array())
     {
-        if (is_array($display)) {
-            // backwards compatibility (old params: $display, $attrs = array())
-            $attrs   = $display;
-            $display = $email;
-        } else {
-            $attrs['href'] = 'mailto:'.$email;
+        $site = $this->getArgument(0);
+        $option = $this->getArgument(1);
+
+        if ($option->getValue('protect') && preg_match($site->getEmailRegExp(), $content) > 0) {
+            $content = $site->getProtectedDisplay($content);
         }
 
-        return WPML_Plugin::plugin()->getSite()->protectedMailto($display, $attrs);
+        // set "email" to "href"
+        if (isset($atts['email'])) {
+            $atts['href'] = 'mailto:' . $atts['email'];
+            unset($atts['email']);
+        }
+
+        $content = $site->protectedMailto($content, $atts);
+
+        return $content;
     }
 
 }

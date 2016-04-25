@@ -10,25 +10,28 @@
  * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
-final class WPML_Shortcode_Mailto extends WPLim_Shortcode_Abstract_0x4x0
+final class WPML_Shortcode_Mailto extends WPRun_BaseAbstract_0x4x0
 {
 
     /**
-     * @var string
+     * Add shortcode "[wpml_mailto]"
      */
-    protected $shortcodeName = 'wpml_mailto';
+    protected function init()
+    {
+        add_shortcode('wpml_mailto', $this->getCallback('mailto'));
+    }
 
     /**
-     * @param array  $atts
-     * @param string $content
-     * @return string
+     * Handle shortcode
+     * @param array   $atts
+     * @param string  $content
      */
-    protected function func($atts, $content)
+    protected function mailto($atts, $content = null)
     {
-        $plugin = WPML_Plugin::plugin();
-        $site = $plugin->getSite();
+        $site = $this->getArgument(0);
+        $option = $this->getArgument(1);
 
-        if ($plugin->getOption()->getValue('protect') && preg_match($site->getEmailRegExp(), $content) > 0) {
+        if ($option->getValue('protect') && preg_match($site->getEmailRegExp(), $content) > 0) {
             $content = $site->getProtectedDisplay($content);
         }
 

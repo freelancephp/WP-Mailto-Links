@@ -10,13 +10,27 @@
  * @link     https://wordpress.org/plugins/wp-mailto-links/
  * @license  MIT license
  */
-final class WPML_RegisterHook_Uninstall extends WPLim_RegisterHook_Uninstall_Abstract_0x4x0
+final class WPML_RegisterHook_Uninstall extends WPRun_BaseAbstract_0x4x0
 {
 
+    /**
+     * Initialize
+     * @param string $pluginFile
+     */
+    protected function init($pluginFile)
+    {
+        register_uninstall_hook($pluginFile, $this->getCallback('uninstall'));
+    }
+
+    /**
+     * Plugin uninstall prodecure
+     */
     protected function uninstall()
     {
+        $option = $this->getArgument(1);
+
         // remove option values
-        WPML_Plugin::plugin()->getOption()->delete();
+        $option->delete();
     }
 
 }

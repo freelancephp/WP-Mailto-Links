@@ -13,15 +13,22 @@
 final class WPML_AdminPage_Settings extends WPLim_AdminPage_TemplateBuilder_Abstract_0x4x0
 {
 
+    public function __construct($option)
+    {
+        $fieldsView = new MyDevLib_FormHelper($option->getOptionName(), $option->getValues());
+
+        $this->setOption($option);
+        $this->setFieldsView($fieldsView);
+    }
+
     protected function before()
     {
-        $templateBasePath = WPML_Plugin::plugin()->getPath('/templates/admin-pages/settings');
+        $templateBasePath = WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings';
         $this->setTemplateBasePath($templateBasePath);
     }
 
     protected function prepareOption()
     {
-        $this->setOption(WPML_Plugin::plugin()->getOption());
     }
 
     protected function prepareAdminPage()
@@ -51,7 +58,7 @@ final class WPML_AdminPage_Settings extends WPLim_AdminPage_TemplateBuilder_Abst
         $helpTabs = new WPLim_AdminPage_HelpTabs_0x4x0($this->getAdminPage(), array(
             'templatesPath' => $this->getTemplateBasePath() . '/help-tabs',
             'templateVars'  => array(
-                'file' => WPML_Plugin::plugin()->getFile(),
+                'file' => WP_MAILTO_LINKS_FILE,
             ),
         ));
 
@@ -88,13 +95,13 @@ final class WPML_AdminPage_Settings extends WPLim_AdminPage_TemplateBuilder_Abst
     {
         wp_enqueue_script(
             'wp-mailto-links-admin'
-            , WPML_Plugin::plugin()->getUrl('/js/wp-mailto-links-admin.js')
+            , plugins_url('/js/wp-mailto-links-admin.js', WP_MAILTO_LINKS_FILE)
             , array('jquery')
             , false
             , true
         );
         wp_localize_script('wp-mailto-links-admin', 'wpmlSettings', array(
-            'pluginUrl' => WPML_Plugin::plugin()->getUrl(),
+            'pluginUrl' => plugins_url('', WP_MAILTO_LINKS_FILE),
             'dashiconsValue' => $this->getOption()->getValue('dashicons'),
             'fontawesomeValue' => $this->getOption()->getValue('fontawesome'),
         ));

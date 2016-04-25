@@ -144,15 +144,24 @@ abstract class WPLim_AdminPage_TemplateBuilder_Abstract_0x4x0 implements WPLim_A
     /**
      * @param WPLim_Option_Interface_0x4x0 $option
      */
-    final protected function setOption(WPLim_Option_Interface_0x4x0 $option, $fieldsViewClass = 'WPLim_Fields_Decorator_View_0x4x0')
+//    final protected function setOption($option, $fieldsViewClass = 'WPLim_Fields_Decorator_View_0x4x0')
+//    {
+//        $this->option = $option;
+//
+//        // create fieldsView
+//        if (class_exists($fieldsViewClass)) {
+//            $fieldsView = new $fieldsViewClass($option);
+//            $this->fieldsView = $fieldsView;
+//        }
+//    }
+    final protected function setOption($option)
     {
         $this->option = $option;
+    }
 
-        // create fieldsView
-        if (class_exists($fieldsViewClass)) {
-            $fieldsView = new $fieldsViewClass($option);
-            $this->fieldsView = $fieldsView;
-        }
+    final protected function setFieldsView($fieldsView)
+    {
+        $this->fieldsView = $fieldsView;
     }
 
     /**
