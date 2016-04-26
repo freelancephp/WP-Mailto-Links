@@ -94,7 +94,7 @@ final class WPML_Front_Site extends WPRun_BaseAbstract_0x4x0
         if ($this->opt('protect')) {
             wp_enqueue_script(
                 'wp-mailto-links'
-                , plugins_url('/js/wp-mailto-links.js', WP_MAILTO_LINKS_FILE)
+                , plugins_url('/public/js/wp-mailto-links.js', WP_MAILTO_LINKS_FILE)
                 , array('jquery')
             );
         }

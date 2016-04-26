@@ -141,7 +141,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x4x0
     {
         wp_enqueue_script(
             'wp-mailto-links-admin'
-            , plugins_url('/js/wp-mailto-links-admin.js', WP_MAILTO_LINKS_FILE)
+            , plugins_url('/public/js/wp-mailto-links-admin.js', WP_MAILTO_LINKS_FILE)
             , array('jquery')
             , false
             , true
