@@ -9,7 +9,7 @@
 
 <?php if ($icon): ?>
 .mail-icon-<?php echo $icon; ?> {
-    background-image:url("<?php echo plugins_url('/images/mail-icon-' . $icon . '.png', WP_MAILTO_LINKS_FILE); ?>");
+    background-image:url("<?php echo plugins_url('/public/images/mail-icon-' . $icon . '.png', WP_MAILTO_LINKS_FILE); ?>");
     background-repeat:no-repeat;
     <?php if ($showBefore): ?>
     background-position:0% 50%; padding-left:18px;
