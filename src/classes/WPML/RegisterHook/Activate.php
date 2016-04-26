@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  MIT license
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 final class WPML_RegisterHook_Activate extends WPRun_BaseAbstract_0x4x0
 {

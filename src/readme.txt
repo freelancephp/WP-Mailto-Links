@@ -2,8 +2,8 @@
 Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email link, protection
 Requires at least: 3.6.0
-Tested up to: 4.4.0
-Stable tag: 2.0.1
+Tested up to: 4.5.0
+Stable tag: 2.1.0
 
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
 
@@ -17,8 +17,8 @@ http://www.youtube.com/watch?v=NxHnJWQnyuY
 * Protect plain email addresses or convert them to mailto links
 * Protect RSS feed
 * Set icon for all mailto links, also supports Font Awesome Icons and Dashicons
-* Use of shortcode `[wpml_mailto]`
-* Use of template tags `wpml_mailto()` and `wpml_filter()`
+* Shortcode support: `[wpml_mailto]`
+* Template tag support: `wpml_mailto()` and `wpml_filter()`
 
 The plugin combines the best email protection methods (css and javascript techniques).
 
@@ -120,17 +120,11 @@ add_filter('wpml_mailto', 'special_mailto', 10, 4);`
 
 Now all mailto links will be wrapped around a `<b>`-tag.
 
-= Action hook (deprecated) =
-The plugin also has a hook when ready, f.e. to add extra filters:
-`// define callback function
-function extra_filters($filter_callback, $object) {
-    add_filter('some_filter', $filter_callback);
-}
-
-// hook it to "wpml_ready" action
-add_action('wpml_ready', 'extra_filters');`
-
 == Changelog ==
+
+= 2.1.0 =
+ * Removed "wpml_ready" action
+ * Refactoring using WPRun
 
 = 2.0.1 =
  * Removed realpath(), causing errors on existing installs

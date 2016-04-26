@@ -1,6 +1,6 @@
 <?php
 /**
- * Class MyDevLib_FormHelper
+ * Class MyDevLib_FormHelper_0x4x0
  *
  * @package  Demo WPRun
  * @category WordPress Plugin
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
  * @license  Dual licensed under the MIT and GPL licenses
  */
-class MyDevLib_FormHelper
+class MyDevLib_FormHelper_0x4x0
 {
 
     /**

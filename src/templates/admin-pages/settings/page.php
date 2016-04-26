@@ -1,5 +1,10 @@
 <div class="wrap">
     <h1><?php echo get_admin_page_title() ?></h1>
+    <?php
+        if ($showUpdatedMessage):
+            settings_errors();
+        endif;
+    ?>
 
     <form method="post" action="options.php">
         <?php settings_fields($option->getOptionGroup()); ?>
@@ -10,15 +15,7 @@
 
         <div id="poststuff">
             <div id="post-body" class="metabox-holder columns-<?php echo $columnCount; ?>">
-
-                <?php
-                    // Body Content
-                    if (file_exists($bodyTemplate)):
-                        include $bodyTemplate;
-                    elseif (file_exists(__DIR__ . DIRECTORY_SEPARATOR . $bodyTemplate)):
-                        include __DIR__ . DIRECTORY_SEPARATOR . $bodyTemplate;
-                    endif;
-                ?>
+                <?php echo $bodyContent; ?>
 
                 <div id="postbox-container-1" class="postbox-container">
                     <?php do_meta_boxes('', 'side', ''); ?>

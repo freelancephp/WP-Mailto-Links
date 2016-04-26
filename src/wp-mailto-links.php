@@ -37,36 +37,38 @@ call_user_func(function () {
     WPRun_AutoLoader_0x4x0::register();
     WPRun_AutoLoader_0x4x0::addPath(WP_MAILTO_LINKS_DIR . '/classes');
 
+    // load text domain
+    add_action('plugins_loaded', function () {
+        load_plugin_textdomain('wp-mailto-links', false, plugin_basename(WP_MAILTO_LINKS_DIR) . '/languages/');
+    });
+
     /**
      * Create plugin components
      */
 
-    // @todo load_plugin_textdomain
-
+    // create option
     $option = WPML_Option_Settings::create();
-
-    if (is_admin()) {
-        $settingsPage = new WPML_AdminPage_Settings($option);
-        $settingsPage->built();
-    } else {
-        $site = WPML_Site::create($option);
-    }
 
     // create register hooks
     WPML_RegisterHook_Activate::create(WP_MAILTO_LINKS_FILE, $option);
     WPML_RegisterHook_Uninstall::create(WP_MAILTO_LINKS_FILE, $option);
 
-    if (!is_admin()) {
-        // create shortcode
-        WPML_Shortcode_Mailto::create($site, $option);
-
-        // create template tags
-        WPML_TemplateTag_Filter::create($site);
-        WPML_TemplateTag_Mailto::create($site, $option);
-
+    if (is_admin()) {
+        WPML_AdminPage_Settings::create($option);
+    } else {
         // create custom filters final_output and widget_output
         WPRun_Filter_FinalOutput_0x4x0::create();
         WPRun_Filter_WidgetOutput_0x4x0::create();
+
+        $emailEncoder = WPML_Front_Email::create($option);
+        WPML_Front_Site::create($option, $emailEncoder);
+
+        // create shortcode
+        WPML_Shortcode_Mailto::create($option, $emailEncoder);
+
+        // create template tags
+        WPML_TemplateTag_Filter::create($emailEncoder);
+        WPML_TemplateTag_Mailto::create($emailEncoder);
     }
 
 });

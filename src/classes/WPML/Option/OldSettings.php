@@ -10,9 +10,9 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  MIT license
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPML_Option_OldSettings extends MyDevLib_OptionAbstract
+final class WPML_Option_OldSettings extends MyDevLib_OptionAbstract_0x4x0
 {
 
     /**

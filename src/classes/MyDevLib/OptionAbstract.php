@@ -1,6 +1,6 @@
 <?php
 /**
- * Class MyDevLib_OptionAbstract
+ * Class MyDevLib_OptionAbstract_0x4x0
  *
  * @package  WPRun
  * @category WordPress Plugin
@@ -10,7 +10,7 @@
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
  * @license  Dual licensed under the MIT and GPL licenses
  */
-abstract class MyDevLib_OptionAbstract extends WPRun_BaseAbstract_0x4x0
+abstract class MyDevLib_OptionAbstract_0x4x0 extends WPRun_BaseAbstract_0x4x0
 {
 
     /**

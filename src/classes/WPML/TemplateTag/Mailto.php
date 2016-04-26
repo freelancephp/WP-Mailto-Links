@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  MIT license
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 final class WPML_TemplateTag_Mailto extends WPRun_BaseAbstract_0x4x0
 {
@@ -30,22 +30,17 @@ final class WPML_TemplateTag_Mailto extends WPRun_BaseAbstract_0x4x0
      */
     protected function mailto($email, $display = null, $atts = array())
     {
-        $site = $this->getArgument(0);
-        $option = $this->getArgument(1);
+        $email = $this->getArgument(0);
 
-        if ($option->getValue('protect') && preg_match($site->getEmailRegExp(), $content) > 0) {
-            $content = $site->getProtectedDisplay($content);
+        if (is_array($display)) {
+            // backwards compatibility (old params: $display, $attrs = array())
+            $atts   = $display;
+            $display = $email;
+        } else {
+            $atts['href'] = 'mailto:'.$email;
         }
 
-        // set "email" to "href"
-        if (isset($atts['email'])) {
-            $atts['href'] = 'mailto:' . $atts['email'];
-            unset($atts['email']);
-        }
-
-        $content = $site->protectedMailto($content, $atts);
-
-        return $content;
+        return $email->protectedMailto($display, $atts);
     }
 
 }

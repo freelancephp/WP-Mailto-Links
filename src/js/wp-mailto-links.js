@@ -1,2 +1,76 @@
 /* WP Mailto Links */
-!jQuery(function(t){"use strict";function e(t){return t.replace(/[a-zA-Z]/g,function(t){return String.fromCharCode(("Z">=t?90:122)>=(t=t.charCodeAt(0)+13)?t:t-26)})}function n(t){var n=t.getAttribute("data-enc-email");return n?(n=n.replace(/\[at\]/g,"@"),n=e(n)):null}function a(t){var e=t.getAttribute("title"),a=n(t);e&&a&&(e=e.replace("{{email}}",a),t.setAttribute("title",e))}function i(t){var e=n(t);e&&t.setAttribute("value",e)}function c(t){var e=n(t);e&&(window.location.href="mailto:"+e)}t("body").on("click","a[data-enc-email]",function(){c(this)}),t("a[data-enc-email]").each(function(){a(this)}),t("input[data-enc-email]").each(function(){i(this)})});
+/*global jQuery, window*/
+jQuery(function ($) {
+
+    'use strict';
+
+    // encoding method
+    function rot13(s) {
+        // source: http://jsfromhell.com/string/rot13
+        return s.replace(/[a-zA-Z]/g, function (c) {
+            return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+        });
+    }
+
+    // fetch email from data attribute
+    function fetchEmail(el) {
+        var email = el.getAttribute('data-enc-email');
+
+        if (!email) {
+            return null;
+        }
+
+        // replace [at] sign
+        email = email.replace(/\[at\]/g, '@');
+
+        // encode
+        email = rot13(email);
+
+        return email;
+    }
+
+    // replace email in title attribute
+    function parseTitle(el) {
+        var title = el.getAttribute('title');
+        var email = fetchEmail(el);
+
+        if (title && email) {
+            title = title.replace('{{email}}', email);
+            el.setAttribute('title', title);
+        }
+    }
+
+    // set input value attribute
+    function setInputValue(el) {
+        var email = fetchEmail(el);
+
+        if (email) {
+            el.setAttribute('value', email);
+        }
+    }
+
+    // open mailto link
+    function mailto(el) {
+        var email = fetchEmail(el);
+
+        if (email) {
+            window.location.href = 'mailto:' + email;
+        }
+    }
+
+    // set mailto click
+    $('body').on('click', 'a[data-enc-email]', function () {
+        mailto(this);
+    });
+
+    // parse title attirbute
+    $('a[data-enc-email]').each(function () {
+        parseTitle(this);
+    });
+
+    // parse input fields
+    $('input[data-enc-email]').each(function () {
+        setInputValue(this);
+    });
+
+});

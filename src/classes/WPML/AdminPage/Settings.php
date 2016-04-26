@@ -8,90 +8,136 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  MIT license
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-final class WPML_AdminPage_Settings extends WPLim_AdminPage_TemplateBuilder_Abstract_0x4x0
+final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x4x0
 {
 
-    public function __construct($option)
-    {
-        $fieldsView = new MyDevLib_FormHelper($option->getOptionName(), $option->getValues());
+    /**
+     * @var MyDevLib_OptionAbstract
+     */
+    private $option = null;
 
-        $this->setOption($option);
-        $this->setFieldsView($fieldsView);
+    /**
+     * @var string
+     */
+    private $pageId = 'wp-mailto-links-option-page';
+
+    /**
+     * @var integer
+     */
+    private $maxColumns = 2;
+
+    /**
+     * @var integer
+     */
+    private $defaultColumns = 2;
+
+    /**
+     * @var WPML_AdminPage_Settings_HelpTabs
+     */
+    private $helpTabs = null;
+
+    /**
+     * @var WPML_AdminPage_Settings_MetaBoxes
+     */
+    private $metaBoxes = null;
+    
+    /**
+     * Initialize
+     * @param MyDevLib_OptionAbstract $option
+     */
+    protected function init($option)
+    {
+        $this->option = $option;
+
+        // create meta boxes
+        $this->metaBoxes = WPML_AdminPage_Settings_MetaBoxes::create($this->option);
+
+        // create help tabs
+        $this->helpTabs = WPML_AdminPage_Settings_HelpTabs::create();
     }
 
-    protected function before()
+    /**
+     * Action for "admin_menu"
+     */
+    protected function actionAdminMenu()
     {
-        $templateBasePath = WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings';
-        $this->setTemplateBasePath($templateBasePath);
+        if ($this->option->getValue('own_admin_menu')) {
+            $this->pageHook = add_menu_page(
+                __('WP Mailto Links', 'wp-mailto-links')    // page title
+                , __('Mailto Links', 'wp-mailto-links')     // menu title
+                , 'manage_options'                          // capability
+                , $this->pageId                             // id
+                , $this->getCallback('showAdminPage')       // callback
+                , 'dashicons-email'                         // icon
+            );
+        } else {
+            $this->pageHook = add_submenu_page(
+                'options-general.php'                       // parent slug
+                , __('WP Mailto Links', 'wp-mailto-links')  // page title
+                , __('Mailto Links', 'wp-mailto-links')     // menu title
+                , 'manage_options'                          // capability
+                , $this->pageId                             // id
+                , $this->getCallback('showAdminPage')       // callback
+            );
+        }
+
+        // load page
+        add_action('load-' . $this->pageHook, $this->getCallback('loadPage'));
     }
 
-    protected function prepareOption()
+    /**
+     * Action of "load-{page}"
+     */
+    protected function loadPage()
     {
-    }
+        // set dashboard postbox
+        wp_enqueue_script('dashboard');
 
-    protected function prepareAdminPage()
-    {
-        $mainMenu = (bool) $this->getOption()->getValue('own_admin_menu');
-
-        $adminPage = new WPLim_AdminPage_Page_MetaBox_0x4x0(array(
-            'id'              => 'wp-mailto-links-option-page',
-            'title'           => __('WP Mailto Links', 'wp-mailto-links'),
-            'menuTitle'       => __('Mailto Links', 'wp-mailto-links'),
-            'parentSlug'      => $mainMenu ? null : 'options-general.php',
-            'iconUrl'         => 'dashicons-email',
-            'defaultColumns'  => 2,
-            'maxColumns'      => 2,
-            'templatesPath' => $this->getTemplateBasePath(),
-            'templateVars'    => array(
-                'option' => $this->getOption(),
-                'fieldsView' => $this->getFieldsView(),
-            ),
+        // screen settings
+        add_screen_option('layout_columns', array(
+            'max'       => $this->maxColumns,
+            'default'   => $this->defaultColumns,
         ));
 
-        $this->setAdminPage($adminPage);
+        // add meta boxes
+        $this->metaBoxes->addMetaBoxes();
+
+        // add help tabs
+        $this->helpTabs->addHelpTabs();
     }
 
-    protected function prepareHelpTabs()
+    /**
+     * Callback show Admin Page
+     */
+    protected function showAdminPage()
     {
-        $helpTabs = new WPLim_AdminPage_HelpTabs_0x4x0($this->getAdminPage(), array(
-            'templatesPath' => $this->getTemplateBasePath() . '/help-tabs',
-            'templateVars'  => array(
-                'file' => WP_MAILTO_LINKS_FILE,
-            ),
+        $currentScreen = get_current_screen();
+
+        // also show updated message for pages outsite the "Settings" menu
+        if (isset($_GET['settings-updated']) && 'options-general' !== $currentScreen->parent_base) {
+            $showUpdatedMessage = true;
+        } else {
+            $showUpdatedMessage = false;
+        }
+
+        $columnCount = (1 == $currentScreen->get_columns()) ? 1 : 2;
+
+        $bodyContent = $this->renderTemplate(WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/body-content.php', array(
+            'fieldsView'      => new MyDevLib_FormHelper_0x4x0($this->option->getOptionName(), $this->option->getValues()),
         ));
 
-        $helpTabs->addHelpTab('general', __('General', 'wp-mailto-links'));
-        $helpTabs->addHelpTab('shortcodes', __('Shortcode', 'wp-mailto-links'));
-        $helpTabs->addHelpTab('template-tags', __('Template Tags', 'wp-mailto-links'));
-        $helpTabs->addHelpTab('filter-hook', __('Filter Hook', 'wp-mailto-links'));
-        $helpTabs->addHelpTab('action-hook', __('Action Hook', 'wp-mailto-links'));
-
-        $this->setHelpTabs($helpTabs);
-    }
-
-    protected function prepareMetaBoxes()
-    {
-        $metaBoxes = new WPLim_AdminPage_MetaBoxes_0x4x0($this->getAdminPage(), array(
-            'templatesPath' => $this->getTemplateBasePath() . '/meta-boxes',
-            'templateVars'  => array(
-                'option' => $this->getOption(),
-                'fieldsView' => $this->getFieldsView(),
-            ),
+        $this->showTemplate(WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/page.php', array(
+            'showUpdatedMessage' => $showUpdatedMessage,
+            'id'                => $this->pageId,
+            'columnCount'       => $columnCount,
+            'option'            => $this->option,
+            'bodyContent'       => $bodyContent,
         ));
-
-        $metaBoxes->addMetaBox('mail-icon', __('Mail Icon', 'wp-mailto-links'));
-        $metaBoxes->addMetaBox('admin', __('Admin', 'wp-mailto-links'));
-
-        // side position
-        $metaBoxes->addMetaBox('additional-classes', __('Additional Classes', 'wp-mailto-links'), 'side');
-        $metaBoxes->addMetaBox('support', __('Support', 'wp-mailto-links'), 'side');
-
-        $this->setMetaBoxes($metaBoxes);
     }
 
-    protected function enqueueScripts()
+    protected function actionAdminEnqueueScripts()
     {
         wp_enqueue_script(
             'wp-mailto-links-admin'
@@ -102,8 +148,8 @@ final class WPML_AdminPage_Settings extends WPLim_AdminPage_TemplateBuilder_Abst
         );
         wp_localize_script('wp-mailto-links-admin', 'wpmlSettings', array(
             'pluginUrl' => plugins_url('', WP_MAILTO_LINKS_FILE),
-            'dashiconsValue' => $this->getOption()->getValue('dashicons'),
-            'fontawesomeValue' => $this->getOption()->getValue('fontawesome'),
+            'dashiconsValue' => $this->option->getValue('dashicons'),
+            'fontawesomeValue' => $this->option->getValue('fontawesome'),
         ));
 
         wp_enqueue_style(

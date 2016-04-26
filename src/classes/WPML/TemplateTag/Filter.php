@@ -8,7 +8,7 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  MIT license
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 final class WPML_TemplateTag_Filter extends WPRun_BaseAbstract_0x4x0
 {
@@ -27,8 +27,8 @@ final class WPML_TemplateTag_Filter extends WPRun_BaseAbstract_0x4x0
      */
     protected function filter($content)
     {
-        $site = $this->getArgument(0);
-        return $site->filterContent($content);
+        $email = $this->getArgument(0);
+        return $email->filterContent($content);
     }
 
 }
