@@ -5,7 +5,7 @@ jQuery(function ($) {
     'use strict';
 
     // fill dashicons  select options
-    $.get(wpmlSettings.pluginUrl + '/data/json/fontawesome.json', null, function (data) {
+    $.get(wpmlSettings.pluginUrl + '/public/data/json/fontawesome.json', null, function (data) {
         var $select = $('.select-fontawesome');
 
         // create select options
@@ -20,7 +20,7 @@ jQuery(function ($) {
     });
 
     // fill fontawesome select options
-    $.get(wpmlSettings.pluginUrl + '/data/json/dashicons.json', null, function (data) {
+    $.get(wpmlSettings.pluginUrl + '/public/data/json/dashicons.json', null, function (data) {
         var $select = $('.select-dashicons');
 
         // create select options
