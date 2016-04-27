@@ -1,6 +1,6 @@
 <?php
 /**
- * Class WPRun_BaseAbstract_0x4x0
+ * Class WPRun_BaseAbstract_0x5x0
  *
  * Base class for concrete subclasses
  * All subclasses are singletons and can be instantiated with the static
@@ -8,13 +8,13 @@
  *
  * @package  WPRun
  * @category WordPress Plugin
- * @version  0.4.0
+ * @version  0.5.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
- * @license  Dual licensed under the MIT and GPL licenses
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class WPRun_BaseAbstract_0x4x0
+abstract class WPRun_BaseAbstract_0x5x0
 {
 
     /**
@@ -55,7 +55,7 @@ abstract class WPRun_BaseAbstract_0x4x0
      * Factory method
      * @param mixed $param1   Optional, will be passed on to the constructor and init() method
      * @param mixed $paramN   Optional, will be passed on to the constructor and init() method
-     * @return WPRun_BaseAbstract_0x4x0|false
+     * @return WPRun_BaseAbstract_0x5x0|false
      */
     final public static function create()
     {
@@ -267,7 +267,7 @@ abstract class WPRun_BaseAbstract_0x4x0
     }
 
     /**
-     * @param WPRun_BaseAbstract_0x4x0   $self
+     * @param WPRun_BaseAbstract_0x5x0   $self
      * @param string                     $hookType  "action" or "filter"
      * @param string                     $hookName
      * @param string                     $methodName

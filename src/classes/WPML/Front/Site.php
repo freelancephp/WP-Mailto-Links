@@ -9,9 +9,9 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  Dual licensed under the MIT and GPLv2+ licenses
+ * @license  GPLv2+ license
  */
-final class WPML_Front_Site extends WPRun_BaseAbstract_0x4x0
+final class WPML_Front_Site extends WPRun_BaseAbstract_0x5x0
 {
 
     private $option = null;

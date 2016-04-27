@@ -1,19 +1,19 @@
 <?php
 /**
- * Class WPRun_Trait_UnderscoreNames_0x4x0
+ * Class WPRun_Trait_UnderscoreNames_0x5x0
  *
  * Extends support for using underscore alias for methods and properties.
  * F.e. "$this->someCamelCaseFunc()" can be called with "$this->some_camel_case_func()"
  *
  * @package  WPRun
  * @category WordPress Plugin
- * @version  0.4.0
+ * @version  0.5.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
- * @license  Dual licensed under the MIT and GPL licenses
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-trait WPRun_Trait_UnderscoreNames_0x4x0
+trait WPRun_Trait_UnderscoreNames_0x5x0
 {
 
     /**
