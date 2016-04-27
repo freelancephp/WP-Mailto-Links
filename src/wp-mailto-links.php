@@ -4,19 +4,19 @@
  *
  * @package  WPML
  * @category WordPress Plugin
- * @version  2.0.1
+ * @version  2.1.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/wp-mailto-links-plugin
- * @license  Dual licensed under the MIT and GPLv2+ licenses
+ * @license  GPLv2+ license
  *
  * @wordpress-plugin
  * Plugin Name:    WP Mailto Links - Manage Email Links
- * Version:        2.0.1
+ * Version:        2.1.0
  * Plugin URI:     http://www.freelancephp.net/wp-mailto-links-plugin
  * Description:    Manage mailto links on your site and protect email addresses from spambots, set mail icon and more.
  * Author:         Victor Villaverde Laan
  * Author URI:     http://www.freelancephp.net
- * License:        Dual licensed under the MIT and GPLv2+ licenses
+ * License:        GPLv2+ license
  * Text Domain:    wp-mailto-links
  * Domain Path:    /languages
  */
@@ -31,11 +31,11 @@ call_user_func(function () {
     }
 
     // set class auto-loader
-    if (!class_exists('WPRun_AutoLoader_0x4x0')) {
+    if (!class_exists('WPRun_AutoLoader_0x5x0')) {
         require_once WP_MAILTO_LINKS_DIR . '/classes/WPRun/AutoLoader.php';
     }
-    WPRun_AutoLoader_0x4x0::register();
-    WPRun_AutoLoader_0x4x0::addPath(WP_MAILTO_LINKS_DIR . '/classes');
+    WPRun_AutoLoader_0x5x0::register();
+    WPRun_AutoLoader_0x5x0::addPath(WP_MAILTO_LINKS_DIR . '/classes');
 
     // load text domain
     add_action('plugins_loaded', function () {
@@ -57,8 +57,8 @@ call_user_func(function () {
         WPML_AdminPage_Settings::create($option);
     } else {
         // create custom filters final_output and widget_output
-        WPRun_Filter_FinalOutput_0x4x0::create();
-        WPRun_Filter_WidgetOutput_0x4x0::create();
+        WPRun_Filter_FinalOutput_0x5x0::create();
+        WPRun_Filter_WidgetOutput_0x5x0::create();
 
         $emailEncoder = WPML_Front_Email::create($option);
         WPML_Front_Site::create($option, $emailEncoder);

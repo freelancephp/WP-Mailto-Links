@@ -124,7 +124,7 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 
 = 2.1.0 =
  * Removed "wpml_ready" action
- * Refactoring using WPRun
+ * Code refactor using WPRun library
 
 = 2.0.1 =
  * Removed realpath(), causing errors on existing installs
