@@ -1,16 +1,16 @@
 <?php
 /**
- * Class MyDevLib_OptionAbstract_0x4x0
+ * Class MyDevLib_OptionAbstract_0x5x0
  *
- * @package  WPRun
+ * @package  Demo WPRun
  * @category WordPress Plugin
- * @version  0.4.0
+ * @version  0.5.0
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WPRun-Plugin-Base
- * @license  Dual licensed under the MIT and GPL licenses
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
-abstract class MyDevLib_OptionAbstract_0x4x0 extends WPRun_BaseAbstract_0x4x0
+abstract class MyDevLib_OptionAbstract_0x5x0 extends WPRun_BaseAbstract_0x5x0
 {
 
     /**
@@ -83,16 +83,17 @@ abstract class MyDevLib_OptionAbstract_0x4x0 extends WPRun_BaseAbstract_0x4x0
 
     /**
      * Set value
-     * @param string  $key
-     * @param mixed   $value
-     * @param boolean $addKeyWhenNonExists  Optional, default true
-     * @throw Exception
+     * @param string $key
+     * @param mixed  $defaultValue  Optional
+     * @return mixed|null
      */
-    final public function setValue($key, $value, $addKeyWhenNonExists = true)
+    final public function setValue($key, $value)
     {
-        if ($addKeyWhenNonExists === true || $this->keyExists($key)) {
-            $this->optionValues[$key] = $value;
+        if (!$this->keyExists($key)) {
+            return $defaultValue;
         }
+
+        return $this->optionValues[$key];
     }
 
     /**

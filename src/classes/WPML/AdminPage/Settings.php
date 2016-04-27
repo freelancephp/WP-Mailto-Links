@@ -9,9 +9,9 @@
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  Dual licensed under the MIT and GPLv2+ licenses
+ * @license  GPLv2+ license
  */
-final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x4x0
+final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
 {
 
     /**
@@ -126,7 +126,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x4x0
         $columnCount = (1 == $currentScreen->get_columns()) ? 1 : 2;
 
         $bodyContent = $this->renderTemplate(WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/body-content.php', array(
-            'fieldsView'      => new MyDevLib_FormHelper_0x4x0($this->option->getOptionName(), $this->option->getValues()),
+            'fieldsView'      => new MyDevLib_FormHelper_0x5x0($this->option->getOptionName(), $this->option->getValues()),
         ));
 
         $this->showTemplate(WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/page.php', array(
