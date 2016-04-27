@@ -84,16 +84,13 @@ abstract class MyDevLib_OptionAbstract_0x5x0 extends WPRun_BaseAbstract_0x5x0
     /**
      * Set value
      * @param string $key
-     * @param mixed  $defaultValue  Optional
      * @return mixed|null
      */
     final public function setValue($key, $value)
     {
-        if (!$this->keyExists($key)) {
-            return $defaultValue;
+        if ($this->keyExists($key)) {
+            $this->optionValues[$key] = $value;
         }
-
-        return $this->optionValues[$key];
     }
 
     /**
