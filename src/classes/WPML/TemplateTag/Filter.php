@@ -4,7 +4,7 @@
  *
  * @package  WPML
  * @category WordPress Plugins
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
@@ -28,8 +28,9 @@ final class WPML_TemplateTag_Filter extends WPRun_BaseAbstract_0x5x0
      */
     protected function filter($content)
     {
-        $email = $this->getArgument(0);
-        return $email->filterContent($content);
+        $option = $this->getArgument(0);
+        $emailEncoder = $this->getArgument(1);
+        return $emailEncoder->contentFilter($content, $option->getValue('convert_emails'));
     }
 
 }
