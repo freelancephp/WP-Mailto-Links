@@ -4,7 +4,7 @@
  *
  * @package  WPML
  * @category WordPress Plugins
- * @version  2.1.0
+ * @version  2.1.1
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
@@ -31,7 +31,7 @@ final class WPML_TemplateTag_Mailto extends WPRun_BaseAbstract_0x5x0
      */
     protected function mailto($email, $display = null, $atts = array())
     {
-        $email = $this->getArgument(0);
+        $emailEncoder = $this->getArgument(0);
 
         if (is_array($display)) {
             // backwards compatibility (old params: $display, $attrs = array())
@@ -41,7 +41,7 @@ final class WPML_TemplateTag_Mailto extends WPRun_BaseAbstract_0x5x0
             $atts['href'] = 'mailto:'.$email;
         }
 
-        return $email->protectedMailto($display, $atts);
+        return $emailEncoder->protectedMailto($display, $atts);
     }
 
 }
