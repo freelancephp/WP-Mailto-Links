@@ -68,8 +68,10 @@ final class WPML_Front_Email extends WPRun_BaseAbstract_0x5x0
             $filtered = $this->filterPlainEmails($filtered);
 
         } elseif ($convertPlainEmails == 2) {
-            $filtered = $this->filterPlainEmails($filtered, function ($match) {
-                return $this->protectedMailto($match[0], array('href' => 'mailto:' . $match[0]));
+            $self = $this;
+
+            $filtered = $this->filterPlainEmails($filtered, function ($match) use ($self) {
+                return $self->protectedMailto($match[0], array('href' => 'mailto:' . $match[0]));
             });
         }
 
@@ -136,7 +138,7 @@ final class WPML_Front_Email extends WPRun_BaseAbstract_0x5x0
         $callbackEncodeInputFields = function ($match) use ($self) {
             $input = $match[0];
             $email = $match[2];
-        $strongEncoding = (bool) $this->opt('input_strong_protection');
+            $strongEncoding = (bool) $self->opt('input_strong_protection');
 
             return $self->encodeInputField($input, $email, $strongEncoding);
         };
@@ -179,7 +181,7 @@ final class WPML_Front_Email extends WPRun_BaseAbstract_0x5x0
      * @param string $email
      * @return string
      */
-    private function encodeInputField($input, $email, $strongEncoding = true)
+    public function encodeInputField($input, $email, $strongEncoding = true)
     {
         if ($strongEncoding === false) {
             // encode email with entities (default wp method)
