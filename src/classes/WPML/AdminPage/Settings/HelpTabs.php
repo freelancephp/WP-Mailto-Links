@@ -19,27 +19,32 @@ final class WPML_AdminPage_Settings_HelpTabs extends WPRun_BaseAbstract_0x5x0
      */
     public function addHelpTabs()
     {
-        $this->addHelpTab('general', __('General', 'wp-mailto-links'));
-        $this->addHelpTab('shortcodes', __('Shortcode', 'wp-mailto-links'));
-        $this->addHelpTab('template-tags', __('Template Tags', 'wp-mailto-links'));
-        $this->addHelpTab('filter-hook', __('Filter Hook', 'wp-mailto-links'));
-    }
-
-    /**
-     * @param string $id
-     * @param string $title
-     * @param string $content
-     */
-    protected function addHelpTab($id, $title, $content = '')
-    {
         $screen = get_current_screen();
 
-        $screen->add_help_tab(array(
-            'id'        => $id,
-            'title'     => $title,
-            'content'   => $content,
+        $defaults = array(
+            'content'   => '',
             'callback'  => $this->getCallback('showHelpTab'),
-        ));
+        );
+
+        $screen->add_help_tab(wp_parse_args(array(
+            'id'        => 'general',
+            'title'     => __('General', 'wp-mailto-links'),
+        ), $defaults));
+
+        $screen->add_help_tab(wp_parse_args(array(
+            'id'        => 'shortcodes',
+            'title'     => __('Shortcode', 'wp-mailto-links'),
+        ), $defaults));
+
+        $screen->add_help_tab(wp_parse_args(array(
+            'id'        => 'template-tags',
+            'title'     => __('Template Tags', 'wp-mailto-links'),
+        ), $defaults));
+
+        $screen->add_help_tab(wp_parse_args(array(
+            'id'        => 'filter-hook',
+            'title'     => __('Filter Hook', 'wp-mailto-links'),
+        ), $defaults));
     }
 
     /**
@@ -51,9 +56,7 @@ final class WPML_AdminPage_Settings_HelpTabs extends WPRun_BaseAbstract_0x5x0
         $key = $args['id'];
         $templateFile = WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/help-tabs/' . $key . '.php';
 
-        $this->showTemplate($templateFile, array(
-            'file' => WP_MAILTO_LINKS_FILE,
-        ));
+        $this->showTemplate($templateFile);
     }
 
 }

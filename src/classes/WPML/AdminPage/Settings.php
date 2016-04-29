@@ -15,11 +15,6 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
 {
 
     /**
-     * @var MyDevLib_OptionAbstract
-     */
-    private $option = null;
-
-    /**
      * @var string
      */
     private $pageId = 'wp-mailto-links-option-page';
@@ -35,6 +30,11 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
     private $defaultColumns = 2;
 
     /**
+     * @var MyDevLib_OptionAbstract_0x5x0
+     */
+    private $option = null;
+
+    /**
      * @var WPML_AdminPage_Settings_HelpTabs
      */
     private $helpTabs = null;
@@ -46,17 +46,17 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
     
     /**
      * Initialize
-     * @param MyDevLib_OptionAbstract $option
+     * @param MyDevLib_OptionAbstract_0x5x0     $option
+     * @param WPML_AdminPage_Settings_MetaBoxes $metaBoxes
+     * @param WPML_AdminPage_Settings_HelpTabs  $helpTabs
      */
-    protected function init($option)
+    protected function init(MyDevLib_OptionAbstract_0x5x0 $option
+                                , WPML_AdminPage_Settings_MetaBoxes $metaBoxes
+                                , WPML_AdminPage_Settings_HelpTabs $helpTabs)
     {
         $this->option = $option;
-
-        // create meta boxes
-        $this->metaBoxes = WPML_AdminPage_Settings_MetaBoxes::create($this->option);
-
-        // create help tabs
-        $this->helpTabs = WPML_AdminPage_Settings_HelpTabs::create();
+        $this->metaBoxes = $metaBoxes;
+        $this->helpTabs = $helpTabs;
     }
 
     /**
@@ -65,7 +65,8 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
     protected function actionAdminMenu()
     {
         if ($this->option->getValue('own_admin_menu')) {
-            $this->pageHook = add_menu_page(
+            // add main menu
+            $pageHook = add_menu_page(
                 __('WP Mailto Links', 'wp-mailto-links')    // page title
                 , __('Mailto Links', 'wp-mailto-links')     // menu title
                 , 'manage_options'                          // capability
@@ -74,7 +75,8 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
                 , 'dashicons-email'                         // icon
             );
         } else {
-            $this->pageHook = add_submenu_page(
+            // add submenu under settings-menu
+            $pageHook = add_submenu_page(
                 'options-general.php'                       // parent slug
                 , __('WP Mailto Links', 'wp-mailto-links')  // page title
                 , __('Mailto Links', 'wp-mailto-links')     // menu title
@@ -85,7 +87,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
         }
 
         // load page
-        add_action('load-' . $this->pageHook, $this->getCallback('loadPage'));
+        add_action('load-' . $pageHook, $this->getCallback('loadPage'));
     }
 
     /**
@@ -93,9 +95,6 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
      */
     protected function loadPage()
     {
-        // set dashboard postbox
-        wp_enqueue_script('dashboard');
-
         // screen settings
         add_screen_option('layout_columns', array(
             'max'       => $this->maxColumns,
@@ -125,10 +124,12 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
 
         $columnCount = (1 == $currentScreen->get_columns()) ? 1 : 2;
 
+        // get page body
         $bodyContent = $this->renderTemplate(WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/body-content.php', array(
             'fieldsView'      => new MyDevLib_FormHelper_0x5x0($this->option->getOptionName(), $this->option->getValues()),
         ));
 
+        // show admin page
         $this->showTemplate(WP_MAILTO_LINKS_DIR . '/templates/admin-pages/settings/page.php', array(
             'showUpdatedMessage' => $showUpdatedMessage,
             'id'                => $this->pageId,
@@ -138,8 +139,15 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
         ));
     }
 
+    /**
+     * Action for "admin_enqueue_scripts"
+     */
     protected function actionAdminEnqueueScripts()
     {
+        // set dashboard postbox
+        wp_enqueue_script('dashboard');
+
+        // set mailto script
         wp_enqueue_script(
             'wp-mailto-links-admin'
             , plugins_url('/public/js/wp-mailto-links-admin.js', WP_MAILTO_LINKS_FILE)
@@ -153,6 +161,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
             'fontawesomeValue' => $this->option->getValue('fontawesome'),
         ));
 
+        // set style
         wp_enqueue_style(
             'font-awesome'
             , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
