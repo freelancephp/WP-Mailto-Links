@@ -4,7 +4,7 @@
  *
  * @package  WPML
  * @category WordPress Plugins
- * @version  2.1.1
+ * @version  2.1.3
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
