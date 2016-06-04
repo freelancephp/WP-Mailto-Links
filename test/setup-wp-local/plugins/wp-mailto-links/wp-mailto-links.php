@@ -11,4 +11,4 @@ License: Dual licensed under the MIT and GPL licenses
 define('WP_MAILTO_LINKS_FILE', __FILE__);
 
 // include plugin
-require_once($_SERVER['DOCUMENT_ROOT'] . 'git/WP-Mailto-Links/src/wp-mailto-links.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . 'git/WP-Mailto-Links/wp-mailto-links/wp-mailto-links.php');
