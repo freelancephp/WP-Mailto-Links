@@ -31,7 +31,7 @@ Sources
 
  - [Documentation](http://wordpress.org/extend/plugins/wp-mailto-links/other_notes/)
  - [FAQ](http://wordpress.org/extend/plugins/wp-mailto-links/faq/)
- - [Github](https://github.com/freelancephp/WP-Mailto-Links) - Open for code contributions
+ - [Github](https://github.com/freelancephp/WP-Mailto-Links)
 
 
 Like this plugin?
