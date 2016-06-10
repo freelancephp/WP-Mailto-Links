@@ -43,7 +43,7 @@ final class WPML_Front_Site extends WPRun_BaseAbstract_0x5x0
     {
         if (is_feed()) {
             if ($this->opt('filter_rss')) {
-                add_filter('final_output', $this->getCallback('rssFilter'));
+                add_filter('final_output', $this->getCallback('rssFilter'), 100);
             }
             
         } else {
@@ -68,7 +68,7 @@ final class WPML_Front_Site extends WPRun_BaseAbstract_0x5x0
             }
 
             if ($this->opt('filter_head') || $this->opt('filter_body')) {
-                add_filter('final_output', $this->getCallback('pageFilter'));
+                add_filter('final_output', $this->getCallback('pageFilter'), 100);
             }
         }
     }
