@@ -123,6 +123,10 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 
 == Changelog ==
 
+= 2.x =
+* Fixed bug responsive image names containing @
+* 
+
 = 2.1.4 =
 * Fixed script conflicts on other admin pages
 * Added data-attribute for WP External Links plugin to ignore WPML links
