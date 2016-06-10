@@ -31,10 +31,11 @@ Sources
 
  - [Documentation](http://wordpress.org/extend/plugins/wp-mailto-links/other_notes/)
  - [FAQ](http://wordpress.org/extend/plugins/wp-mailto-links/faq/)
- - [Github](https://github.com/freelancephp/WP-Mailto-Links) - Open for code contributions
+ - [Github](https://github.com/freelancephp/WP-Mailto-Links)
 
 
 Like this plugin?
 -----------------
 
-This plugin is free and I don't accept any donations. If you want to show your appreciation, just [send your review](http://wordpress.org/support/view/plugin-reviews/wp-mailto-links).
+
+[Rate it](http://wordpress.org/support/view/plugin-reviews/wp-mailto-links) to support the development of this plugin.

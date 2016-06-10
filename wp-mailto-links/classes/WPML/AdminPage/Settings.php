@@ -4,12 +4,12 @@
  *
  * @package  WPML
  * @category WordPress Plugins
- * @version  2.1.3
+ * @version  2.1.4
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @link     https://wordpress.org/plugins/wp-mailto-links/
- * @license  GPLv2+ license
+ * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
 {
@@ -18,6 +18,11 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
      * @var string
      */
     private $pageId = 'wp-mailto-links-option-page';
+
+    /**
+     * @var string
+     */
+    private $pageHook = null;
 
     /**
      * @var integer
@@ -66,7 +71,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
     {
         if ($this->option->getValue('own_admin_menu')) {
             // add main menu
-            $pageHook = add_menu_page(
+            $this->pageHook = add_menu_page(
                 __('WP Mailto Links', 'wp-mailto-links')    // page title
                 , __('Mailto Links', 'wp-mailto-links')     // menu title
                 , 'manage_options'                          // capability
@@ -76,7 +81,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
             );
         } else {
             // add submenu under settings-menu
-            $pageHook = add_submenu_page(
+            $this->pageHook = add_submenu_page(
                 'options-general.php'                       // parent slug
                 , __('WP Mailto Links', 'wp-mailto-links')  // page title
                 , __('Mailto Links', 'wp-mailto-links')     // menu title
@@ -87,7 +92,7 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
         }
 
         // load page
-        add_action('load-' . $pageHook, $this->getCallback('loadPage'));
+        add_action('load-' . $this->pageHook, $this->getCallback('loadPage'));
     }
 
     /**
@@ -141,9 +146,14 @@ final class WPML_AdminPage_Settings extends WPRun_BaseAbstract_0x5x0
 
     /**
      * Action for "admin_enqueue_scripts"
+     * @return void
      */
     protected function actionAdminEnqueueScripts()
     {
+        if (get_current_screen()->id !== $this->pageHook) {
+            return;
+        }
+
         // set dashboard postbox
         wp_enqueue_script('dashboard');
 
