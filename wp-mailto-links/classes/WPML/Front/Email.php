@@ -239,6 +239,9 @@ final class WPML_Front_Email extends WPRun_BaseAbstract_0x5x0
             $attrs['title'] = $this->filterPlainEmails($attrs['title'], '{{email}}'); // {{email}} will be replaced in javascript
         }
 
+        // set ignore to data-attribute to prevent being processed by WPEL plugin
+        $attrs['data-wpel-link'] = 'ignore';
+
         // create element code
         $link = '<a ';
 
