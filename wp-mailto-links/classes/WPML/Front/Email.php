@@ -6,7 +6,7 @@
  *
  * @package  WPML
  * @category WordPress Plugins
- * @version  2.1.4
+ * @version  2.1.5
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/
  * @link     https://github.com/freelancephp/WP-Mailto-Links
@@ -168,11 +168,21 @@ final class WPML_Front_Email extends WPRun_BaseAbstract_0x5x0
             $replaceBy = $this->getProtectionText();
         }
 
-        if (is_callable($replaceBy)) {
-            return preg_replace_callback($this->getEmailRegExp(), $replaceBy, $content);
-        }
+        return preg_replace_callback($this->getEmailRegExp(), function ($matches) use ($replaceBy) {
+            // workaround to skip responsive image names containing @
+            $extention = strtolower($matches[4]);
+            $excludedList = array('.jpg', '.jpeg', 'png', 'gif');
 
-        return preg_replace($this->getEmailRegExp(), $replaceBy, $content);
+            if (in_array($extention, $excludedList)) {
+                return $matches[0];
+            }
+
+            if (is_callable($replaceBy)) {
+                return call_user_func($replaceBy, $matches);
+            }
+
+            return $replaceBy;
+        }, $content);
     }
 
     /**
