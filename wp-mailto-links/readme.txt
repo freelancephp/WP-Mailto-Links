@@ -3,7 +3,7 @@ Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email link, protection
 Requires at least: 3.6.0
 Tested up to: 4.5.2
-Stable tag: 2.1.4
+Stable tag: 2.1.5
 
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
 
@@ -123,9 +123,8 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 
 == Changelog ==
 
-= 2.x =
+= 2.1.5 =
 * Fixed bug responsive image names containing @
-* 
 
 = 2.1.4 =
 * Fixed script conflicts on other admin pages
