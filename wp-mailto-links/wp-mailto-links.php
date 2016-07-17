@@ -1,4 +1,4 @@
-<?php defined('ABSPATH') OR die('No direct access.');
+<?php
 /**
  * WP Mailto Links - Manage Email Links
  *
@@ -7,6 +7,7 @@
  * @version  2.1.5
  * @author   Victor Villaverde Laan
  * @link     http://www.freelancephp.net/wp-mailto-links-plugin
+ * @link     https://github.com/freelancephp/WP-Mailto-Links
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  *
  * @wordpress-plugin
@@ -20,71 +21,70 @@
  * Text Domain:    wp-mailto-links
  * Domain Path:    /languages
  */
-call_user_func(function () {
+if ( ! function_exists( 'wpml_init' ) ):
+    function wpml_init()
+    {
+        // only load in WP environment
+        if ( ! defined( 'ABSPATH' ) ) {
+            die();
+        }
 
-    // set constant
-    if (!defined('WP_MAILTO_LINKS_FILE')) {
-        define('WP_MAILTO_LINKS_FILE', __FILE__);
-    }
-    if (!defined('WP_MAILTO_LINKS_DIR')) {
-        define('WP_MAILTO_LINKS_DIR', __DIR__);
-    }
+        $plugin_file = defined( 'TEST_WPML_PLUGIN_FILE' ) ? TEST_WPML_PLUGIN_FILE : __FILE__;
+        $plugin_dir = dirname( __FILE__ );
 
-    // set class auto-loader
-    if (!class_exists('WPRun_AutoLoader_0x5x0')) {
-        require_once WP_MAILTO_LINKS_DIR . '/classes/WPRun/AutoLoader.php';
-    }
-    WPRun_AutoLoader_0x5x0::register();
-    WPRun_AutoLoader_0x5x0::addPath(WP_MAILTO_LINKS_DIR . '/classes');
+        // check requirements
+        $wp_version = get_bloginfo( 'version' );
+        $php_version = phpversion();
 
+        if ( version_compare( $wp_version, '3.6', '<' ) || version_compare( $php_version, '5.3', '<' ) ) {
+            if ( ! function_exists( 'wpml_requirements_notice' ) ) {
+                function wpml_requirements_notice()
+                {
+                    include $plugin_dir .'/templates/requirements-notice.php';
+                }
 
-    /**
-     * Create plugin components
-     */
+                add_action( 'admin_notices', 'wpml_requirements_notice' );
+            }
 
-    // create text domain
-    WPML_TextDomain::create();
+            return;
+        }
 
-    // create option
-    $option = WPML_Option_Settings::create();
+        /**
+         * Autoloader
+         */
+        if ( ! class_exists( 'WPRun_Autoloader_1x0x0' ) ) {
+            require_once $plugin_dir . '/libs/wprun/class-wprun-autoloader.php';
+        }
 
-    // create register hooks
-    WPML_RegisterHook_Activate::create(WP_MAILTO_LINKS_FILE, $option);
-    WPML_RegisterHook_Uninstall::create(WP_MAILTO_LINKS_FILE, $option);
+        $autoloader = new WPRun_Autoloader_1x0x0();
+        $autoloader->add_path( $plugin_dir . '/libs/', true );
+        $autoloader->add_path( $plugin_dir . '/includes/', true );
 
-    if (is_admin()) {
+        /**
+         * Load debugger
+         */
+        if ( true === constant( 'WP_DEBUG' ) ) {
+            FWP_Debug_1x0x0::create( array(
+                'log_hooks'  => false,
+            ) );
+        }
 
-        // create meta boxes
-        $metaBoxes = WPML_AdminPage_Settings_MetaBoxes::create($option);
+        /**
+         * Register Hooks
+         */
+        global $wpdb;
+        WPML_Activation::create( $plugin_file, $wpdb );
+        WPML_Uninstall::create( $plugin_file, $wpdb );
 
-        // create help tabs
-        $helpTabs = WPML_AdminPage_Settings_HelpTabs::create();
-
-        // create admin settings page
-        WPML_AdminPage_Settings::create($option, $metaBoxes, $helpTabs);
-
-    } else {
-
-        // create custom filters final_output and widget_output
-        WPRun_Filter_FinalOutput_0x5x0::create();
-        WPRun_Filter_WidgetOutput_0x5x0::create();
-
-        // create email encoder
-        $emailEncoder = WPML_Front_Email::create($option);
-
-        // create front site
-        WPML_Front_Site::create($option, $emailEncoder);
-
-        // create shortcode
-        WPML_Shortcode_Mailto::create($option, $emailEncoder);
-
-        // create template tags
-        WPML_TemplateTag_Filter::create($option, $emailEncoder);
-        WPML_TemplateTag_Mailto::create($emailEncoder);
+        /**
+         * Set plugin vars
+         */
+        WPML_Plugin::create( $plugin_file, $plugin_dir );
 
     }
 
-});
+    wpml_init();
+endif;
 
 
 /*?>*/
