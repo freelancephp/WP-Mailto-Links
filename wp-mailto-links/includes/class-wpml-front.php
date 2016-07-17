@@ -92,11 +92,7 @@ final class WPML_Front extends WPRun_Base_1x0x0
     protected function action_wp_enqueue_scripts()
     {
         if ($this->opt('protect')) {
-            wp_enqueue_script(
-                'wp-mailto-links'
-                , plugins_url('/public/js/wp-mailto-links.js', WP_MAILTO_LINKS_FILE)
-                , array('jquery')
-            );
+            wp_enqueue_script( 'wp-mailto-links' );
         }
 
         // add css font icons
@@ -104,12 +100,7 @@ final class WPML_Front extends WPRun_Base_1x0x0
             wp_enqueue_style('dashicons');
 
         } elseif ($this->opt('mail_icon') === 'fontawesome') {
-            wp_enqueue_style(
-                'font-awesome'
-                , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-                , array()
-                , null // use caching CDN file
-            );
+            wp_enqueue_script( 'font-awesome' );
         }
     }
 

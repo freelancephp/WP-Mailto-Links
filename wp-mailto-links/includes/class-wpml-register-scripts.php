@@ -44,20 +44,19 @@ final class WPML_Register_Scripts extends WPRun_Base_1x0x0
             , $plugin_version
         );
 
-        // set wpel admin script
+        // set wpml admin script
         wp_register_script(
-            'wpel-admin-script'
-            , plugins_url( '/public/js/wp-mailto-links-admin.js', WPEL_Plugin::get_plugin_file() )
+            'wp-mailto-links-admin'
+            , plugins_url( '/public/js/wp-mailto-links-admin.js', WPML_Plugin::get_plugin_file() )
             , array( 'jquery' )
             , $plugin_version
             , true
         );
 
-
-        // set wpel front script
+        // set wpml front script
         wp_register_script(
-            'wpel-admin-script'
-            , plugins_url( '/public/js/wp-mailto-links.js', WPEL_Plugin::get_plugin_file() )
+            'wp-mailto-links'
+            , plugins_url( '/public/js/wp-mailto-links.js', WPML_Plugin::get_plugin_file() )
             , array( 'jquery' )
             , $plugin_version
             , true
