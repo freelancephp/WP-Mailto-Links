@@ -34,19 +34,13 @@ final class WPML_Shortcodes extends FWP_Shortcode_Base_1x0x0
      */
     protected function mailto( $atts, $content = null )
     {
-        $option = $this->getArgument(0);
-
-        if ($option->getValue('protect') && preg_match($this->email_encoder->getEmailRegExp(), $content) > 0) {
-            $content = $this->email_encoder->getProtectedDisplay($content);
-        }
-
         // set "email" to "href"
-        if (isset($atts['email'])) {
-            $atts['href'] = 'mailto:' . $atts['email'];
-            unset($atts['email']);
+        if ( isset( $atts[ 'email' ] ) ) {
+            $atts[ 'href' ] = 'mailto:' . $atts[ 'email' ];
+            unset( $atts[ 'email' ] );
         }
 
-        $content = $this->email_encoder->protectedMailto($content, $atts);
+        $content = $this->email_encoder->protectedMailto( $content, $atts );
 
         return $content;
     }

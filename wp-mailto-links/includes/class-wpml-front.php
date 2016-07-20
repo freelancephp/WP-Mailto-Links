@@ -98,7 +98,6 @@ final class WPML_Front extends WPRun_Base_1x0x0
         // add css font icons
         if ($this->opt('mail_icon') === 'dashicons') {
             wp_enqueue_style('dashicons');
-
         } elseif ($this->opt('mail_icon') === 'fontawesome') {
             wp_enqueue_script( 'font-awesome' );
         }

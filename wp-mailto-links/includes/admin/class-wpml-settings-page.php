@@ -157,13 +157,7 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
         wp_enqueue_script('dashboard');
 
         // set mailto script
-        wp_enqueue_script(
-            'wp-mailto-links-admin'
-            , plugins_url('/public/js/wp-mailto-links-admin.js', WP_MAILTO_LINKS_FILE)
-            , array('jquery')
-            , false
-            , true
-        );
+        wp_enqueue_script('wp-mailto-links-admin');
         wp_localize_script('wp-mailto-links-admin', 'wpmlSettings', array(
             'pluginUrl' => plugins_url('', WP_MAILTO_LINKS_FILE),
             'dashiconsValue' => $this->option->getValue('dashicons'),
@@ -171,12 +165,7 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
         ));
 
         // set style
-        wp_enqueue_style(
-            'font-awesome'
-            , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-            , array()
-            , null
-        );
+        wp_enqueue_style('font-awesome');
     }
 
 }
