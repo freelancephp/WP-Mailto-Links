@@ -1,0 +1,58 @@
+/**
+ * WP External Links Plugin
+ * Front Style
+ */
+
+.wpml-icon.dashicons-before:before {
+    font-size: inherit;
+    line-height: inherit;
+    width: auto;
+}
+
+.wpml-icon-left i.wpml-icon.dashicons-before {
+    margin-right: 0.2em;
+}
+.wpml-icon-right i.wpml-icon.dashicons-before {
+    margin-left: 0.2em;
+}
+.wpml-icon-left i.wpml-icon {
+    margin-right: 0.3em;
+}
+.wpml-icon-right i.wpml-icon {
+    margin-left: 0.3em;
+}
+
+.wpml-icon.wpml-image {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+}
+.wpml-icon-left .wpml-icon.wpml-image {
+    margin-right: 0.3em;
+}
+.wpml-icon-right .wpml-icon.wpml-image {
+    margin-left: 0.3em;
+}
+
+.wpml-icon-1 { background-image: url('../images/wpml-icons/icon-1.png'); }
+.wpml-icon-2 { background-image: url('../images/wpml-icons/icon-2.png'); }
+.wpml-icon-3 { background-image: url('../images/wpml-icons/icon-3.png'); }
+.wpml-icon-4 { background-image: url('../images/wpml-icons/icon-4.png'); }
+.wpml-icon-5 { background-image: url('../images/wpml-icons/icon-5.png'); }
+.wpml-icon-6 { background-image: url('../images/wpml-icons/icon-6.png'); }
+.wpml-icon-7 { background-image: url('../images/wpml-icons/icon-7.png'); }
+.wpml-icon-8 { background-image: url('../images/wpml-icons/icon-8.png'); }
+.wpml-icon-9 { background-image: url('../images/wpml-icons/icon-9.png'); }
+.wpml-icon-10 { background-image: url('../images/wpml-icons/icon-10.png'); }
+.wpml-icon-11 { background-image: url('../images/wpml-icons/icon-11.png'); }
+.wpml-icon-12 { background-image: url('../images/wpml-icons/icon-12.png'); }
+.wpml-icon-13 { background-image: url('../images/wpml-icons/icon-13.png'); }
+.wpml-icon-14 { background-image: url('../images/wpml-icons/icon-14.png'); }
+.wpml-icon-15 { background-image: url('../images/wpml-icons/icon-15.png'); }
+.wpml-icon-16 { background-image: url('../images/wpml-icons/icon-16.png'); }
+.wpml-icon-17 { background-image: url('../images/wpml-icons/icon-17.png'); }
+.wpml-icon-18 { background-image: url('../images/wpml-icons/icon-18.png'); }
+.wpml-icon-19 { background-image: url('../images/wpml-icons/icon-19.png'); }
+.wpml-icon-20 { background-image: url('../images/wpml-icons/icon-20.png'); }

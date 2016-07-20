@@ -123,10 +123,6 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 
 == Changelog ==
 
-= NEW =
-* Remove option "no-icon class"
-* 
-
 = 2.1.5 =
 * Fixed bug responsive image names containing @
 

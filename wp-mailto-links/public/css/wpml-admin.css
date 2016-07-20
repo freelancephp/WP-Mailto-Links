@@ -1,0 +1,111 @@
+/**
+ * WP External Links Plugin
+ * Admin Style
+ */
+
+.wpml-no-label,
+.wpml-no-label th,
+.wpml-no-label td {
+    padding-top: 0;
+}
+.wpml-no-label th:after {
+    content: '\00a0';
+}
+.wpml-hidden {
+    display: none;
+}
+
+a.toplevel_page_wpml-settings-page .wp-menu-image:before {
+    font-family: FontAwesome;
+    content:  '\f0e0';
+}
+
+a.toplevel_page_wpml-network-settings-page .wp-menu-image:before {
+    font-family: FontAwesome;
+    content:  '\f0e0';
+}
+
+.wpml-settings-page .nav-tab i,
+.wpml-network-page .nav-tab i {
+    margin-right: 5px;
+}
+
+.wpml-settings-page .nav-tab-support,
+.wpml-network-page .nav-tab-support {
+    float: right;
+}
+
+.wpml-settings-page form,
+.wpml-network-page form {
+    position: relative;
+}
+
+.js-wpml-apply-child td {
+    padding-left: 30px;
+}
+
+.wpml-icon-type-image-column {
+    min-width: 10em;
+    float: left;
+}
+.wpml-icon-type-image-column:after {
+    clear: both;
+}
+
+::-webkit-input-placeholder {
+   color: #ccc;
+   font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+   color: #ccc;
+   font-style: italic;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #ccc;
+   font-style: italic;
+}
+:-ms-input-placeholder {
+   color: #ccc;
+   font-style: italic;
+}
+
+/**
+ * Background Icon
+ */
+
+.wpml-settings-page form:before,
+.wpml-network-page form:before {
+    font-family: FontAwesome;
+    opacity: 0.2;
+    color: #aaa;
+    font-size: 200pt;
+    position: absolute;
+    top: 140px;
+    right: 40px;
+    z-index: -1;
+}
+
+.wpml-settings-page-mailto-links form:before {
+    content: "\f0e0";
+}
+.wpml-settings-page-exceptions form:before {
+    content: "\f009";
+}
+.wpml-settings-page-admin form:before {
+    content: "\f085";
+}
+.wpml-settings-page-support form:before {
+    content: "\f128";
+}
+
+.wpml-network-page-network-settings form:before {
+    content: "\f0e8";
+}
+.wpml-network-page-network-admin-settings form:before {
+    content: "\f085";
+}
+.wpml-network-page-support form:before {
+    content: "\f128";
+}
+
+
