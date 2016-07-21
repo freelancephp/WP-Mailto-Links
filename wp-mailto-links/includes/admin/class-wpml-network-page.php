@@ -85,7 +85,10 @@ final class WPML_Network_Page extends WPRun_Base_1x0x0
             }
         } else if ( isset( $this->tabs[ $type ][ 'fields' ] ) ) {
             $option_values = $this->tabs[ $type ][ 'fields' ]->get_option_values();
-            return $option_values[ $key ];
+
+            if ( isset( $option_values[ $key ] ) ) {
+                return $option_values[ $key ];
+            }
         }
 
         trigger_error( 'Option value "'. $key .'" cannot be found.' );
@@ -100,8 +103,8 @@ final class WPML_Network_Page extends WPRun_Base_1x0x0
 
         if ( '1' === $own_admin_menu ) {
             $this->page_hook = add_menu_page(
-                __( 'WP External Links' , 'wp-mailto-links' )                  // page title
-                , __( 'External Links' , 'wp-mailto-links' )                   // menu title
+                __( 'WP External Links' , 'wp-mailto-links' )       // page title
+                , __( 'External Links' , 'wp-mailto-links' )        // menu title
                 , 'manage_network'                                  // capability
                 , $this->menu_slug                                  // menu slug
                 , $this->get_callback( 'show_network_page' )        // callback
@@ -111,8 +114,8 @@ final class WPML_Network_Page extends WPRun_Base_1x0x0
         } else {
             $this->page_hook = add_submenu_page(
                 'settings.php'                                      // parent slug
-                , __( 'WP External Links' , 'wp-mailto-links' )                // page title
-                , __( 'External Links' , 'wp-mailto-links' )                   // menu title
+                , __( 'WP External Links' , 'wp-mailto-links' )     // page title
+                , __( 'External Links' , 'wp-mailto-links' )        // menu title
                 , 'manage_options'                                  // capability
                 , $this->menu_slug                                  // menu slug
                 , $this->get_callback( 'show_network_page' )        // callback
@@ -137,19 +140,17 @@ final class WPML_Network_Page extends WPRun_Base_1x0x0
      */
     protected function show_network_page()
     {
-        $template_file = WPML_Plugin::get_plugin_dir( '/templates/network-page/main.php' );
         $page = $this->get_option_value( 'own_admin_menu' ) ? 'admin.php' : 'settings.php';
         $page_url = network_admin_url() . $page .'?page='. $this->menu_slug;
 
-        $template_vars = array(
+        $template_file = WPML_Plugin::get_plugin_dir( '/templates/network-page/main.php' );
+        $this->show_template( $template_file, array(
             'tabs'              => $this->tabs,
             'current_tab'       => $this->current_tab,
             'page_url'          => $page_url,
             'menu_slug'         => $this->menu_slug,
             'own_admin_menu'    => $this->get_option_value( 'own_admin_menu' ),
-        );
-
-        $this->show_template( $template_file, $template_vars );
+        ) );
     }
 
     /**
@@ -170,7 +171,7 @@ final class WPML_Network_Page extends WPRun_Base_1x0x0
      * @param WP_Screen $screen
      * @param array     $args
      */
-    protected function show_help_tab( $screen, array $args )
+    protected function show_help_tab( WP_Screen $screen, array $args )
     {
         $template_file = WPML_Plugin::get_plugin_dir( '/templates/network-page/help-tabs/'. $args[ 'id' ] .'.php' );
         $this->show_template( $template_file );

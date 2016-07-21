@@ -1,7 +1,7 @@
 === WP Mailto Links - Manage Email Links ===
 Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email link, protection
-Requires at least: 3.6.0
+Requires at least: 4.0.0
 Tested up to: 4.5.2
 Stable tag: 2.1.5
 
@@ -125,7 +125,7 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 
 = NEW =
 * Remove option "no-icon class"
-* 
+* Added option for "title" attribute
 
 = 2.1.5 =
 * Fixed bug responsive image names containing @

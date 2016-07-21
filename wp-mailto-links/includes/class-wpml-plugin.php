@@ -40,6 +40,7 @@ final class WPML_Plugin extends FWP_Plugin_Base_1x0x0
 
         // admin settings page
         $settings_page = WPML_Settings_Page::create( $network_page, array(
+            'protection'        => WPML_Protection_Fields::create(),
             'mailto-links'      => WPML_Mailto_Link_Fields::create(),
             'admin'             => WPML_Admin_Fields::create(),
             'exceptions'        => WPML_Exceptions_Fields::create(),

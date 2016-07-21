@@ -26,7 +26,7 @@ final class WPML_Mailto_Link_Fields extends FWP_Settings_Section_Base_1x0x0
             'title'         => __( 'Mailto Links', 'wp-mailto-links' ),
             'fields'        => array(
                 'apply_settings' => array(
-                    'label'             => __( 'Settings for links:', 'wp-mailto-links' ),
+                    'label'             => __( 'Settings for mailto links:', 'wp-mailto-links' ),
                     'class'             => 'js-apply-settings',
                 ),
                 'title' => array(

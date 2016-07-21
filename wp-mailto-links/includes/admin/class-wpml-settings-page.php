@@ -41,9 +41,14 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
         $this->network_page = $network_page;
 
         $this->tabs = array(
+            'protection' => array(
+                'title'     => __( 'Protection', 'wp-mailto-links' ),
+                'icon'      => '<i class="fa fa-shield" aria-hidden="true"></i>',
+                'fields'    => $fields_objects[ 'protection' ],
+            ),
             'mailto-links' => array(
                 'title'     => __( 'Mailto Links', 'wp-mailto-links' ),
-                'icon'      => '<i class="fa fa-envelope" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-at" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'mailto-links' ],
             ),
             'exceptions' => array(
@@ -62,9 +67,9 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
             ),
         );
 
-        // check excluded links tab available
-        if ( $this->get_option_value( 'excludes_as_internal_links', 'exceptions' ) ) {
-            unset( $this->tabs[ 'excluded-links' ] );
+        // check mailto links tab available
+        if ( ! $this->get_option_value( 'protect', 'protection' ) ) {
+            unset( $this->tabs[ 'mailto-links' ] );
         }
 
         // get current tab
@@ -102,7 +107,10 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
             }
         } else if ( isset( $this->tabs[ $type ][ 'fields' ] ) ) {
             $option_values = $this->tabs[ $type ][ 'fields' ]->get_option_values();
-            return $option_values[ $key ];
+
+            if ( isset( $option_values[ $key ] ) ) {
+                return $option_values[ $key ];
+            }
         }
 
         trigger_error( 'Option value "'. $key .'" cannot be found.' );
@@ -114,13 +122,12 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
     protected function action_admin_menu()
     {
         $capability = $this->network_page->get_option_value( 'capability' );
-
         $own_admin_menu = $this->get_option_value( 'own_admin_menu', 'admin' );
 
         if ( '1' === $own_admin_menu ) {
             $this->page_hook = add_menu_page(
-                __( 'WP Mailto Links' , 'wp-mailto-links' )          // page title
-                , __( 'Mailto Links' , 'wp-mailto-links' )           // menu title
+                __( 'WP Mailto Links' , 'wp-mailto-links' ) // page title
+                , __( 'Mailto Links' , 'wp-mailto-links' )  // menu title
                 , $capability                               // capability
                 , $this->menu_slug                          // id
                 , $this->get_callback( 'show_admin_page' )  // callback
@@ -129,8 +136,8 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
             );
         } else {
             $this->page_hook = add_options_page(
-                __( 'WP Mailto Links' , 'wp-mailto-links' )          // page title
-                , __( 'Mailto Links' , 'wp-mailto-links' )           // menu title
+                __( 'WP Mailto Links' , 'wp-mailto-links' ) // page title
+                , __( 'Mailto Links' , 'wp-mailto-links' )  // menu title
                 , $capability                               // capability
                 , $this->menu_slug                          // id
                 , $this->get_callback( 'show_admin_page' )  // callback
@@ -141,6 +148,7 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
     }
 
     /**
+     * Action for "wpmu_new_blog"
      * Set default option values for new created sites
      * @param integer $blog_id
      */
@@ -175,19 +183,17 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
      */
     protected function show_admin_page()
     {
-        $template_file = WPML_Plugin::get_plugin_dir( '/templates/settings-page/main.php' );
         $page = $this->get_option_value( 'own_admin_menu' ) ? 'admin.php' : 'options-general.php';
         $page_url = admin_url() . $page .'?page='. $this->menu_slug;
 
-        $template_vars = array(
+        $template_file = WPML_Plugin::get_plugin_dir( '/templates/settings-page/main.php' );
+        $this->show_template( $template_file, array(
             'tabs'              => $this->tabs,
             'current_tab'       => $this->current_tab,
             'page_url'          => $page_url,
             'menu_slug'         => $this->menu_slug,
             'own_admin_menu'    => $this->get_option_value( 'own_admin_menu', 'admin' ),
-        );
-
-        $this->show_template( $template_file, $template_vars );
+        ) );
     }
 
     /**
@@ -208,7 +214,7 @@ final class WPML_Settings_Page extends WPRun_Base_1x0x0
      * @param WP_Screen $screen
      * @param array     $args
      */
-    protected function show_help_tab( $screen, array $args )
+    protected function show_help_tab( WP_Screen $screen, array $args )
     {
         $template_file = WPML_Plugin::get_plugin_dir( '/templates/settings-page/help-tabs/'. $args[ 'id' ] .'.php' );
         $this->show_template( $template_file );

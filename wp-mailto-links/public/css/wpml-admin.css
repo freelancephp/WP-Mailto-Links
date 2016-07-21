@@ -17,12 +17,12 @@
 
 a.toplevel_page_wpml-settings-page .wp-menu-image:before {
     font-family: FontAwesome;
-    content:  '\f0e0';
+    content:  '\f1fa';
 }
 
 a.toplevel_page_wpml-network-settings-page .wp-menu-image:before {
     font-family: FontAwesome;
-    content:  '\f0e0';
+    content:  '\f1fa';
 }
 
 .wpml-settings-page .nav-tab i,
@@ -85,8 +85,11 @@ a.toplevel_page_wpml-network-settings-page .wp-menu-image:before {
     z-index: -1;
 }
 
+.wpml-settings-page-protection form:before {
+    content: "\f132";
+}
 .wpml-settings-page-mailto-links form:before {
-    content: "\f0e0";
+    content: "\f1fa";
 }
 .wpml-settings-page-exceptions form:before {
     content: "\f009";

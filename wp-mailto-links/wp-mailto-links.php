@@ -35,7 +35,7 @@ if ( ! function_exists( 'wpml_init' ) ):
         $wp_version = get_bloginfo( 'version' );
         $php_version = phpversion();
 
-        if ( version_compare( $wp_version, '3.6', '<' ) || version_compare( $php_version, '5.3', '<' ) ) {
+        if ( version_compare( $wp_version, '4.0', '<' ) || version_compare( $php_version, '5.3', '<' ) ) {
             if ( ! function_exists( 'wpml_requirements_notice' ) ) {
                 function wpel_requirements_notice()
                 {

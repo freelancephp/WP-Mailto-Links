@@ -42,10 +42,6 @@ final class WPML_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
                     'class'         => 'js-wpml-apply-child wpml-hidden wpml-no-label',
                     'default_value' => '1',
                 ),
-                'ignore_script_tags' => array(
-                    'label'         => __( 'Skip <code>&lt;script&gt;</code>:', 'wp-mailto-links' ),
-                    'default_value' => '1',
-                ),
             ),
         ) );
 
@@ -96,16 +92,6 @@ final class WPML_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
         );
     }
 
-    protected function show_ignore_script_tags( array $args )
-    {
-        $this->get_html_fields()->check_with_label(
-            $args[ 'key' ]
-            , __( 'Ignore all links in <code>&lt;script&gt;</code> blocks', 'wp-mailto-links' )
-            , '1'
-            , ''
-        );
-    }
-
     /**
      * Validate and sanitize user input before saving to databse
      * @param array $new_values
@@ -121,20 +107,11 @@ final class WPML_Exceptions_Fields extends FWP_Settings_Section_Base_1x0x0
         $is_valid = $is_valid && in_array( $new_values[ 'apply_comments' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'apply_widgets' ], array( '', '1' ) );
         $is_valid = $is_valid && in_array( $new_values[ 'apply_all' ], array( '', '1' ) );
-        $is_valid = $is_valid && in_array( $new_values[ 'ignore_script_tags' ], array( '', '1' ) );
 
         if ( false === $is_valid ) {
             // error when user input is not valid conform the UI, probably tried to "hack"
             $this->add_error( __( 'Something went wrong. One or more values were invalid.', 'wp-mailto-links' ) );
             return $old_values;
-        }
-
-        if ( '' !== trim( $new_values[ 'include_urls' ] ) ) {
-            $update_values[ 'include_urls' ] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $new_values[ 'include_urls' ] ) ) );
-        }
-
-        if ( '' !== trim( $new_values[ 'exclude_urls' ] ) ) {
-            $update_values[ 'exclude_urls' ] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $new_values[ 'exclude_urls' ] ) ) );
         }
 
         return $update_values;

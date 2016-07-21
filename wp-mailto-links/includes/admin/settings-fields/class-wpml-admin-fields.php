@@ -25,6 +25,10 @@ final class WPML_Admin_Fields extends FWP_Settings_Section_Base_1x0x0
             'option_group'      => 'wpml-admin-settings',
             'title'             => __( 'Admin Settings', 'wp-mailto-links' ),
             'fields'            => array(
+                'security_check' => array(
+                    'label'         => __( 'Security Check:', 'wp-mailto-links' ),
+                    'default_value' => '0',
+                ),
                 'own_admin_menu' => array(
                     'label'         => __( 'Main Admin Menu:', 'wp-mailto-links' ),
                     'default_value' => '1',
@@ -38,6 +42,21 @@ final class WPML_Admin_Fields extends FWP_Settings_Section_Base_1x0x0
     /**
      * Show field methods
      */
+
+    protected function show_security_check( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Mark emails on the site as successfully encoded', 'wp-mailto-links' )
+            , '1'
+            , ''
+        );
+
+        echo ' <i class="dashicons-before dashicons-lock"></i>';
+        echo ' <p class="description">'
+                . __( 'Only visible for admin users', 'wp-mailto-links' )
+                .'</p>';
+    }
 
     protected function show_own_admin_menu( array $args )
     {

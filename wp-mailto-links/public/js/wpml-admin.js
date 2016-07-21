@@ -1,5 +1,5 @@
 /**
- * WP External Links Plugin
+ * WP Mailto Links Plugin
  * Admin
  */
 /*global jQuery, window*/
