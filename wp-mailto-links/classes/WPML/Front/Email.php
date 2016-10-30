@@ -171,7 +171,7 @@ final class WPML_Front_Email extends WPRun_BaseAbstract_0x5x0
         return preg_replace_callback($this->getEmailRegExp(), function ($matches) use ($replaceBy) {
             // workaround to skip responsive image names containing @
             $extention = strtolower($matches[4]);
-            $excludedList = array('.jpg', '.jpeg', 'png', 'gif');
+            $excludedList = array('.jpg', '.jpeg', '.png', '.gif');
 
             if (in_array($extention, $excludedList)) {
                 return $matches[0];
