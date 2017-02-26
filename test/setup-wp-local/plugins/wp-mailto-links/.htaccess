@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteRule images/(.*)$ http://localhost/git/WP-Mailto-Links/wp-mailto-links/public/images/$1
-RewriteRule js/(.*)$ http://localhost/git/WP-Mailto-Links/wp-mailto-links/public/js/$1
-RewriteRule css/(.*)$ http://localhost/git/WP-Mailto-Links/wp-mailto-links/public/css/$1
-RewriteRule data/(.*)$ http://localhost/git/WP-Mailto-Links/wp-mailto-links/public/data/$1
+RewriteRule images/(.*)$ http://localhost/wpdev/wp-plugins/wpml/WP-Mailto-Links/wp-mailto-links/public/images/$1
+RewriteRule js/(.*)$ http://localhost/wpdev/wp-plugins/wpml/WP-Mailto-Links/wp-mailto-links/public/js/$1
+RewriteRule css/(.*)$ http://localhost/wpdev/wp-plugins/wpml/WP-Mailto-Links/wp-mailto-links/public/css/$1
+RewriteRule data/(.*)$ http://localhost/wpdev/wp-plugins/wpml/WP-Mailto-Links/wp-mailto-links/public/data/$1
 </IfModule>
