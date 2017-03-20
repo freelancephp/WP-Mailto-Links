@@ -2,7 +2,7 @@
 Contributors: freelancephp
 Tags: hide, email, email address, mailto, link, antispam, protect, spambot, encode, encrypt, obfuscate, email link, protection
 Requires at least: 3.6.0
-Tested up to: 4.6.1
+Tested up to: 4.7.3
 Stable tag: 2.1.6
 
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
