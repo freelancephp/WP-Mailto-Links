@@ -124,7 +124,7 @@ Now all mailto links will be wrapped around a `<b>`-tag.
 == Changelog ==
 
 = 2.1.7 =
- * Fixed bug copying emailaddress
+ * Fixed bug copying emailaddress (credits to Martin Kreiner)
 
 = 2.1.6 =
 * Fixed bug retina png or gif images
