@@ -1,7 +1,7 @@
 WP Mailto Links - Manage Email Links
 ====================================
 
-> From 13 March 2019 this WordPress plugin has been taken over by WebFactory. Take a look at the [plugin page on wordpress.org](https://wordpress.org/plugins/email-encoder-bundle/)  to follow further updates.
+> **_From 13 March 2019 this WordPress plugin has been taken over by WebFactory. Take a look at the [plugin page on wordpress.org](https://wordpress.org/plugins/email-encoder-bundle/)  to follow further updates._**
 
 Protect email addresses and mailto links from spambots and spamming. Easy to use without configuration.
 
