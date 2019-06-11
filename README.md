@@ -1,7 +1,7 @@
 WP Mailto Links - Manage Email Links
 ====================================
 
-> **_From 13 March 2019 this WordPress plugin has been taken over by WebFactory. Take a look at the [plugin page on wordpress.org](https://wordpress.org/plugins/wp-mailto-links/)  to follow future updates._**
+> **_From March 13, 2019 this WordPress plugin has been taken over by other developers. Take a look at the [plugin page on wordpress.org](https://wordpress.org/plugins/wp-mailto-links/)  to follow future updates._**
 
 ---
 
